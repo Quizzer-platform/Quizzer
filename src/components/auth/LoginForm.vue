@@ -1,8 +1,5 @@
 <template>
-  <h1>hello from app</h1>
-  <main>
-    <RouterView />
-  </main>
+    <h1>login form</h1>
 </template>
 
 <script>

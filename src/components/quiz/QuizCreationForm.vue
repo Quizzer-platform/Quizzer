@@ -1,8 +1,5 @@
 <template>
-  <h1>hello from app</h1>
-  <main>
-    <RouterView />
-  </main>
+    <h1>quiz creation form </h1>
 </template>
 
 <script>

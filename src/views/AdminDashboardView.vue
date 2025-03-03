@@ -22,7 +22,7 @@
 <script>
 import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavbar from "@/components/admin/AdminNavBar.vue";
-import DashboardOverview from "@/components/admin/AdminOverView.vue";
+import DashboardOverview from "@/components/admin/AdminOverview.vue";
 import QuizzesTable from "@/components/admin/AdminQuizList.vue";
 
 export default {

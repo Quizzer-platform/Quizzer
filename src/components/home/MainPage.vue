@@ -68,7 +68,7 @@
         <Cards :cards="cards" />
         <!-- View All Button -->
          <!-- border text-gray-900 border-gray-300 px-6 py-2 rounded-lg hover:bg-teal-50 -->
-        <button class="mt-8 border border-gray-300 px-6 py-2 rounded-lg hover:bg-gray-100">
+        <button @click="$router.push('/categories')"  class="mt-8 border border-gray-300 px-6 py-2 rounded-lg hover:bg-gray-100">
           View All →
         </button>
       </div>

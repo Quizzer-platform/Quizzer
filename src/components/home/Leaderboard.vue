@@ -14,7 +14,7 @@
             <select class="border rounded px-2 py-1">
                 <option>Overall</option>
             </select>
-        </div>
+           </div>
 
         <!-- Top 3 -->
         <div class="grid grid-cols-3 gap-4 text-center mb-6">

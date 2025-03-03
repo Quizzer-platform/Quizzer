@@ -8,7 +8,7 @@
     <p class="text-gray-600 mt-2 text-sm">
       {{ description }}
     </p>
-        <button class="mt-4 bg-teal-700 text-white px-12 py-2 rounded-lg shadow-lg hover:bg-teal-900">
+    <button class="mt-4 bg-teal-700 text-white px-12 py-2 rounded-lg shadow-lg hover:bg-teal-900">
       See More
     </button>
   </div>

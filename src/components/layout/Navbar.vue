@@ -25,7 +25,9 @@
           </ul>
           <div class="flex items-center space-x-4">
             <div class="flex items-center space-x-2 m-5">
-              <button  class="hover:text-teal-600"><router-link to="/login">Login</router-link></button>
+              <slot name="canChange">
+                <button  class="hover:text-teal-600"><router-link to="/login">Login</router-link></button>
+              </slot>
             </div>
            
             <button @click="toggleMenu" class="md:hidden text-gray-600 focus:outline-none">

@@ -6,7 +6,8 @@ import SignupView from './views/SignupView.vue';
 import AdminDashboardView from './views/AdminDashboardView.vue';
 import UserProfileView from './views/UserProfileView.vue';
 import NotFoundView from './views/NotFoundView.vue';
-import CategoryPage from '@/views/CategoryPage.vue';  // The category page
+import CategoryPage from '@/views/CategoryPage.vue';  
+import Leaderboard from './components/home/Leaderboard.vue';
 
 const routes = [
     { path: '/', component: HomeView },
@@ -14,6 +15,8 @@ const routes = [
     { path: '/signup', component: SignupView },
     { path: '/admin', component: AdminDashboardView },
     { path: '/profile', component: UserProfileView },
+    { path: '/leaderboard', component: Leaderboard },
+
     { path: '/:notFound(.*)', component: NotFoundView },
     { path: '/categories', component: CategoryPage },
 ]

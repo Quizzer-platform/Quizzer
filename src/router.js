@@ -17,7 +17,6 @@ const routes = [
     { path: '/admin', component: AdminDashboardView },
     { path: '/profile', component: UserProfileView },
     { path: '/leaderboard', component: Leaderboard },
-    { path: '/:notFound(.*)', component: NotFoundView },
     { path: '/categories', component: CategoryPage },
     { path: '/quizLevels', component:Quizlevels },
 

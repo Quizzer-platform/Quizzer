@@ -13,12 +13,12 @@
                 <input v-model="email" type="email" placeholder="Enter your email" class="w-full p-2 border rounded-lg">
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700">Password</label>
-                <input v-model="password" type="password" placeholder="Enter your password" class="w-full p-2 border rounded-lg">
-            </div>
-            <div class="mb-4">
                 <label class="block text-gray-700">Phone</label>
                 <input v-model="phone" type="text" placeholder="Enter your phone number" class="w-full p-2 border rounded-lg">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Password</label>
+                <input v-model="password" type="password" placeholder="Enter your password" class="w-full p-2 border rounded-lg">
             </div>
             <div class="mb-4 flex items-center">
                 <input v-model="termsAccepted" type="checkbox" class="mr-2">

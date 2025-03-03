@@ -53,32 +53,9 @@
       <div class="text-gray-600 mt-2">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc <p>odio in et, lectus sit lorem id integer.</p>
       </div>
-      
       <!-- Features Grid -->
       <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-        <!-- Feature 1 -->
-        <div class="bg-teal-50 p-6 rounded-lg shadow-md">
-          <h3 class="font-semibold text-lg text-gray-800">Skill Evaluation</h3>
-          <p class="text-gray-600 mt-2 text-sm">
-            Our platform provides in-depth skill assessments across multiple domains, helping organizations make data-driven hiring decisions.
-          </p>
-        </div>
-
-        <!-- Feature 2 -->
-        <div class="bg-teal-50 p-6 rounded-lg shadow-md">
-          <h3 class="font-semibold text-lg text-gray-800">Performance Analytics</h3>
-          <p class="text-gray-600 mt-2 text-sm">
-            Track quiz performance with detailed analytics, including scores, time spent, and comparative benchmarking for smarter evaluations.
-          </p>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="bg-teal-50 p-6 rounded-lg shadow-md">
-          <h3 class="font-semibold text-lg text-gray-800">Customizable Quizzes</h3>
-          <p class="text-gray-600 mt-2 text-sm">
-            Create quizzes with various question types, difficulty levels, and scoring methods to match your assessment criteria.
-          </p>
-        </div>
+        <Features />
       </div>
     </div>
   </section>
@@ -88,52 +65,8 @@
       <h2 class="text-3xl font-bold text-gray-800">
         Explore Our Quiz Categories
       </h2>
-
-      <!-- Categories Grid -->
-      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <!-- Card 1 -->
-        <div class="bg-white p-6 rounded-lg shadow-md">              
-          <div class="bg-teal-100 p-3 w-12 h-12 mx-auto rounded-md flex items-center justify-center">
-            <i>icon</i>
-          </div>
-          <h3 class="font-semibold text-lg text-gray-800 mt-4">Programming</h3>
-          <p class="text-gray-600 mt-2 text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
-          </p>
-          <button class="mt-4 bg-teal-700 text-white px-12 py-2 rounded-lg shadow-lg hover:bg-teal-900">
-            See More
-          </button>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <div class="bg-teal-100 p-3 w-12 h-12 mx-auto rounded-md flex items-center justify-center">
-            <i>icon</i> 
-          </div>
-          <h3 class="font-semibold text-lg text-gray-800 mt-4">Languages</h3>
-          <p class="text-gray-600 mt-2 text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
-          </p>
-          <button class="mt-4 bg-teal-700 text-white px-12 py-2 rounded-lg shadow-lg hover:bg-teal-900">
-            See More
-          </button>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <div class="bg-teal-100 p-3 w-12 h-12 mx-auto rounded-md flex items-center justify-center">
-            <i>icon</i> 
-          </div>
-          <h3 class="font-semibold text-lg text-gray-800 mt-4">Typing Speed</h3>
-          <p class="text-gray-600 mt-2 text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
-          </p>
-          <button class="mt-4 bg-teal-700 text-white px-12 py-2 rounded-lg shadow-lg hover:bg-teal-900">
-            See More
-          </button>
-        </div>
-      </div>
-
+      <!-- Categories Grid Quiz Cards -->
+      <Cards :cards="cards" />
       <!-- View All Button -->
        <!-- border text-gray-900 border-gray-300 px-6 py-2 rounded-lg hover:bg-teal-50 -->
       <button class="mt-8 border border-gray-300 px-6 py-2 rounded-lg hover:bg-gray-100">
@@ -141,16 +74,18 @@
       </button>
     </div>
   </section>
-  <section class="py-8 px-6 bg-white text-center">
-    <div class="max-w-4xl mx-auto">
-      <!-- Heading -->
-      <h2 class="text-3xl font-bold text-gray-800">
-        Frequently Asked Questions
-      </h2>
+ <section class="py-8 px-6 bg-white text-center">
+  <div class="max-w-4xl mx-auto">
+    <!-- Heading -->
+    <h2 class="text-3xl font-bold text-gray-800">
+      Frequently Asked Questions
+    </h2>
 
-      <!-- FAQ Grid -->
-      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Question 1 (Expanded) -->
+    <!-- FAQ Grid -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <!-- Left Column -->
+      <div class="space-y-4">
+        <!-- Expanded Question -->
         <div class="bg-white p-6 rounded-lg shadow-md text-left">
           <div class="flex items-start gap-3">
             <span class="text-xl text-teal-600">−</span>
@@ -159,15 +94,25 @@
                 How long until we deliver your first blog post?
               </h3>
               <p class="text-gray-600 mt-2 text-sm">
-                Quick help to your company! We analyze the niche, define
-                your brand voice, and provide high-quality content. Expect
-                delivery in a few business days.
+                Really boy law county she unable her sister. Feet you off its like like silk.
+                Among sex are leave law built now. In built table in an rapid blush. Merits
+                behind on afraid or warmly.
               </p>
             </div>
           </div>
         </div>
 
-        <!-- Collapsed Questions -->
+        <!-- Collapsed Question -->
+        <div class="bg-white p-6 rounded-lg shadow-md text-left flex items-center gap-3">
+          <span class="text-xl text-teal-700">+</span>
+          <h3 class="font-semibold text-gray-800">
+            How long until we deliver your first blog post?
+          </h3>
+        </div>
+      </div>
+
+      <!-- Right Column  -->
+      <div class="space-y-4">
         <div class="bg-white p-6 rounded-lg shadow-md text-left flex items-center gap-3">
           <span class="text-xl text-teal-700">+</span>
           <h3 class="font-semibold text-gray-800">
@@ -190,7 +135,8 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
   <section class="py-16 px-6 bg-white text-center">
     <div class="max-w-4xl mx-auto">
       <!-- Section Title -->
@@ -299,12 +245,36 @@
 <script>
 import Navbar from "../components/layout/Navbar.vue";
 import Footer from "../components/layout/Footer.vue";
-
+import Features from "../components/home/Features.vue"
+import Cards from "../components/home/QuizzesCards.vue"
 export default {
   name: "HomeView",
   components: {
         Navbar,
         Footer,
+        Features,
+        Cards,
+  },
+  data() {
+    return {
+      cards: [
+        {
+          icon: "icon",
+          title: "Programming",
+          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
+        },
+        {
+          icon: "icon",
+          title: "Languages",
+          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
+        },
+        {
+          icon: "icon", 
+          title: "Typing Speed",
+          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
+        },
+      ],
+    };
   },
 };
 </script>

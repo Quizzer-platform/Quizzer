@@ -5,6 +5,7 @@
           <h1 class="text-xl font-bold text-teal-600">Quizzer</h1>
           <p class="mt-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam.</p>
           <div class="flex space-x-4 mt-4">
+            <!-- this icons will not work like this  -->
             <a href="#" class="text-xl"><i class="fab fa-facebook"></i></a>
             <a href="#" class="text-xl"><i class="fab fa-twitter"></i></a>
             <a href="#" class="text-xl"><i class="fab fa-instagram"></i></a>

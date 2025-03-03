@@ -1,8 +1,7 @@
 <template>
     <div class="container mx-auto px-4 py-8">
-      <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Categories</h2>
       
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center ">
         <CategoryCard 
           v-for="(category, index) in categories" 
           :key="index"
@@ -15,7 +14,7 @@
   </template>
   
   <script>
-  import CategoryCard from "./categorycard.vue";
+  import CategoryCard from "./categrycard.vue";
   
   export default {
     name: "CategoryPage",

@@ -4,13 +4,28 @@
         <div class="flex justify-between items-center py-4">
           <h1 class="text-xl font-bold text-teal-600">Quizzer</h1>
           <ul class="hidden md:flex space-x-6">
-            <li v-for="item in menuItems" :key="item">
-              <a href="#" class="hover:text-teal-600">{{ item }}</a>
+            <li>
+              <a href="#" class="hover:text-teal-600 ">Home</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-teal-600 ">Services</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-teal-600 ">Leaderboard</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-teal-600 ">About Us</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-teal-600 ">Contact Us</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-teal-600 ">Pricing</a>
             </li>
           </ul>
           <div class="flex items-center space-x-4">
             <div class="flex items-center space-x-2 m-5">
-              <button  class="hover:text-teal-600">login</button>
+              <button  class="hover:text-teal-600"><router-link to="/login">Login</router-link></button>
             </div>
            
             <button @click="toggleMenu" class="md:hidden text-gray-600 focus:outline-none">

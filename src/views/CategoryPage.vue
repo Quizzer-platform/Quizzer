@@ -1,5 +1,7 @@
 <template>
+<Navbar/>
 <Category/>
+<Footer/>
 </template>
 <script>
 import Navbar from "../components/layout/Navbar.vue";

@@ -1,5 +1,4 @@
 <template>
-  <h1>hello from app</h1>
   <main>
     <RouterView />
   </main>

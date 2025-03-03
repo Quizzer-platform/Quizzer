@@ -7,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  assetsInclude: ["**/*.png", "**/*.PNG"],
   plugins: [
     vue(),
     vueDevTools(),
@@ -18,3 +19,4 @@ export default defineConfig({
     },
   },
 })
+

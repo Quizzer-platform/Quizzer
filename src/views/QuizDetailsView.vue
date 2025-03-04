@@ -1,20 +1,17 @@
 <template>
     <Navbar />
-    <search customClass="" />
-    <Category />
+    <QuizDetails />
     <Footer />
 </template>
 <script>
 import Navbar from "../components/layout/Navbar.vue";
 import Footer from "../components/layout/Footer.vue";
-import Category from "../components/home/Categories.vue";
-import search from "../components/layout/Searchbar.vue"
+import QuizDetails from "@/components/quiz/QuizDetails.vue";
 export default {
     components: {
-        Category,
         Navbar,
         Footer,
-        search
+        QuizDetails
     }
 }
 </script>

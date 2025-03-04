@@ -9,10 +9,13 @@
                 sed do eiusmodadipiscing elit, sed do eiusmod.
             </p>
             <div class="mt-4 sm:mt-6 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                <button class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md">CREATE
-                    QUIZ</button>
-                <button class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md">VIEW /
-                    EDIT QUIZ</button>
+                <button
+                    class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                    @click="createQuiz">CREATE QUIZ</button>
+                <button
+                    class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                    @click="viewQuiz">VIEW
+                    / EDIT QUIZ</button>
             </div>
         </div>
 
@@ -24,4 +27,16 @@
     </div>
 </template>
 <script>
+export default {
+    methods: {
+        createQuiz() {
+            this.$router.push('/admin/createQuiz');
+        },
+        viewQuiz() {
+            //   this.$router.push('/admin/quiz')
+            console.log('View Quiz');
+        }
+    }
+
+};
 </script>

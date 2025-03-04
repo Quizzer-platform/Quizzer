@@ -9,10 +9,41 @@
 
     <h2 class="text-2xl font-bold p-6">QUIZZER</h2>
     <nav class="mt-6">
-      <ul>
-        <li v-for="item in menuItems" :key="item.name">
-          <router-link :to="item.path" class="block py-3 px-6 hover:bg-teal-600 transition">
-            {{ item.name }}
+      <ul class="space-y-2">
+        <li>
+          <router-link 
+            to="/" 
+            class="block py-3 px-6 hover:bg-teal-600 transition"
+            active-class="bg-teal-700"
+          >
+            Home
+          </router-link>
+        </li>
+        <li>
+          <router-link 
+            to="/admin" 
+            class="block py-3 px-6 hover:bg-teal-600 transition"
+            active-class="bg-teal-700"
+          >
+            Dashboard
+          </router-link>
+        </li>
+        <li>
+          <router-link 
+            to="/admin/organizations" 
+            class="block py-3 px-6 hover:bg-teal-600 transition"
+            active-class="bg-teal-700"
+          >
+            Organizations
+          </router-link>
+        </li>
+        <li>
+          <router-link 
+            to="/admin/quizzes" 
+            class="block py-3 px-6 hover:bg-teal-600 transition"
+            active-class="bg-teal-700"
+          >
+            Quizzes
           </router-link>
         </li>
       </ul>
@@ -29,16 +60,6 @@ export default {
   props: {
     isOpen: Boolean
   },
-  data() {
-    return {
-      menuItems: [
-        { name: "Home", path: "/" },
-        { name: "Dashboard", path: "/dashboard" },
-        { name: "Organizations", path: "/organizations" },
-        { name: "Quizzes", path: "/quizzes" }
-      ]
-    };
-  },
   methods: {
     toggleSidebar() {
       this.$emit("toggleSidebar");
@@ -46,5 +67,3 @@ export default {
   }
 };
 </script>
-
-

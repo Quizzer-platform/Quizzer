@@ -1,10 +1,10 @@
 <template>
-   <Navbar>
-    <template v-slot:canChange>
-      <ProfileIcon/>
-    </template>
-  </Navbar>
-   <div class="m-10">
+    <Navbar>
+        <template v-slot:canChange>
+            <UserProfileIcon />
+        </template>
+    </Navbar>
+    <div class="m-10">
         <h2 class="text-2xl font-semibold text-center">See where you are!</h2>
         <p class="text-gray-500 text-center">Here is your Leaderboard</p>
 
@@ -14,7 +14,7 @@
             <select class="border rounded px-2 py-1">
                 <option>Overall</option>
             </select>
-           </div>
+        </div>
 
         <!-- Top 3 -->
         <div class="grid grid-cols-3 gap-4 text-center mb-6">
@@ -74,19 +74,19 @@
             </table>
         </div>
     </div>
-    <Footer/>
+    <Footer />
 </template>
 
 <script>
 import Navbar from "../layout/Navbar.vue";
 import Footer from "../layout/Footer.vue";
-import ProfileIcon from "../layout/userProfileIcon.vue"
-export default{
-    components:{
-     ProfileIcon,
-      Navbar,
-      Footer,
-     
+import UserProfileIcon from "../layout/userProfileIcon.vue";
+export default {
+    components: {
+        UserProfileIcon,
+        Navbar,
+        Footer,
+
     }
 }
 

@@ -5,6 +5,7 @@ import LoginView from './views/LoginView.vue';
 import SignupView from './views/SignupView.vue';
 import AdminDashboardView from './views/AdminDashboardView.vue';
 import AdminOrganizationsView from './views/AdminOrganizationsView.vue';
+import AdminQuizzesEditDelete from "./views/AdminQuizzesEditDelete.vue"
 import UserProfileView from './views/UserProfileView.vue';
 import NotFoundView from './views/NotFoundView.vue';
 import Leaderboard from './components/home/Leaderboard.vue';
@@ -15,21 +16,21 @@ import ContactUs from "@/views/ContactUs.vue";
 
 
 const routes = [
-    { path: '/', component: HomeView },
-    { path: '/login', component: LoginView },
-    { path: '/signup', component: SignupView },
-    { path: '/admin', component: AdminDashboardView },
-    { path: '/admin/organizations', component: AdminOrganizationsView },
-    { path: '/profile', component: UserProfileView },
+  { path: '/', component: HomeView },
+  { path: '/login', component: LoginView },
+  { path: '/signup', component: SignupView },
+  { path: '/admin', component: AdminDashboardView },
+  { path: '/admin/organizations', component: AdminOrganizationsView },
+  { path: '/admin/quizzes', component: AdminQuizzesEditDelete },
+  { path: '/profile', component: UserProfileView },
 
-    { path: '/leaderboard', component: Leaderboard },
-    { path: '/categories', component: CategoryPage },
-    { path: '/quizLevels', component:Quizlevels },
-    { path: '/contactus', component:ContactUs },
+  { path: '/leaderboard', component: Leaderboard },
+  { path: '/categories', component: CategoryPage },
+  { path: '/quizLevels', component: Quizlevels },
+  { path: '/contactus', component: ContactUs },
 
-
-    { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time 
-]
+  { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time
+];
 
 const router = createRouter({
   history: createWebHistory(),

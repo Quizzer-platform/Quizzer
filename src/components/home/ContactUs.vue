@@ -4,9 +4,9 @@
             <div class="flex flex-wrap lg:justify-between">
             <div class="w-full px-4 lg:w-1/2 xl:w-6/12">
                 <div class="mb-12 max-w-[570px] lg:mb-0">
-                <span class="block mb-4 text-4xl font-semibold text-primary text-teal-700"> Contact Us </span>
+                <span class="block mb-4 text-2xl font-semibold text-primary text-teal-700"> Contact Us </span>
                 <h2
-                    class="text-dark mb-6 text-2xl font-bold uppercase "
+                    class="text-dark mb-6 text-3xl font-bold uppercase "
                 >
                     GET IN TOUCH WITH US
                 </h2>

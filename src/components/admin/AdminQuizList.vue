@@ -4,11 +4,12 @@
     
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold text-teal-900">Quizzes Review</h2>
-        <input 
+        <SearchBar class="ml-165"></SearchBar>
+        <!-- <input 
         type="text" 
         placeholder="Search" 
         class="p-2 pl-4 w-60 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-600"
-        />
+        /> -->
     </div>
 
 
@@ -16,7 +17,7 @@
     <div class="bg-white p-6 rounded-lg shadow-lg mx-auto max-w-5xl">
   <table class="w-full text-left border-collapse overflow-hidden rounded-lg">
     <thead>
-      <tr class="bg-teal-900 text-white">
+      <tr class="bg-teal-900 text-white text-center">
         <th class="p-4 rounded-l-lg">QUIZ ID</th>
         <th class="p-4">Name of Quiz</th>
         <th class="p-4">No. takes</th>
@@ -45,6 +46,7 @@
 </template>
 
 <script>
+import SearchBar from "../layout/Searchbar.vue"
 export default {
   data() {
     return {
@@ -56,6 +58,9 @@ export default {
       ],
     };
   },
+  components: {
+    SearchBar,
+  }
 };
 </script>
 

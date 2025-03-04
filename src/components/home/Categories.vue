@@ -14,7 +14,7 @@
   </template>
   
   <script>
-  import CategoryCard from "./categrycard.vue";
+  import CategoryCard from "./CategryCard.vue";
   
   export default {
     name: "CategoryPage",

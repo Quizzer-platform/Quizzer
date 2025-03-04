@@ -39,7 +39,7 @@
         </li>
         <li>
           <router-link 
-            to="/quizzes" 
+            to="/admin/quizzes" 
             class="block py-3 px-6 hover:bg-teal-600 transition"
             active-class="bg-teal-700"
           >

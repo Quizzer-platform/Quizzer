@@ -5,6 +5,7 @@ import LoginView from './views/LoginView.vue';
 import SignupView from './views/SignupView.vue';
 import AdminDashboardView from './views/AdminDashboardView.vue';
 import AdminOrganizationsView from './views/AdminOrganizationsView.vue';
+import AdminQuizzesEditDelete from "./views/AdminQuizzesEditDelete.vue"
 import UserProfileView from './views/UserProfileView.vue';
 import NotFoundView from './views/NotFoundView.vue';
 import Leaderboard from './components/home/Leaderboard.vue';
@@ -14,6 +15,7 @@ import ContactUs from "./views/ContactUsView.vue";
 import PricingPage from "./components/home/PricingPage.vue";
 import CreateQuizView from './views/CreateQuizView.vue';
 import Quizzes from './components/home/Quizzes.vue';
+import QuizDetailsView from './views/QuizDetailsView.vue';
 
 
 const routes = [
@@ -23,6 +25,7 @@ const routes = [
     { path: '/signup', component: SignupView },
     { path: '/admin', component: AdminDashboardView },
     { path: '/admin/organizations', component: AdminOrganizationsView },
+    { path:'/admin/quizzes',component:AdminQuizzesEditDelete},
     { path: '/profile', component: UserProfileView },
     { path: '/admin/createQuiz', component: CreateQuizView },
 
@@ -32,10 +35,11 @@ const routes = [
     { path: '/contactus', component: ContactUs },
     { path: '/pricing', component: PricingPage },
     { path: '/quizzes', component: Quizzes },
+    { path: '/quizDetails', component: QuizDetailsView },
 
 
-    { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time 
-]
+  { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time
+];
 
 const router = createRouter({
     history: createWebHistory(),

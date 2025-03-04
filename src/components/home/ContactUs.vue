@@ -1,12 +1,12 @@
     <template>
-        <section class="relative z-10 overflow-hidden bg-white dark:bg-dark py-20 lg:py-[120px]">
+        <section class="relative z-10 overflow-hidden m-5 bg-white dark:bg-dark py-20 lg:py-[120px]">
         <div class="container mx-auto">
             <div class="flex flex-wrap -mx-4 lg:justify-between">
             <div class="w-full px-4 lg:w-1/2 xl:w-6/12">
                 <div class="mb-12 max-w-[570px] lg:mb-0">
-                <span class="block mb-4 text-base font-semibold text-primary text-teal-700"> Contact Us </span>
+                <span class="block mb-4 text-4xl font-semibold text-primary text-teal-700"> Contact Us </span>
                 <h2
-                    class="text-dark dark:text-white mb-6 text-[32px] font-bold uppercase sm:text-[40px] lg:text-[36px] xl:text-[40px]"
+                    class="text-dark mb-6 text-2xl font-bold uppercase "
                 >
                     GET IN TOUCH WITH US
                 </h2>

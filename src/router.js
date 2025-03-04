@@ -24,7 +24,7 @@ const routes = [
     { path: '/signup', component: SignupView },
     { path: '/admin', component: AdminDashboardView },
     { path: '/admin/organizations', component: AdminOrganizationsView },
-    { path:'admin/quizzes',component:AdminQuizzesEditDelete},
+    { path:'/admin/quizzes',component:AdminQuizzesEditDelete},
     { path: '/profile', component: UserProfileView },
     { path: '/admin/createQuiz', component: CreateQuizView },
 

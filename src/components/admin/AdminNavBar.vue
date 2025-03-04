@@ -6,7 +6,7 @@
     </button>
 
     <!-- Title -->
-    <h1 class="text-xl font-bold text-gray-800 text-center flex-1">Admin Dashboard</h1>
+    <h1 class="text-xl font-bold text-gray-800 sm:text-center md:text-left flex-1">Admin Dashboard</h1>
 
     <!-- User Profile -->
     <div class="relative flex items-center pr-2 sm:pr-4">

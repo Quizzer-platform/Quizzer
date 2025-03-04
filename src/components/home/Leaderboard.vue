@@ -83,7 +83,7 @@ import Footer from "../layout/Footer.vue";
 import UserProfileIcon from "../layout/UserProfileIcon.vue";
 export default{
     components:{
-     ProfileIcon,
+        UserProfileIcon,
       Navbar,
       Footer,
      

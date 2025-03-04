@@ -15,6 +15,7 @@ import ContactUs from "./views/ContactUsView.vue";
 import PricingPage from "./components/home/PricingPage.vue";
 import CreateQuizView from './views/CreateQuizView.vue';
 import Quizzes from './components/home/Quizzes.vue';
+import QuizDetailsView from './views/QuizDetailsView.vue';
 
 
 const routes = [
@@ -34,6 +35,7 @@ const routes = [
     { path: '/contactus', component: ContactUs },
     { path: '/pricing', component: PricingPage },
     { path: '/quizzes', component: Quizzes },
+    { path: '/quizDetails', component: QuizDetailsView },
 
 
   { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time

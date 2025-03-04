@@ -16,6 +16,7 @@ import CreateQuizView from './views/CreateQuizView.vue';
 import Quizzes from './components/home/Quizzes.vue';
 
 
+
 const routes = [
     { path: '/', component: HomeView },
     { path: '/home', redirect: '/' },

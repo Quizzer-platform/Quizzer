@@ -12,6 +12,12 @@
                         <a href="#" class="hover:text-teal-600 ">Services</a>
                     </li>
                     <li>
+                        <router-link to="/categories" class="hover:text-teal-600 ">Categories</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/quizzes" class="hover:text-teal-600 ">Quizzes</router-link>
+                    </li>
+                    <li>
                         <router-link to="/leaderboard" class="hover:text-teal-600 ">Leaderboard</router-link>
                     </li>
                     <li>
@@ -49,6 +55,12 @@
                 <li>
                     <!-- <router-link to="/" class="hover:text-teal-600 ">Services</router-link> -->
                     <a href="#" class="hover:text-teal-600 ">Services</a>
+                </li>
+                <li>
+                    <router-link to="/categories" class="hover:text-teal-600 ">Categories</router-link>
+                </li>
+                <li>
+                    <router-link to="/quizzes" class="hover:text-teal-600 ">Quizzes</router-link>
                 </li>
                 <li>
                     <router-link to="/leaderboard" class="hover:text-teal-600 ">Leaderboard</router-link>

@@ -12,6 +12,8 @@ import CategoryPage from '@/views/CategoryPage.vue';  // The category page
 import Quizlevels from "@/views/QuizLevels.vue";
 import ContactUs from "@/views/ContactUs.vue";
 
+
+
 const routes = [
     { path: '/', component: HomeView },
     { path: '/login', component: LoginView },
@@ -19,6 +21,7 @@ const routes = [
     { path: '/admin', component: AdminDashboardView },
     { path: '/admin/organizations', component: AdminOrganizationsView },
     { path: '/profile', component: UserProfileView },
+
     { path: '/leaderboard', component: Leaderboard },
     { path: '/categories', component: CategoryPage },
     { path: '/quizLevels', component:Quizlevels },

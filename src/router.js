@@ -4,6 +4,7 @@ import HomeView from './views/HomeView.vue';
 import LoginView from './views/LoginView.vue';
 import SignupView from './views/SignupView.vue';
 import AdminDashboardView from './views/AdminDashboardView.vue';
+import AdminOrganizationsView from './views/AdminOrganizationsView.vue';
 import UserProfileView from './views/UserProfileView.vue';
 import NotFoundView from './views/NotFoundView.vue';
 import Leaderboard from './components/home/Leaderboard.vue';
@@ -18,6 +19,7 @@ const routes = [
     { path: '/login', component: LoginView },
     { path: '/signup', component: SignupView },
     { path: '/admin', component: AdminDashboardView },
+    { path: '/admin/organizations', component: AdminOrganizationsView },
     { path: '/profile', component: UserProfileView },
 
     { path: '/leaderboard', component: Leaderboard },

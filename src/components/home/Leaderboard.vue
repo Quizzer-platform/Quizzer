@@ -1,7 +1,7 @@
 <template>
    <Navbar>
     <template v-slot:canChange>
-      <ProfileIcon/>
+      <UserProfileIcon/>
     </template>
   </Navbar>
    <div class="m-10">
@@ -80,10 +80,10 @@
 <script>
 import Navbar from "../layout/Navbar.vue";
 import Footer from "../layout/Footer.vue";
-import ProfileIcon from "../layout/UserProfileIcon.vue"
+import UserProfileIcon from "../layout/UserProfileIcon.vue";
 export default{
     components:{
-     ProfileIcon,
+        UserProfileIcon,
       Navbar,
       Footer,
      

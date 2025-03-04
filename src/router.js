@@ -9,6 +9,7 @@ import NotFoundView from './views/NotFoundView.vue';
 import Leaderboard from './components/home/Leaderboard.vue';
 import CategoryPage from '@/views/CategoryPage.vue';  // The category page
 import Quizlevels from "@/views/QuizLevels.vue";
+import ContactUs from "@/views/ContactUs.vue";
 
 
 
@@ -20,9 +21,10 @@ const routes = [
     { path: '/profile', component: UserProfileView },
 
     { path: '/leaderboard', component: Leaderboard },
-    { path: '/:notFound(.*)', component: NotFoundView },
     { path: '/categories', component: CategoryPage },
     { path: '/quizLevels', component:Quizlevels },
+    { path: '/contactus', component:ContactUs },
+
 
     { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time 
 ]

@@ -8,7 +8,7 @@
     import Navbar from "../layout/Navbar.vue";
     import Footer from "../layout/Footer.vue";
     import Quizess from "./QuizzesCards.vue";
-    import search from "../layout/searchbar.vue" ;
+    import search from "../layout/Searchbar.vue" ;
 
     export default{
     components:{

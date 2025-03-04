@@ -10,12 +10,15 @@ import Leaderboard from './components/home/Leaderboard.vue';
 import CategoryPage from '@/views/CategoryPage.vue';  // The category page
 import Quizlevels from "@/views/QuizLevels.vue";
 
+
+
 const routes = [
     { path: '/', component: HomeView },
     { path: '/login', component: LoginView },
     { path: '/signup', component: SignupView },
     { path: '/admin', component: AdminDashboardView },
     { path: '/profile', component: UserProfileView },
+
     { path: '/leaderboard', component: Leaderboard },
     { path: '/:notFound(.*)', component: NotFoundView },
     { path: '/categories', component: CategoryPage },

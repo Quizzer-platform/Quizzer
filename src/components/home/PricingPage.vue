@@ -14,15 +14,15 @@
     <div class="flex items-center space-x-2 mb-6">
       <button 
         @click="monthlyActive = true; updatePricing()" 
-        :class="monthlyActive ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-700'"
-        class="px-4 py-2 rounded-full">
+        :class="monthlyActive ? 'bg-teal-700 text-white' : 'bg-gray-200 text-gray-700'"
+        class="px-4 py-2 rounded-full cursor-pointer">
         Monthly
       </button>
       <button 
         @click="monthlyActive = false; updatePricing()" 
-        :class="!monthlyActive ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-700'"
-        class="px-4 py-2 rounded-full">
-        Yearly <span class="text-xs text-green-500">(Save 30%)</span>
+        :class="!monthlyActive ? 'bg-teal-700 text-white' : 'bg-gray-200 text-gray-700'"
+        class="px-4 py-2 rounded-full cursor-pointer">
+        Yearly <span class="text-xs text-black">(Save 30%)</span>
       </button>
     </div>
     
@@ -31,7 +31,7 @@
         <h3 class="text-xl font-semibold text-gray-700">Starter</h3>
         <p class="text-gray-500 mt-2">Starter pack to help you get started</p>
         <p class="text-2xl font-bold text-gray-800 mt-4">Free</p>
-        <button class="mt-4 px-6 py-2 bg-teal-800 hover:bg-teal-900 text-white rounded-lg mb-6">Get Started</button>
+        <button class="mt-4 px-6 py-2 bg-teal-800 hover:bg-teal-900 text-white rounded-lg mb-6 cursor-pointer">Get Started</button>
         <hr>
         <ul class="text-left mt-4 text-gray-600">
           <li>✔ 5 free tests and 5 custom questions</li>
@@ -45,7 +45,7 @@
         <h3 class="text-xl font-semibold text-gray-700">Pro</h3>
         <p class="text-gray-500 mt-2">More power for small teams</p>
         <p class="text-2xl font-bold text-gray-800 mt-4">{{ proPrice }}</p>
-        <button class="mt-4 px-6 py-2 text-white rounded-lg bg-teal-800 hover:bg-teal-900 mb-6">Get Started</button>
+        <button class="mt-4 px-6 py-2 text-white rounded-lg bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer">Get Started</button>
         <hr>
         <ul class="text-left mt-4 text-gray-600">
           <li>✔ All 400+ tests in the test library</li>
@@ -58,7 +58,7 @@
         <h3 class="text-xl font-semibold text-gray-700">Business+</h3>
         <p class="text-gray-500 mt-2">For companies that need to manage work</p>
         <p class="text-2xl font-bold text-gray-800 mt-4">{{ businessPrice }}</p>
-        <button class="mt-4 px-6 py-2 text-white rounded-lg bg-teal-800 hover:bg-teal-900 mb-6">Get Started</button>
+        <button class="mt-4 px-6 py-2 text-white rounded-lg bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer">Get Started</button>
         <hr>
         <ul class="text-left mt-4 text-gray-600">
           <li>✔ Everything in the Starter plan, plus...</li>
@@ -72,7 +72,7 @@
         <h3 class="text-xl font-semibold text-gray-700">Enterprise</h3>
         <p class="text-gray-500 mt-2">For enterprises that need additional security</p>
         <p class="text-2xl font-bold text-gray-800 mt-4">Custom</p>
-        <button class="mt-4 px-6 py-2 bg-teal-800 hover:bg-teal-900 text-white rounded-lg mb-6">Contact Sales</button>
+        <button class="mt-4 px-6 py-2 bg-teal-800 hover:bg-teal-900 text-white rounded-lg mb-6 cursor-pointer">Contact Sales</button>
         <hr>
         <ul class="text-left mt-4 text-gray-600">
           <li>✔ Enhanced security</li>

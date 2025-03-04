@@ -1,4 +1,5 @@
 <template>
+    <Navbar />
     <div class="flex items-center justify-center min-h-screen bg-gray-100 p-4">
         <div class="flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="w-full md:w-1/2 p-6 md:p-10">
@@ -24,7 +25,7 @@
                 <input v-model="termsAccepted" type="checkbox" class="mr-2">
                 <label class="text-gray-600 text-sm">I agree to the <a href="#" class="text-teal-600">terms & policy</a></label>
             </div>
-            <button class="w-full bg-teal-600 text-white py-2 rounded-lg">Signup</button>
+            <button class="w-full bg-teal-600 text-white py-2 rounded-lg cursor-pointer">Signup</button>
             <p class="text-center mt-4 text-gray-600">
                 Have an account? <router-link to="/login" class="text-teal-600">Sign In</router-link>
             </p>
@@ -40,7 +41,11 @@
 
     <script>
     import imageUrl from "@/assets/img1.PNG";
+    import Navbar from "../layout/Navbar.vue";
     export default {
+        components: {
+        Navbar,
+    },
     data() {
         return {
         name: "",

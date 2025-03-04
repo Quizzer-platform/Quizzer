@@ -26,7 +26,7 @@ export default {
       dropdownOpen: false,
       user: {
         name: "Admin",
-        avatar: "https://via.placeholder.com/40",
+        avatar: "https://placehold.co/200x200/green/white",
       },
     };
   },

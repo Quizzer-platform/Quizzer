@@ -87,7 +87,7 @@ export default {
                 duration: 10,
                 numberOfQuestions: 10,
                 description: '',
-                revealAnswers: 'yes',
+                  revealAnswers: 'yes',
                 scorePerQuestion: 1,
                 questions: [
                     {

@@ -5,9 +5,10 @@
         <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-teal-100 to-teal-200 opacity-40 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
       </div>
           <Navbar />
-      <div class="container mx-auto px-6 text-center">
+          <SearchBar class="ml-auto w-full sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px] xl:max-w-[600px]" />
+          <div class="container mx-auto px-6 text-center">
         <!-- Main Content -->
-        <div class="max-w-4xl mx-auto mt-35">
+        <div class="max-w-4xl mx-auto mt-15">
           <span class="bg-gray-100 text-gray-900 border-1 border-gray-300 text-sm px-4 py-1 rounded-full">
             🚀 Measure Skills, Not Just Words
           </span>
@@ -246,12 +247,14 @@
   import Footer from "../layout/Footer.vue";
   import Features from "./Features.vue"
   import Cards from "./QuizzesCards.vue"
+  import SearchBar from "../layout/Searchbar.vue";
   export default {
     components: {
           Navbar,
           Footer,
           Features,
           Cards,
+          SearchBar
     },
     data() {
       return {

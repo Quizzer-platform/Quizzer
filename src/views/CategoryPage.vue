@@ -8,7 +8,7 @@
 import Navbar from "../components/layout/Navbar.vue";
 import Footer from "../components/layout/Footer.vue";
 import Category from "../components/home/Categories.vue";
-import search from "../components/layout/searchbar.vue"
+import search from "../components/layout/Searchbar.vue"
 export default{
 components:{
   Category,

@@ -1,36 +1,43 @@
 <template>
-    <div class="bg-teal-500 p-6 rounded-lg shadow-md m-2">
-        <!-- Icon -->
-        <div class="bg-teal-100 p-3 mx-auto rounded-md flex items-center justify-center">
-            <i :class="icon" class="text-teal-700 text-xl">{{ icon }}</i>
-        </div>
-        <h3 class="font-semibold text-lg text-gray-800 mt-4">{{ title }}</h3>
-        <p class="text-gray-600 mt-2 text-sm">
-            {{ description }}
-        </p>
-        <button class="mt-4 bg-teal-700 text-white px-12 py-2 rounded-lg shadow-lg cursor-pointer hover:bg-teal-900">
-            See More
-        </button>
+  <div class="bg-white p-6 rounded-xl shadow-lg m-2 w-64 text-center">
+    <!-- Icon Section -->
+    <div class="bg-teal-100 p-3 w-12 h-12 mx-auto rounded-md flex items-center justify-center">
+      <span class="text-teal-700 text-lg font-semibold">{{ icon }}</span>
     </div>
+
+    <!-- Quiz Title -->
+    <h3 class="font-semibold text-lg text-gray-900 mt-4">{{ title }}</h3>
+
+    <!-- Quiz Description -->
+    <p class="text-gray-600 mt-2 text-sm">
+      {{ description }}
+    </p>
+
+    <!-- Button -->
+    <button 
+      class="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md w-full hover:bg-teal-900 transition">
+      See More
+    </button>
+  </div>
 </template>
 
 <script>
 export default {
-    name: "QuizCard",
-    props: {
-        icon: {
-            type: String,
-            required: true,
-            default: "icon",
-        },
-        title: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
-    }
+  name: "QuizCard",
+  props: {
+    icon: {
+      type: String,
+      required: true,
+      default: "📘",
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+  },
 };
 </script>

@@ -9,6 +9,8 @@ import AdminOrganizationsView from './views/AdminOrganizationsView.vue';
 import AdminQuizzesEditDeleteView from "./views/AdminQuizzesEditDeleteView.vue";
 import OrganizationQuizzesEditDeleteView from "./views/OrganizationQuizzesEditDelete.vue"
 import AdminOrganizationDetailsView from "./views/AdminOrganizationDetailsView.vue";
+import OrganizationUserView from './views/OrganizationUserView.vue';
+import OrganizationUsersView from "./views/OrganizationUsersView.vue"
 import UserProfileView from './views/UserProfileView.vue';
 import NotFoundView from './views/NotFoundView.vue';
 import Leaderboard from './components/home/Leaderboard.vue';
@@ -31,8 +33,10 @@ const routes = [
   { path: '/organization', component: OrganizationDashboardView },
   { path: '/admin/organizations', component: AdminOrganizationsView },
   { path: '/admin/organizations/:id', component: AdminOrganizationDetailsView },
+  { path: '/organization/user/:id', component: OrganizationUserView },
+  { path: '/organization/users', component: OrganizationUsersView },
   { path: '/admin/quizzes', component: AdminQuizzesEditDeleteView },
-  { path: '/organization/quizzes', component: OrganizationQuizzesEditDeleteView },
+  { path: '/organization/quizzes',component: OrganizationQuizzesEditDeleteView,},
   { path: '/profile', component: UserProfileView },
   { path: '/admin/createQuiz', component: CreateQuizView },
   { path: '/organization/createQuiz', component: CreateQuizView },

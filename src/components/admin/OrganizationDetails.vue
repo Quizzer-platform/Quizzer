@@ -14,10 +14,6 @@
 
       <!-- Organization Details Content -->
       <main class="flex-1 p-6">
-        <h2 class="text-xl font-semibold text-teal-900 sm:pl-5">
-          Organization Details: {{ selectedOrg ? selectedOrg.name : 'Not Found' }}
-        </h2>
-
         <!-- Organization Info -->
         <div v-if="selectedOrg" class="bg-teal-100 p-6 rounded-lg shadow-md flex items-center mt-4">
           <img :src="selectedOrg.image" alt="Organization Logo" class="w-40 h-40 rounded-full object-cover mr-6">

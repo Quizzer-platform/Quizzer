@@ -1,7 +1,9 @@
 <template>
     <Navbar />
     <search />
+    <div class="flex justify-center">
     <Quizzes :cards="cards" />
+    </div>
     <Footer />
 </template>
 <script>

@@ -8,10 +8,6 @@
                         <router-link to="/" class="hover:text-teal-600 ">Home</router-link>
                     </li>
                     <li>
-                        <!-- <router-link to="/" class="hover:text-teal-600 ">Services</router-link> -->
-                        <a href="#" class="hover:text-teal-600 ">Services</a>
-                    </li>
-                    <li>
                         <router-link to="/categories" class="hover:text-teal-600 ">Categories</router-link>
                     </li>
                     <li>
@@ -19,10 +15,6 @@
                     </li>
                     <li>
                         <router-link to="/leaderboard" class="hover:text-teal-600 ">Leaderboard</router-link>
-                    </li>
-                    <li>
-                        <!-- <router-link to="/" class="hover:text-teal-600 ">About Us</router-link> -->
-                        <a href="#" class="hover:text-teal-600 ">About Us</a>
                     </li>
                     <li>
                         <router-link to="/contactus" class="hover:text-teal-600 ">Contact Us</router-link>

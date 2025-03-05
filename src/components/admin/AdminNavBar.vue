@@ -4,7 +4,6 @@
     <button class="md:hidden text-2xl text-gray-700" @click="$emit('toggleSidebar')">
       ☰
     </button>
-
     <!-- Title -->
     <h1 class="text-xl font-bold text-gray-800 sm:text-center md:text-left flex-1">Admin Dashboard</h1>
 

@@ -1,7 +1,7 @@
 <template>
-    <div class="container mx-auto px-4 py-8">
+    <div class="flex justify-center">
       
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center ">
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <CategoryCard 
           v-for="(category, index) in categories" 
           :key="index"

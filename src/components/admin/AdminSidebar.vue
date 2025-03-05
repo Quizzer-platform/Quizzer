@@ -48,10 +48,10 @@
         </li>
       </ul>
     </nav>
-    <div class="absolute bottom-6 left-6 text-sm text-gray-300">
+    <!-- <div class="absolute bottom-6 left-6 text-sm text-gray-300">
       <p>Licensed under &copy; CCC</p>
       <router-link to="/donate" class="underline">Donate Us</router-link>
-    </div>
+    </div> -->
   </div>
 </template>
 

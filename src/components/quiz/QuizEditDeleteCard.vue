@@ -9,10 +9,10 @@
 
     <!-- Edit & Delete Buttons -->
     <div class="absolute top-6 right-3 flex gap-2">
-      <button @click="$emit('edit', quiz)" class="bg-teal-700 text-white p-2 rounded-full hover:bg-teal-900 transition">
+      <button @click="$emit('edit', quiz)" class="bg-teal-400 text-white p-2 rounded-full hover:bg-teal-900 transition">
         ✏️
       </button>
-      <button @click="$emit('delete', quiz)" class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition">
+      <button @click="$emit('delete', quiz)" class="bg-red-200 text-white p-2 rounded-full hover:bg-red-600 transition">
         ❌
       </button>
     </div>

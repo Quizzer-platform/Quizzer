@@ -45,7 +45,7 @@
                         <td class="p-2">4</td>
                         <td class="p-2">400</td>
                     </tr>
-                    <tr class="bg-teal-700 text-white">
+                    <tr class="text-white">
                         <td class="p-2">@ayushi123</td>
                         <td class="p-2">5</td>
                         <td class="p-2">367</td>

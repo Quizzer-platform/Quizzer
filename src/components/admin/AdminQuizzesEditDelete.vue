@@ -6,7 +6,6 @@
       @toggleSidebar="toggleSidebar"
       class="fixed md:relative md:block z-50"
     />
-
     <!-- Main Content -->
     <div class="flex-1 flex flex-col overflow-x-hidden">
       <!-- Navbar -->
@@ -22,7 +21,7 @@
           <SearchBar class="w-full sm:w-auto" @search="updateSearchQuery" />
 
           <!-- Create Quiz Button (Full Width on Small Screens) -->
-          <button class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 w-1/2 sm:w-auto">
+          <button class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 w-1/2 sm:w-auto cursor-pointer" @click="createQuiz">
   ➕ Create Quiz
 </button>
         </div>
@@ -86,6 +85,9 @@ export default {
       this.searchQuery = query;
     },
 
+    createQuiz() {
+      this.$router.push('/admin/createQuiz');
+    },
     editQuiz(quiz) {
       console.log("Editing quiz:", quiz);
     },

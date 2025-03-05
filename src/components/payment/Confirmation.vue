@@ -25,7 +25,7 @@
 
 <script>
 import Navbar from "../layout/Navbar.vue";
-import UserProfileIcon  from "../layout/userProfileIcon.vue"
+import UserProfileIcon  from "../layout/UserProfileIcon.vue"
 export default {
   components: {Navbar,UserProfileIcon },
   

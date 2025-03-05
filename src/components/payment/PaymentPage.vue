@@ -34,7 +34,7 @@ import Navbar from "../layout/Navbar.vue";
 import CardPayment from './CardPayment.vue';
 import BankPayment from './BankPayment.vue';
 import TransferPayment from './TransferPayment.vue';
-import UserProfileIcon  from "../layout/userProfileIcon.vue"
+import UserProfileIcon  from "../layout/UserProfileIcon.vue"
 export default {
   components: { CardPayment, BankPayment, TransferPayment ,Navbar,UserProfileIcon },
   data() {

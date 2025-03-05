@@ -33,7 +33,7 @@ export default {
             this.$router.push('/admin/createQuiz');
         },
         viewQuiz() {
-            //   this.$router.push('/admin/quiz')
+            this.$router.push('/admin/quizzes')
             console.log('View Quiz');
         }
     }

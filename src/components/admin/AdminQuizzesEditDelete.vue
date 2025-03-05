@@ -56,10 +56,10 @@ export default {
       isSidebarOpen: window.innerWidth >= 768, // Sidebar is open by default on large screens
       searchQuery: "",
       quizzes: [
-        { id: 1, title: "HTML Fundamentals",icon:"ii", description: "Learn the basics of HTML and more about this quiz" },
-        { id: 2, title: "CSS Basics", icon:"ii",description: "Understand styling with CSS and more about this quiz" },
-        { id: 3, title: "JavaScript Essentials", icon:"ii",description: "Master JavaScript concepts and more about this quiz" },
-        { id: 4, title: "Vue.js Introduction",icon:"ii", description: "Get started with Vue.js and more about this quiz" },
+        // { id: 1, title: "HTML Fundamentals",icon:"ii", description: "Learn the basics of HTML and more about this quiz" },
+        // { id: 2, title: "CSS Basics", icon:"ii",description: "Understand styling with CSS and more about this quiz" },
+        // { id: 3, title: "JavaScript Essentials", icon:"ii",description: "Master JavaScript concepts and more about this quiz" },
+        // { id: 4, title: "Vue.js Introduction",icon:"ii", description: "Get started with Vue.js and more about this quiz" },
       ],
     };
   },
@@ -73,6 +73,23 @@ export default {
   },
 
   methods: {
+    loadQuizzes() {
+            fetch('https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json', {})
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                }).then(data => {
+                    console.log('Data:', data);
+                    for (const id in data) {
+                        this.quizzes.push({ title: data[id].title, description: data[id].description });
+                    }
+
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again later.');
+                });
+        },
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
@@ -99,6 +116,7 @@ export default {
 
   mounted() {
     window.addEventListener("resize", this.handleResize);
+    this.loadQuizzes();
   },
 
   beforeUnmount() {

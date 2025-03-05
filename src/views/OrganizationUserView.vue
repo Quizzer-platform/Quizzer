@@ -1,13 +1,13 @@
 <template>
-  <OrganizationUsers />
+  <OrganizationUser />
 </template>
 
 <script>
-import OrganizationUsers from "@/components/organization/OrganizationUser.vue";
+import OrganizationUser from "@/components/organization/OrganizationUser.vue";
 
 export default {
   components: {
-    OrganizationUsers,
+    OrganizationUser,
   },
 };
 </script>

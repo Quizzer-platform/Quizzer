@@ -97,7 +97,27 @@ export default {
         },
         {
           id: 2,
-          name: "John Doe",
+          name: "Ethar Mohamed",
+          joinedDate: "June 10, 2022",
+          email: "johndoe@gmail.com",
+          phone: "01234567892",
+          rank: 950,
+          totalQuizzes: 8,
+          image: "https://placehold.co/100x100/green/white"
+        },
+        {
+          id: 3,
+          name: "Shereen Shawky",
+          joinedDate: "June 10, 2022",
+          email: "johndoe@gmail.com",
+          phone: "01234567892",
+          rank: 950,
+          totalQuizzes: 8,
+          image: "https://placehold.co/100x100/green/white"
+        },
+        {
+          id: 4,
+          name: "Rawan Magdy",
           joinedDate: "June 10, 2022",
           email: "johndoe@gmail.com",
           phone: "01234567892",

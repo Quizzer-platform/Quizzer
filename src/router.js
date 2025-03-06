@@ -40,7 +40,6 @@ const routes = [
   { path: '/profile', component: UserProfileView },
   { path: '/admin/createQuiz', component: CreateQuizView },
   { path: '/organization/createQuiz', component: CreateQuizView },
-
   { path: '/leaderboard', component: Leaderboard },
   { path: '/categories', component: CategoryView },
   { path: '/quizLevels', component: Quizlevels },

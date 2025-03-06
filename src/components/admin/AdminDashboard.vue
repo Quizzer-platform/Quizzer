@@ -35,6 +35,11 @@
                 @click="viewQuiz">
                 VIEW / EDIT QUIZ
               </button>
+              <button
+                class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                @click="createCategory">
+               Create Category
+              </button>
             </div>
           </div>
 
@@ -85,6 +90,10 @@ export default {
       this.$router.push('/admin/quizzes');
       console.log('View Quiz');
     },
+    createCategory(){
+      this.$router.push('/admin/categorycreation');
+      console.log('Create Category');
+    }
   },
   mounted() {
     window.addEventListener('resize', this.handleResize);

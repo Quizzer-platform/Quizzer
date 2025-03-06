@@ -67,4 +67,4 @@ export default {
         this.loadQuizzes();
     },
 }
-</script>
+</script> 

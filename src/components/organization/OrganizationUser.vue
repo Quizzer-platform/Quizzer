@@ -4,11 +4,11 @@
     <OrganizationSidebar 
       :isOpen="isSidebarOpen" 
       @toggleSidebar="toggleSidebar"
-      class="fixed md:relative md:block z-50"
+      class="fixed md:fixed z-50"
     />
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col md:ml-64">
       <!-- Navbar -->
       <OrganizationNavbar @toggleSidebar="toggleSidebar" />
 

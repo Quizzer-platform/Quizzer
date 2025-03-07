@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="fixed md:relative h-screen bg-teal-900 text-white w-64 transition-transform duration-300"
+    class="fixed h-screen bg-teal-900 text-white w-64 transition-transform duration-300"
     :class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }"
   >
     <button class="absolute top-4 right-4 md:hidden text-white text-2xl" @click="toggleSidebar">

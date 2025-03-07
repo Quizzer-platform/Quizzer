@@ -155,6 +155,12 @@ export default {
                         <input id="numberOfQuestions" v-model="quiz.numberOfQuestions" type="number" class="mt-2 p-2 block w-full rounded-lg bg-gray-300 shadow-md" required>
                     </div>
                     <div class="md:w-1/2">
+                        <label for="scorePerQuestion" class="block text-sm font-medium text-black">Score per
+                            Question</label>
+                        <input id="scorePerQuestion" v-model="quiz.scorePerQuestion" type="number"
+                            class="mt-2 p-2 block w-full rounded-lg bg-gray-300 shadow-md" required>
+                    </div>
+                    <div class="md:w-1/2">
                         <label for="category" class="block text-sm font-medium text-black">Category</label>
                         <select id="category" v-model="quiz.category" class="mt-2 p-2 block w-full rounded-lg bg-gray-300 shadow-md">
                             <option v-for="category in categories" :key="category.id" :value="category.id">
@@ -182,8 +188,8 @@ export default {
                 </div>
             </div>
             <div class="flex justify-center m-2">
-                <button type="button" @click="addQuestion" class="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-400 hover:cursor-pointer">Add Question</button>
-                <button type="submit" class="bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-500 hover:cursor-pointer">Submit Quiz</button>
+                <button type="button" @click="addQuestion" class=" bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-400 hover:cursor-pointer">Add Question</button>
+                <button type="submit" class="  bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-500 hover:cursor-pointer">Submit Quiz</button>
             </div>
         </form>
     </div>

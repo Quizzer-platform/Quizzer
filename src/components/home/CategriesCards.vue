@@ -18,7 +18,7 @@
         class="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md w-full hover:bg-teal-900 transition">
         See More
       </button> -->
-      <button @click="$emit('view-quizzes', category.id)" class="mt-4 bg-teal-700  text-white px-5 py-2 rounded-lg shadow-md w-full hover:bg-teal-900 transition">
+      <button @click="$emit('view-quizzes', category.id)" class="mt-4 bg-teal-700  text-white px-5 py-2 rounded-lg shadow-md w-full hover:bg-teal-900 cursor-pointer transition">
     See More
 </button>
     </div></div>

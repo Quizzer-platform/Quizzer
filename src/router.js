@@ -44,6 +44,7 @@ const routes = [
   { path: '/admin/createQuiz', component: CreateQuizView },
   { path: '/organization/createQuiz', component: OrganizationCreateQuizView },
   { path: "/organization/quizzes/:quizId", name: "editQuiz", component: OrganizationCreateQuizView, props: true },
+  { path: "/admin/quizzes/:quizId", name: "adminEditQuiz", component: CreateQuizView, props: true },
   { path: '/leaderboard', component: Leaderboard },
   { path: '/categories', component: CategoryView },
   { path: '/admin/categorycreation', component: CategoryCreation },
@@ -53,8 +54,8 @@ const routes = [
   { path: '/pricing', component: PricingPage },
   { path: '/quizzes', component: Quizzes },
   { path: '/quizDetails', component: QuizDetailsView },
+  { path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true },
 
-{ path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true },
   { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time
 ];
 

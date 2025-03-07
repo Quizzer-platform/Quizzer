@@ -211,13 +211,33 @@ export default {
                     correctAnswer: ''
                 }]
             },
-            categories: []
+            categories: [],
+            isEditing: false, // Track if we're editing
+            quizId: null // Store the ID of the quiz being edited
         };
     },
+    created() {
+    const quizId = this.$route.params.quizId; // Get quizId from route
+    if (quizId) {
+        this.isEditing = true;
+        this.quizId = quizId;
+        this.fetchQuiz(quizId); // Fetch quiz data
+    }
+},
     mounted() {
         this.loadCategories();
     },
     methods: {
+        fetchQuiz(quizId) {
+        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/quizData/${quizId}.json`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    this.quiz = data; // Fill form with existing quiz data
+                }
+            })
+            .catch(error => console.error('Error fetching quiz:', error));
+    },
         loadCategories() {
             fetch("https://quizzer-platform-default-rtdb.firebaseio.com/categories.json")
                 .then(response => response.json())
@@ -234,18 +254,41 @@ export default {
             });
         },
         submitQuiz() {
-            if (!this.quiz.category) {
-                alert("Please select a category!");
-                return;
-            }
-            fetch('https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(this.quiz)
-            })
-            .then(response => console.log('Quiz saved:', response))
-            .catch(error => console.error('Error:', error));
-        }
+    if (!this.quiz.category) {
+        alert("Please select a category!");
+        return;
+    }
+
+    if (this.isEditing) {
+        // Edit quiz (PATCH request)
+        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/quizData/${this.quizId}.json`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.quiz)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Quiz Updated:', data);
+        })
+        .catch(error => {
+            console.error('Error updating quiz:', error);
+        });
+    } else {
+        // Create new quiz (POST request)
+        fetch('https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.quiz)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Quiz Created:', data);
+        })
+        .catch(error => {
+            console.error('Error creating quiz:', error);
+        });
+    }
+}
     }
 };
 </script>

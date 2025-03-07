@@ -3,13 +3,13 @@
     <AdminSidebar 
       :isOpen="isSidebarOpen" 
       @toggleSidebar="toggleSidebar"
-      class="fixed md:relative md:block z-50"
+      class="fixed md:fixed z-50"
     />
 
-    <div class="flex-1 flex flex-col overflow-x-hidden">
+    <div class="flex-1 flex flex-col md:ml-64">
       <AdminNavbar @toggleSidebar="toggleSidebar" />
 
-      <div class="flex-1 p-4 overflow-x-hidden">
+      <div class="flex-1 p-4">
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
           <h2 class="text-xl font-semibold text-teal-900 sm:pl-5">Organizations</h2>
           <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-160" />
@@ -57,9 +57,22 @@ export default {
     };
   },
   methods: {
+    toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  },
+
+  handleResize() {
+    this.isSidebarOpen = window.innerWidth >= 768;
+  },
     goToDetails(orgId) {
       this.$router.push(`/admin/organizations/${orgId}`);
     }
-  }
+  },
+  mounted() {
+  window.addEventListener("resize", this.handleResize);
+},
+beforeUnmount() {
+  window.removeEventListener("resize", this.handleResize);
+}
 };
 </script>

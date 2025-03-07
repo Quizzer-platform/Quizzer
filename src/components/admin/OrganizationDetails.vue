@@ -4,7 +4,7 @@
     <AdminSidebar 
       :isOpen="isSidebarOpen" 
       @toggleSidebar="toggleSidebar"
-      class="fixed md:relative md:block z-50"
+      class="fixed md:fixed z-50"
     />
 
     <!-- Main Content -->

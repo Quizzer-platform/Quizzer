@@ -27,6 +27,8 @@ import Quizzes from './components/home/Quizzes.vue';
 import QuizDetailsView from './views/QuizDetailsView.vue';
 import QuizList from './views/QuizList.vue';
 import OrganizationSignupForm from './components/auth/OrganizationSignupForm.vue';
+import RankPage from './views/RankPage.vue';
+
 
 
 const routes = [
@@ -58,6 +60,7 @@ const routes = [
   { path: '/quizzes', component: Quizzes },
   { path: '/quizDetails', component: QuizDetailsView },
   { path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true ,meta: { requiresAuth: true } },
+  { path: '/rankpage', component: RankPage },
 
   { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time
 ];

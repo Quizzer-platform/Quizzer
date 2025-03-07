@@ -19,31 +19,36 @@ const isMenuOpen = ref(false);
                     </div>
                 </div>
                 <nav class="flex flex-col space-y-4">
-                    <a href="#" class="hover:bg-green-700 p-2 rounded font-bold">Dashboard</a>
+                    <a href="#" class="hover:bg-green-700 p-2 rounded text-gray-300">Dashboard</a>
                     <a href="#" class="hover:bg-green-700 p-2 rounded text-gray-300">Account Info</a>
                     <a href="#" class="hover:bg-green-700 p-2 rounded text-gray-300">Subscriptions</a>
-                    <a href="#" class="hover:bg-green-700 p-2 rounded text-gray-300">All Quizzes and Rank</a>
+                    <a href="#" class="hover:bg-green-700 p-2 rounded font-bold">All Quizzes and Rank</a>
                     <a href="#" class="hover:bg-green-700 p-2 rounded text-gray-300">Your Companies</a>
                 </nav>
             </aside>
 
             <!-- Main Content -->
             <main class="flex-1 p-6">
-                <div class="bg-green-800 text-white p-10 rounded-lg flex flex-col md:flex-row justify-between items-center">
+                <div class="bg-green-800 text-white p-10 rounded-lg flex flex-col md:flex-row justify-between items-center ">
+                    <div class="flex">
+                        <img src="https://placehold.co/200x200/green/white" class="w-10 h-10 rounded-full border-2 border-teal-600 me-2" alt="Profile" />
                     <div>
-                        <p class="text-sm">September 4, 2023</p>
-                        <h1 class="text-2xl font-bold">Welcome back, John!</h1>
-                        <p class="text-sm">Always stay updated in your Quiz portal</p>
+                        <h3 class="font-bold text-white">John Doe</h3>
+                        <p class="text-gray-300">john@gmail.com</p>
                     </div>
-                    <div class="w-24 h-24 bg-gray-400 rounded-full mx-10 flex items-center justify-center text-3xl mt-2">
-                        👤
+                    </div>
+                    <div class="font-semibold text-white text-xl mt-4 md:mt-0">
+                        Rank : 6
+                    </div>
+                    <div class="font-semibold text-white text-xl mt-4 md:mt-0">
+                        Score : 367
                     </div>
                 </div>
 
                 <div class="flex flex-wrap gap-6 mt-6">
                     <!-- Left Section -->
                     <div class="flex-1">
-                        <h2 class="text-xl font-bold">Recent Quizzes</h2>
+                        <h2 class="text-xl font-bold">Completed Quizzes</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                             <div v-for="quiz in recentQuizzes" :key="quiz.id" class="bg-white p-4 rounded-lg shadow">
                                 <div class="flex items-center justify-between">
@@ -60,38 +65,9 @@ const isMenuOpen = ref(false);
                             </div>
                         </div>
 
-                        <h2 class="mt-7 text-xl font-bold">Badges</h2>
-                        <div class="flex flex-wrap justify-around mt-4">
-                            <div v-for="badge in badges" :key="badge.name" class="text-center">
-                                <img :src="badge.image" :alt="badge.name" class="w-30 h-30 rounded-full mx-auto border-2 shadow-md" :class="badge.borderColor" />
-                                <p class="mt-2 font-bold">{{ badge.name }}</p>
-                                <p class="text-sm text-gray-600 truncate">{{ badge.description }}</p>
-                            </div>
-                        </div>
+                        
                     </div>
                     
-                    <!-- Right Section -->
-                    <div class="w-full md:w-1/3">
-                        <h2 class="text-xl font-bold">Recommended Quizzes</h2>
-                        <div class="flex flex-wrap gap-4 mt-5 justify-center">
-                            <img v-for="quiz in recommendedQuizzes" :key="quiz.id" :src="quiz.image" :alt="quiz.title" class="w-20 h-20 rounded-full shadow-lg" />
-                        </div>
-    
-                        <div class="mt-5 flex justify-between text-xl">
-                            <h3 class="font-bold">Go Premium! <span class="text-yellow-600">👑</span></h3>
-                            <a href="#" class="text-blue-700 font-semibold">See all</a>
-                        </div>
-    
-                        <div class="mt-5 p-5 bg-white rounded-lg">
-                            <h3 class="font-bold">Subscriptions</h3>
-                            <p class="text-sm text-gray-700">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure saepe repellendus natus? Eos blanditiis dignissimos reprehenderit, fuga, ex optio quo, odit tenetur ratione minus aliquam? Aspernatur enim tempora ea non!</p>
-                            <a href="#" class="text-blue-700 underline">See more</a>
-    
-                            <h3 class="font-bold mt-6">Today's offer</h3>
-                            <p class="text-sm text-gray-700">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste dignissimos id perspiciatis a esse aliquam quam fugit, non exercitationem animi, ratione repellendus ducimus. Ipsum quae fuga commodi, sed qui doloribus?</p>
-                            <a href="#" class="text-blue-700 underline">See more</a>
-                        </div>
-                    </div>
                 </div>
             </main>
         </div>

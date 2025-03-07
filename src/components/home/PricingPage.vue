@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   
   <div class=" relative isolate overflow-hidden bg-gradient-to-b from-teal-50 to-white pb-16 ">
     <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
@@ -113,6 +113,108 @@ export default {
       } else {
         this.proPrice = "$140 / year";
         this.businessPrice = "$700 / year";
+      }
+    }
+  }
+};
+</script> -->
+
+<template>
+  <div class="relative isolate overflow-hidden bg-gradient-to-b from-teal-50 to-white pb-16">
+    <Navbar />
+    <div class="flex flex-col items-center justify-center m-7">
+      <h2 class="text-2xl md:text-3xl font-semibold text-gray-800 m-7">
+        We offer great <span class="text-teal-600">price</span> plan for the application
+      </h2>
+
+      <div class="flex items-center space-x-2 mb-6">
+        <button @click="monthlyActive = true; updatePricing()" 
+                :class="monthlyActive ? 'bg-teal-700 text-white' : 'bg-gray-200 text-gray-700'"
+                class="px-4 py-2 rounded-full cursor-pointer">
+          Monthly
+        </button>
+        <button @click="monthlyActive = false; updatePricing()" 
+                :class="!monthlyActive ? 'bg-teal-700 text-white' : 'bg-gray-200 text-gray-700'"
+                class="px-4 py-2 rounded-full cursor-pointer">
+          Yearly <span class="text-xs text-black">(Save 30%)</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl m-16">
+        <div v-for="plan in plans" :key="plan.name" class="border rounded-lg p-6 shadow-md text-center bg-white">
+          <h3 class="text-xl font-semibold text-gray-700">{{ plan.name }}</h3>
+          <p class="text-gray-500 mt-2">{{ plan.description }}</p>
+          <p class="text-2xl font-bold text-gray-800 mt-4">{{ plan.price }}</p>
+          <button class="mt-4 px-6 py-2 bg-teal-800 hover:bg-teal-900 text-white rounded-lg mb-6 cursor-pointer">
+            {{ plan.buttonText }}
+          </button>
+          <hr>
+          <ul class="text-left mt-4 text-gray-600">
+            <li v-for="feature in plan.features" :key="feature">✔ {{ feature }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="max-w-5xl w-full mt-10">
+        <h3 class="text-xl font-semibold text-gray-700 text-center mb-4">Features Comparison</h3>
+        <table class="w-full border-collapse border border-gray-300 text-center">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border border-gray-300 p-2">Feature</th>
+              <th class="border border-gray-300 p-2">Free</th>
+              <th class="border border-gray-300 p-2">Starter</th>
+              <th class="border border-gray-300 p-2">Pro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="feature in features" :key="feature.name">
+              <td class="border border-gray-300 p-2">{{ feature.name }}</td>
+              <td class="border border-gray-300 p-2">{{ feature.free }}</td>
+              <td class="border border-gray-300 p-2">{{ feature.starter }}</td>
+              <td class="border border-gray-300 p-2">{{ feature.pro }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <Footer />
+</template>
+
+<script>
+import Navbar from "../layout/Navbar.vue";
+import Footer from "../layout/Footer.vue";
+
+export default {
+  components: { Navbar, Footer },
+  data() {
+    return {
+      monthlyActive: true,
+      plans: [
+        { name: "Free", description: "Basic access", price: "Free", buttonText: "Get Started", features: ["5 free tests", "Invite unlimited candidates"] },
+        { name: "Starter", description: "For small teams", price: "$20 / month", buttonText: "Get Started", features: ["All 400+ tests", "Unlimited active assessments"] },
+        { name: "Pro", description: "Advanced features", price: "$100 / month", buttonText: "Get Started", features: ["Custom branded assessments", "API access"] }
+      ],
+      features: [
+        { name: "Edge content delivery", free: "✔", starter: "✔", pro: "✔" },
+        { name: "Custom domains", free: "1", starter: "3", pro: "Unlimited" },
+        { name: "Team members", free: "3", starter: "20", pro: "Unlimited" },
+        { name: "Single sign-on (SSO)", free: "-", starter: "-", pro: "✔" },
+        { name: "Advanced analytics", free: "✔", starter: "✔", pro: "✔" },
+        { name: "Basic reports", free: "-", starter: "✔", pro: "✔" },
+        { name: "Professional reports", free: "-", starter: "-", pro: "✔" },
+        
+      ]
+    };
+  },
+  methods: {
+    updatePricing() {
+      if (this.monthlyActive) {
+        this.plans[1].price = "$20 / month";
+        this.plans[2].price = "$100 / month";
+      } else {
+        this.plans[1].price = "$140 / year";
+        this.plans[2].price = "$700 / year";
       }
     }
   }

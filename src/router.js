@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router';
+import store from './store';
 
 import HomeView from './views/HomeView.vue';
 import LoginView from './views/LoginView.vue';
@@ -25,36 +26,38 @@ import OrganizationCreateQuizView from './views/OrganizationCreateQuizView.vue';
 import Quizzes from './components/home/Quizzes.vue';
 import QuizDetailsView from './views/QuizDetailsView.vue';
 import QuizList from './views/QuizList.vue';
+import OrganizationSignupForm from './components/auth/OrganizationSignupForm.vue';
 
 
 const routes = [
   { path: '/', component: HomeView },
   { path: '/home', redirect: '/' },
-  { path: '/login', component: LoginView },
-  { path: '/signup', component: SignupView },
-  { path: '/admin', component: AdminDashboardView },
-  { path: '/organization', component: OrganizationDashboardView },
-  { path: '/admin/organizations', component: AdminOrganizationsView },
-  { path: '/admin/organizations/:id', component: AdminOrganizationDetailsView },
-  { path: '/organization/user/:id', component: OrganizationUserView },
-  { path: '/organization/users', component: OrganizationUsersView },
-  { path: '/admin/quizzes', component: AdminQuizzesEditDeleteView },
-  { path: '/organization/quizzes',component: OrganizationQuizzesEditDeleteView,},
-  { path: '/profile', component: UserProfileView },
-  { path: '/admin/createQuiz', component: CreateQuizView },
-  { path: '/organization/createQuiz', component: OrganizationCreateQuizView },
-  { path: "/organization/quizzes/:quizId", name: "editQuiz", component: OrganizationCreateQuizView, props: true },
-  { path: "/admin/quizzes/:quizId", name: "adminEditQuiz", component: CreateQuizView, props: true },
+  { path: '/login', component: LoginView ,meta: { requiresGuest: true }},
+  { path: '/usersignup', component: SignupView ,meta: { requiresGuest: true } },
+  { path: '/organizationsignup', component: OrganizationSignupForm },
+  { path: '/admin', component: AdminDashboardView ,meta: { requiresAuth: true, requiresAdmin: true } },
+  { path: '/organization', component: OrganizationDashboardView ,meta: { requiresAuth: true } },
+  { path: '/admin/organizations', component: AdminOrganizationsView ,meta: { requiresAuth: true } },
+  { path: '/admin/organizations/:id', component: AdminOrganizationDetailsView ,meta: { requiresAuth: true } },
+  { path: '/organization/user/:id', component: OrganizationUserView ,meta: { requiresAuth: true } },
+  { path: '/organization/users', component: OrganizationUsersView ,meta: { requiresAuth: true } },
+  { path: '/admin/quizzes', component: AdminQuizzesEditDeleteView ,meta: { requiresAuth: true } },
+  { path: '/organization/quizzes',component: OrganizationQuizzesEditDeleteView,meta: { requiresAuth: true }},
+  { path: '/profile', component: UserProfileView ,meta: { requiresAuth: true } },
+  { path: '/admin/createQuiz', component: CreateQuizView ,meta: { requiresAuth: true } },
+  { path: '/organization/createQuiz', component: OrganizationCreateQuizView ,meta: { requiresAuth: true } },
+  { path: "/organization/quizzes/:quizId", name: "editQuiz", component: OrganizationCreateQuizView, props: true ,meta: { requiresAuth: true } },
+  { path: "/admin/quizzes/:quizId", name: "adminEditQuiz", component: CreateQuizView, props: true ,meta: { requiresAuth: true } },
   { path: '/leaderboard', component: Leaderboard },
   { path: '/categories', component: CategoryView },
-  { path: '/admin/categorycreation', component: CategoryCreation },
+  { path: '/admin/categorycreation', component: CategoryCreation ,meta: { requiresAuth: true } },
 
   { path: '/quizLevels', component: Quizlevels },
   { path: '/contactus', component: ContactUs },
   { path: '/pricing', component: PricingPage },
   { path: '/quizzes', component: Quizzes },
   { path: '/quizDetails', component: QuizDetailsView },
-  { path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true },
+  { path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true ,meta: { requiresAuth: true } },
 
   { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time
 ];
@@ -63,5 +66,20 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 })
+
+// Navigation guard
+router.beforeEach((to, from, next) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
+  
+    if (requiresAuth && !user) {
+      next('/login');
+    } else if (requiresAdmin && user?.role !== 'admin') {
+      next('/');
+    } else {
+      next();
+    }
+  });
 
 export default router 

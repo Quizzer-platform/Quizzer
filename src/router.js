@@ -19,6 +19,7 @@ import Quizlevels from "./views/QuizLevelsView.vue";
 import ContactUs from "./views/ContactUsView.vue";
 import PricingPage from "./components/home/PricingPage.vue";
 import CreateQuizView from './views/CreateQuizView.vue';
+import OrganizationCreateQuizView from './views/OrganizationCreateQuizView.vue';
 import Quizzes from './components/home/Quizzes.vue';
 import QuizDetailsView from './views/QuizDetailsView.vue';
 import QuizList from './views/QuizList.vue';
@@ -39,7 +40,8 @@ const routes = [
   { path: '/organization/quizzes',component: OrganizationQuizzesEditDeleteView,},
   { path: '/profile', component: UserProfileView },
   { path: '/admin/createQuiz', component: CreateQuizView },
-  { path: '/organization/createQuiz', component: CreateQuizView },
+  { path: '/organization/createQuiz', component: OrganizationCreateQuizView },
+  { path: "/organization/quizzes/:quizId", name: "editQuiz", component: OrganizationCreateQuizView, props: true },
   { path: '/leaderboard', component: Leaderboard },
   { path: '/categories', component: CategoryView },
   { path: '/quizLevels', component: Quizlevels },

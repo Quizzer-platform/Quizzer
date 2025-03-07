@@ -1,29 +1,30 @@
 <template>
-  <div class="flex h-full bg-gray-100">
-    <!-- Sidebar (Hidden by Default on Small Screens) -->
+  <div class="flex min-h-screen bg-gray-100">
+    <!-- Sidebar -->
     <OrganizationSidebar 
       :isOpen="isSidebarOpen" 
       @toggleSidebar="toggleSidebar"
-      class="fixed md:relative md:block z-50"
+      class="fixed md:fixed z-50"
     />
+
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-x-hidden">
+    <div class="flex-1 flex flex-col md:ml-64">
       <!-- Navbar -->
       <OrganizationNavbar @toggleSidebar="toggleSidebar" />
 
       <!-- Page Content -->
-      <div class="flex-1 p-4 overflow-x-hidden">
+      <div class="flex-1 p-4">
         <!-- Page Header -->
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2 text-center sm:text-left">
           <h2 class="text-xl font-semibold text-teal-900">Edit Quizzes</h2>
 
-          <!-- Search Bar (Full Width on Small Screens) -->
+          <!-- Search Bar -->
           <SearchBar class="w-full sm:w-auto" @search="updateSearchQuery" />
 
-          <!-- Create Quiz Button (Full Width on Small Screens) -->
+          <!-- Create Quiz Button -->
           <button class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 w-1/2 sm:w-auto cursor-pointer" @click="createQuiz">
-  ➕ Create Quiz
-</button>
+            ➕ Create Quiz
+          </button>
         </div>
 
         <!-- Quiz Cards Grid -->
@@ -33,10 +34,21 @@
             :key="quiz.id" 
             :quiz="quiz" 
             @edit="editQuiz" 
-            @delete="deleteQuiz"
+            @delete="confirmDelete(quiz.id)"
             class="max-w-xs mx-auto sm:max-w-none"
-        />
+          />
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Popup -->
+  <div v-if="showDeletePopup" class="fixed inset-0 z-[100] flex items-center justify-center bg-gray-600/75">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <p class="text-lg font-semibold mb-4">Are you sure you want to delete this quiz?</p>
+      <div class="flex justify-center space-x-4">
+        <button @click="deleteQuiz" class="bg-red-500 text-white px-4 py-2 rounded-lg">Yes, Delete</button>
+        <button @click="showDeletePopup = false" class="bg-gray-300 px-4 py-2 text-teal-800 rounded-lg">Cancel</button>
       </div>
     </div>
   </div>
@@ -53,14 +65,11 @@ export default {
 
   data() {
     return {
-      isSidebarOpen: window.innerWidth >= 768, // Sidebar is open by default on large screens
+      isSidebarOpen: window.innerWidth >= 768, 
       searchQuery: "",
-      quizzes: [
-        { id: 1, title: "HTML Fundamentals",icon:"ii", description: "Learn the basics of HTML and more about this quiz" },
-        { id: 2, title: "CSS Basics", icon:"ii",description: "Understand styling with CSS and more about this quiz" },
-        { id: 3, title: "JavaScript Essentials", icon:"ii",description: "Master JavaScript concepts and more about this quiz" },
-        { id: 4, title: "Vue.js Introduction",icon:"ii", description: "Get started with Vue.js and more about this quiz" },
-      ],
+      quizzes: [],
+      showDeletePopup: false,
+      quizToDeleteId: null,
     };
   },
 
@@ -73,6 +82,22 @@ export default {
   },
 
   methods: {
+    async fetchQuizzes() {
+      try {
+        const organizationId = "test-org-123"; // Replace with authenticated org ID later
+        const response = await fetch('https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes.json');
+        const data = await response.json();
+
+        if (data) {
+          this.quizzes = Object.keys(data)
+            .map((key) => ({ id: key, ...data[key] }))
+            .filter((quiz) => quiz.organizationId === organizationId);
+        }
+      } catch (error) {
+        console.error("Error fetching quizzes:", error);
+      }
+    },
+
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
@@ -88,17 +113,39 @@ export default {
     createQuiz() {
       this.$router.push('/organization/createQuiz');
     },
+
     editQuiz(quiz) {
-      console.log("Editing quiz:", quiz);
+      this.$router.push({ name: "editQuiz", params: { quizId: quiz.id } });
     },
 
-    deleteQuiz(id) {
-      this.quizzes = this.quizzes.filter((quiz) => quiz.id !== id);
+    confirmDelete(id) {
+      this.quizToDeleteId = id;
+      this.showDeletePopup = true;
     },
+
+    async deleteQuiz() {
+      if (!this.quizToDeleteId) return;
+
+      try {
+        await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${this.quizToDeleteId}.json`, {
+          method: "DELETE",
+        });
+
+        // Remove from UI
+        this.quizzes = this.quizzes.filter((quiz) => quiz.id !== this.quizToDeleteId);
+      } catch (error) {
+        console.error("Error deleting quiz:", error);
+      }
+
+      // Close popup
+      this.showDeletePopup = false;
+      this.quizToDeleteId = null;
+    }
   },
 
   mounted() {
     window.addEventListener("resize", this.handleResize);
+    this.fetchQuizzes();
   },
 
   beforeUnmount() {

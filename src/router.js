@@ -26,6 +26,7 @@ import Quizzes from './components/home/Quizzes.vue';
 import QuizDetailsView from './views/QuizDetailsView.vue';
 import QuizList from './views/QuizList.vue';
 
+import RankPage from './views/RankPage.vue';
 
 const routes = [
   { path: '/', component: HomeView },
@@ -55,6 +56,7 @@ const routes = [
   { path: '/quizzes', component: Quizzes },
   { path: '/quizDetails', component: QuizDetailsView },
   { path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true },
+  { path: '/rankpage', component: RankPage },
 
   { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time
 ];

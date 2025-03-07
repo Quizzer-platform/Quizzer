@@ -22,7 +22,7 @@
           </div>
           
           <div class="flex justify-center m-2">
-              <button type="submit" class="bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-500 hover:cursor-pointer">Submit Category</button>
+              <button type="submit" class="bg-teal-600 cursor-pointer text-white p-3 rounded-lg hover:bg-teal-500 hover:cursor-pointer">Submit Category</button>
           </div>
       </form>
   </div>

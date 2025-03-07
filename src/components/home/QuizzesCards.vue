@@ -25,10 +25,23 @@
     </p> 
 
     <!-- Button -->
-    <button 
+    <!-- <button 
       class="mt-4 bg-teal-700  text-white px-5 py-2 rounded-lg shadow-md w-full hover:bg-teal-900 transition">
       See More
     </button>
+    <router-link 
+  v-if="card.id" 
+  :to="{ name: 'quizlist', params: { quizId: card.id } }"
+  class="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md w-full hover:bg-teal-900 transition"
+>
+  See More
+</router-link> -->
+<button 
+  @click="goToQuiz(card.id)"
+  class="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg  shadow-md w-full hover:bg-teal-900 cursor-pointer transition">
+  See More
+</button>
+
   </div></div>
   </div>
 </template> 
@@ -36,39 +49,48 @@
 <script> 
 // import QuizCard from "../quiz/QuizCard.vue";
 
- export default {
-  name: "Cards",
+  export default {
+//   name: "Cards",
   // components: {
   //   QuizCard,
   // },
- data() {
-    return {
-      cards: [],
+//  data() {
+//     return {
+//       cards: [],
       
-    }
-  },
-  methods: {
-    loadQuizzes() {
-            fetch('https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json', {})
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                }).then(data => {
-                    console.log('Data:', data);
-                    for (const id in data) {
-                        this.cards.push({ title: data[id].title, description: data[id].description });
-                    }
+//     }
+//   },
 
-                }).catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred. Please try again later.');
-                });
-        },
-  },mounted() {
+    methods: {
+  goToQuiz(quizId) {
+    if (quizId) {
+      this.$router.push({ name: "quizlist", params: { quizId } });
+    }
+  }
+}
+
+  //   loadQuizzes() {
+  //           fetch('https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json', {})
+  //               .then(response => {
+  //                   if (response.ok) {
+  //                       return response.json();
+  //                   }
+  //               }).then(data => {
+  //                   console.log('Data:', data);
+  //                   for (const id in data) {
+  //                       this.cards.push({ title: data[id].title, description: data[id].description });
+  //                   }
+
+  //               }).catch(error => {
+  //                   console.error('Error:', error);
+  //                   alert('An error occurred. Please try again later.');
+  //               });
+  // //       },
+  // },mounted() {
     // window.addEventListener("resize", this.handleResize);
-    this.loadQuizzes();
-  },
+  //   this.loadQuizzes();
+  //
+ ,
   props: 
   
    

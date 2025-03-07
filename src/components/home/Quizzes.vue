@@ -44,27 +44,44 @@ export default {
         };
     },
     methods: {
-        loadQuizzes() {
-            fetch('https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json', {})
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                }).then(data => {
-                    console.log('Data:', data);
-                    for (const id in data) {
-                        this.cards.push({ icon: "📚", title: data[id].title, description: data[id].description });
-                    }
+        // loadQuizzes() {
+        //     fetch('https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json', {})
+        //         .then(response => {
+        //             if (response.ok) {
+        //                 return response.json();
+        //             }
+        //         }).then(data => {
+        //             console.log('Data:', data);
+        //             for (const id in data) {
+        //                 this.cards.push({ icon: "📚", title: data[id].title, description: data[id].description });
+        //             }
                     
-                }).catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred. Please try again later.');
-                });
-        },
+        //         }).catch(error => {
+        //             console.error('Error:', error);
+        //             alert('An error occurred. Please try again later.');
+        //         });
+        // },
+        loadQuizzes() {
+    fetch('https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json', {})
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data:', data);
+            this.cards = Object.keys(data).map(id => ({
+                id, // إضافة معرف الاختبار
+                title: data[id].title,
+                description: data[id].description
+            }));
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        });
+}
+
 
     },
     mounted() {
         this.loadQuizzes();
     },
 }
-</script>
+</script> 

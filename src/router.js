@@ -18,6 +18,8 @@ import CategoryView from './views/CategoryView.vue';  // The category page
 import Quizlevels from "./views/QuizLevelsView.vue";
 import ContactUs from "./views/ContactUsView.vue";
 import PricingPage from "./components/home/PricingPage.vue";
+import CategoryCreation from "./components/home/CategoryCreation.vue";
+
 import CreateQuizView from './views/CreateQuizView.vue';
 import OrganizationCreateQuizView from './views/OrganizationCreateQuizView.vue';
 import Quizzes from './components/home/Quizzes.vue';
@@ -44,13 +46,15 @@ const routes = [
   { path: "/organization/quizzes/:quizId", name: "editQuiz", component: OrganizationCreateQuizView, props: true },
   { path: '/leaderboard', component: Leaderboard },
   { path: '/categories', component: CategoryView },
+  { path: '/admin/categorycreation', component: CategoryCreation },
+
   { path: '/quizLevels', component: Quizlevels },
   { path: '/contactus', component: ContactUs },
   { path: '/pricing', component: PricingPage },
   { path: '/quizzes', component: Quizzes },
   { path: '/quizDetails', component: QuizDetailsView },
-  { path: '/quizlist', component: QuizList },
 
+{ path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true },
   { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time
 ];
 

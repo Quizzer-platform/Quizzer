@@ -102,9 +102,10 @@
             </div>
             <div class="w-full lg:w-1/2 xl:w-5/12 lg:me-25 ">
                 <div class="relative p-8 bg-white rounded-lg shadow-lg dark:bg-dark-2 sm:p-12">
-                <form>
+                <form @submit.prevent="sendEmail">
                     <div class="mb-6">
                     <input
+                    v-model="name"
                         type="text"
                         placeholder="Your Name"
                         class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none"
@@ -112,6 +113,7 @@
                     </div>
                     <div class="mb-6">
                     <input
+                    v-model="email"
                         type="email"
                         placeholder="Your Email"
                         class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none"
@@ -119,6 +121,7 @@
                     </div>
                     <div class="mb-6">
                     <input
+                    v-model="phone"
                         type="text"
                         placeholder="Your Phone"
                         class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none"
@@ -126,18 +129,21 @@
                     </div>
                     <div class="mb-6">
                     <textarea
+                    v-model="message"
                         rows="6"
                         placeholder="Your Message"
                         class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full resize-none rounded border py-3 px-[14px] text-base outline-none"
                     ></textarea>
                     </div>
                     <div>
-                    <button
+                            <button
                         type="submit"
                         class="w-full p-3 text-white transition border rounded border-primary text-tear-900 bg-teal-900 hover:bg-teal-700 cursor-pointer"
                     >
                         Send Message
-                    </button>
+                    </button>   
+                       
+                   
                     </div>
                 </form>             
                 </div>
@@ -146,4 +152,47 @@
         </div>
         </section>
     </template>
-    
+      
+      <script>
+      import emailjs from "@emailjs/browser";
+      
+      export default {
+        data() {
+          return {
+            name: "",
+            email: "",
+            phone: "",
+            message: "",
+          };
+        },
+
+        methods: {
+          async sendEmail() {
+            try {
+              const serviceID = "service_7cay50n";
+              const templateID = "template_jple4br";
+              const publicKey = "wQb6IC1fjIt3_eUVs";
+      
+              const templateParams = {
+                user_name: this.name,
+                user_email: this.email,
+                user_phone: this.phone,
+                message: this.message,
+              };
+      
+              await emailjs.send(serviceID, templateID, templateParams, publicKey);
+              alert("Your message has been sent successfully!");
+
+              this.name = "";
+              this.email = "";
+              this.phone = "";
+              this.message = "";
+            } catch (error) {
+                console.error("Error while sending:", error);
+                alert("An error occurred while sending your message.");
+            }
+          },
+        },
+      };
+      </script>
+      

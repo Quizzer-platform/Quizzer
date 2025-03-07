@@ -35,11 +35,11 @@
                 <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4 mb-5">
                     <button
                         class="bg-teal-700 text-white px-6 py-2 rounded-lg shadow-lg cursor-pointer hover:bg-teal-900">
-                        For Employers and Recruiters →
+                        <router-link to="/organizationsignup">For Employers and Recruiters</router-link>
                     </button>
                     <button
                         class="border text-gray-900 border-gray-300 px-6 py-2 rounded-lg cursor-pointer hover:bg-gray-200">
-                        For Job Seekers →
+                        <router-link to="/usersignup">For Job Seekers →</router-link>
                     </button>
                 </div>
             </div>
@@ -256,6 +256,7 @@
 </template>
 
 <script>
+import router from '@/router';
 import Navbar from "../layout/Navbar.vue";
 import Footer from "../layout/Footer.vue";
 import Features from "./Features.vue"

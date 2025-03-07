@@ -1,5 +1,5 @@
 <template>
-    <nav :class="['transition-colors duration-300 shadow-md', isSticky ? 'sticky-nav' : 'bg-transparent']" id="navbar">
+    <nav class="bg-white shadow-md" id="navbar">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center py-2">
                 <h1 class="text-xl font-bold text-teal-600">Quizzer</h1>
@@ -22,11 +22,23 @@
                     <li>
                         <router-link to="/pricing" class="hover:text-teal-600 ">Pricing</router-link>
                     </li>
+                    <li v-if="isAuthenticated">
+                        <router-link :to="dashboardLink" class="hover:text-teal-600">{{ this.user.role === "user" ? "Profile" : "Dashboard"}}</router-link>
+                    </li>
                 </ul>
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-2 m-5">
                         <slot name="canChange">
-                            <button class="hover:text-teal-600"><router-link to="/login">Login</router-link></button>
+                            <template v-if="!isAuthenticated">
+                                <button class="mx-2 hover:text-teal-600"><router-link
+                                        to="/login">Login</router-link></button>
+                                <button class="mx-2 hover:text-teal-600"><router-link
+                                        to="/usersignup">Signup</router-link></button>
+                            </template>
+                            <template v-else>
+                                <span class="mx-2 text-teal-600">Welcome, {{ userName }}</span>
+                                <button @click="handleLogout" class="mx-2 hover:text-teal-600">Logout</button>
+                            </template>
                         </slot>
                     </div>
 
@@ -39,33 +51,37 @@
                 </div>
             </div>
         </div>
-        <div v-if="mobileMenuOpen" class="md:hidden flex flex-col items-center space-y-4 pb-4">
+        <div v-if="mobileMenuOpen" class="md:hidden flex flex-col items-center space-y-4 pb-4 bg-white">
             <ul class="space-x-6 flex flex-col gap-y-2">
                 <li>
-                    <router-link to="/" class="hover:text-teal-600 ">Home</router-link>
+                    <router-link to="/" class="hover:text-teal-600">Home</router-link>
                 </li>
                 <li>
-                    <!-- <router-link to="/" class="hover:text-teal-600 ">Services</router-link> -->
-                    <a href="#" class="hover:text-teal-600 ">Services</a>
+                    <router-link to="/categories" class="hover:text-teal-600">Categories</router-link>
                 </li>
                 <li>
-                    <router-link to="/categories" class="hover:text-teal-600 ">Categories</router-link>
+                    <router-link to="/quizzes" class="hover:text-teal-600">Quizzes</router-link>
                 </li>
                 <li>
-                    <router-link to="/quizzes" class="hover:text-teal-600 ">Quizzes</router-link>
+                    <router-link to="/leaderboard" class="hover:text-teal-600">Leaderboard</router-link>
                 </li>
                 <li>
-                    <router-link to="/leaderboard" class="hover:text-teal-600 ">Leaderboard</router-link>
+                    <router-link to="/contactus" class="hover:text-teal-600">Contact Us</router-link>
                 </li>
                 <li>
-                    <!-- <router-link to="/" class="hover:text-teal-600 ">About Us</router-link> -->
-                    <a href="#" class="hover:text-teal-600 ">About Us</a>
+                    <router-link to="/pricing" class="hover:text-teal-600">Pricing</router-link>
                 </li>
-                <li>
-                    <router-link to="/contactus" class="hover:text-teal-600 ">Contact Us</router-link>
+                <li v-if="isAuthenticated">
+                    <router-link :to="dashboardLink" class="hover:text-teal-600">{{ this.user.role === "user" ? "Profile" : "Dashboard"}}</router-link>
                 </li>
-                <li>
-                    <router-link to="/pricing" class="hover:text-teal-600 ">Pricing</router-link>
+                <li v-if="!isAuthenticated">
+                    <router-link to="/login" class="hover:text-teal-600">Login</router-link>
+                </li>
+                <li v-if="!isAuthenticated">
+                    <router-link to="/usersignup" class="hover:text-teal-600">Signup</router-link>
+                </li>
+                <li v-if="isAuthenticated">
+                    <button @click="handleLogout" class="hover:text-teal-600">Logout</button>
                 </li>
             </ul>
         </div>
@@ -73,41 +89,60 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import store from '@/store';
+import router from '@/router';
 
 export default {
-
     data() {
         return {
             mobileMenuOpen: false,
-            isSticky: false,
         };
+    },
+    computed: {
+        ...mapState({
+            isAuthenticated: state => state.isAuthenticated,
+            user: state => state.user
+        }),
+        userName() {
+            return this.user?.name || this.user?.email || 'User';
+        },
+        dashboardLink() {
+            if (!this.user) return '/login';
+
+            switch (this.user.role) {
+                case 'admin':
+                    return '/admin';
+                case 'organization_admin':
+                    return '/organization';
+                case 'user':
+                    return '/profile';
+                default:
+                    return '/profile';
+            }
+        }
     },
     methods: {
         toggleMenu() {
             this.mobileMenuOpen = !this.mobileMenuOpen;
         },
-        handleScroll() {
-            this.isSticky = window.scrollY > 150;
+        async handleLogout() {
+            try {
+                await store.dispatch('logout');
+                this.mobileMenuOpen = false; // Close mobile menu after logout
+                router.push('/login');
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
         }
-    },
-    mounted() {
-        window.addEventListener('scroll', this.handleScroll);
-    },
-    unmounted() {
-        window.removeEventListener('scroll', this.handleScroll);
     }
 };
 </script>
 
 <style scoped>
-.sticky-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #063c38;
-    color: #f4f7f6;
-    transition: background-color 0.1s ease-in-out;
+nav {
+    background-color: #ffffff;
+    color: #333333;
     z-index: 1000;
 }
 </style>

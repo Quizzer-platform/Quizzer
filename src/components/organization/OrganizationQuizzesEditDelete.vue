@@ -145,10 +145,11 @@ export default {
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
-
     handleResize() {
-      this.isSidebarOpen = window.innerWidth >= 768;
-    },
+    if (window.innerWidth >= 768) {
+      this.isSidebarOpen = true; // Auto-show sidebar on large screens
+    }
+  },
 
     updateSearchQuery(query) {
       this.searchQuery = query;
@@ -196,6 +197,7 @@ export default {
   },
 
   mounted() {
+  window.addEventListener("resize", this.handleResize);
   console.log("Component Mounted: Fetching Organization ID");
   this.fetchOrganizationId()
     .then(() => {

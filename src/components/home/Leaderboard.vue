@@ -80,7 +80,7 @@
 <script>
 import Navbar from "../layout/Navbar.vue";
 import Footer from "../layout/Footer.vue";
-import UserProfileIcon from "../layout/UserProfileIcon.vue";
+import UserProfileIcon from "../layout/userProfileIcon.vue";
 export default {
     components: {
         UserProfileIcon,

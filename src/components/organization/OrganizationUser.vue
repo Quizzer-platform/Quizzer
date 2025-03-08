@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-full bg-gray-100">
+  <div class="flex min-h-screen bg-gray-100">
     <!-- Sidebar -->
     <OrganizationSidebar 
       :isOpen="isSidebarOpen" 
@@ -14,50 +14,61 @@
 
       <!-- User Details Content -->
       <main class="flex-1 p-6">
-        <!-- User Info --> 
         <!-- User Info -->
-<div v-if="selectedUser" class="bg-teal-100 p-6 rounded-lg shadow-md mt-4">
-  <div class="flex flex-col md:flex-row items-center md:justify-between">
-    
-    <!-- Profile Image & Basic Info (Stacked on Small Screens) -->
-    <div class="flex flex-col items-center md:flex-row">
-      <img 
-        :src="selectedUser.image" 
-        alt="User Profile" 
-        class="w-24 h-24 rounded-full object-cover mb-4 md:mb-0 md:mr-6"
-      />
-      
-      <div class="text-center md:text-left">
-        <h2 class="text-2xl font-bold">{{ selectedUser.name }}</h2>
-        <p class="mt-1">Joined at: {{ selectedUser.joinedDate }}</p>
+        <div v-if="selectedUser" class="bg-teal-100 p-6 rounded-lg shadow-md mt-4">
+          <div class="flex flex-col md:flex-row items-center md:justify-between">
+            
+            <!-- Profile Image & Basic Info -->
+            <div class="flex flex-col items-center md:flex-row">
+              <img 
+                :src="selectedUser.image" 
+                alt="User Profile" 
+                class="w-24 h-24 rounded-full object-cover mb-4 md:mb-0 md:mr-6"
+              />
+              
+              <div class="text-center md:text-left">
+                <h2 class="text-2xl font-bold">{{ selectedUser.name }}</h2>
+                <p class="mt-1">Joined at: {{ selectedUser.joinedDate }}</p>
 
-        <div class="mt-3 text-sm">
-          <p class="font-semibold">Contact Info</p>
-          <p>Email: {{ selectedUser.email }}</p>
-          <p>Phone: {{ selectedUser.phone }}</p>
+                <div class="mt-3 text-sm">
+                  <p class="font-semibold">Contact Info</p>
+                  <p>Email: {{ selectedUser.email }}</p>
+                  <p>Phone: {{ selectedUser.phone }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- User Stats -->
+            <div class="mt-4 md:mt-0 text-center md:text-right">
+              <p class="font-semibold">Rank: {{ selectedUser.rank }}</p>
+              <p>Total No of Quizzes: {{ selectedUser.totalQuizzes }}</p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <!-- User Stats (Centered on Small Screens) -->
-    <div class="mt-4 md:mt-0 text-center md:text-right">
-      <p class="font-semibold">Rank: {{ selectedUser.rank }}</p>
-      <p>Total No of Quizzes: {{ selectedUser.totalQuizzes }}</p>
-    </div>
-  </div>
-</div>
-
 
         <!-- User Review Section -->
         <div class="mt-8">
           <div class="flex justify-between items-center mb-3">
             <h3 class="text-xl font-bold text-gray-800">User Review</h3>
             <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-170" />
-            <!-- Search Bar (Aligned) -->
           </div>
 
-          <!-- Table -->
+          <!-- 🔹 Loading Spinner -->
+          <div v-if="isLoading" class="flex justify-center my-6">
+            <svg class="animate-spin h-10 w-10 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+          </div>
+
+          <!-- 🔹 No Quizzes Found Message -->
+          <div v-else-if="userReview.length === 0" class="text-center text-gray-500 mt-6">
+            This user has not taken any quizzes yet.
+          </div>
+
+          <!-- Table (Only Show When Data Exists) -->
           <TableStructure 
+            v-else
             :headers="['Quiz Code', 'Quiz Name', 'Degree', 'Date']" 
             :rows="filteredReviews.map(r => [r.code, r.quizName, r.degree, r.date])" 
           />
@@ -68,10 +79,11 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
 import OrganizationSidebar from "@/components/organization/OrganizationSidebar.vue";
 import OrganizationNavbar from "@/components/organization/OrganizationNavbar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
-import SearchBar from "@/components/layout/Searchbar.vue"
+import SearchBar from "@/components/layout/Searchbar.vue";
 
 export default {
   components: {
@@ -84,55 +96,9 @@ export default {
     return {
       isSidebarOpen: window.innerWidth >= 768,
       searchQuery: "",
-      userData: [
-        {
-          id: 1,
-          name: "Andrew Samir",
-          joinedDate: "September 4, 2023",
-          email: "andrew@gmail.com",
-          phone: "01234567891",
-          rank: 1200,
-          totalQuizzes: 10,
-          image: "https://placehold.co/100x100/green/white"
-        },
-        {
-          id: 2,
-          name: "Ethar Mohamed",
-          joinedDate: "June 10, 2022",
-          email: "johndoe@gmail.com",
-          phone: "01234567892",
-          rank: 950,
-          totalQuizzes: 8,
-          image: "https://placehold.co/100x100/green/white"
-        },
-        {
-          id: 3,
-          name: "Shereen Shawky",
-          joinedDate: "June 10, 2022",
-          email: "johndoe@gmail.com",
-          phone: "01234567892",
-          rank: 950,
-          totalQuizzes: 8,
-          image: "https://placehold.co/100x100/green/white"
-        },
-        {
-          id: 4,
-          name: "Rawan Magdy",
-          joinedDate: "June 10, 2022",
-          email: "johndoe@gmail.com",
-          phone: "01234567892",
-          rank: 950,
-          totalQuizzes: 8,
-          image: "https://placehold.co/100x100/green/white"
-        }
-      ],
-      selectedUser: null,
-      userReview: [
-        { code: 158216, quizName: "Front-end", degree: "35/40", date: "30/5/2025" },
-        { code: 158216, quizName: "Back-end", degree: "35/40", date: "5/3/2025" },
-        { code: 158216, quizName: "Cyber", degree: "35/40", date: "30/5/2025" },
-        { code: 158216, quizName: "AI", degree: "35/40", date: "5/3/2025" },
-      ],
+      selectedUser: null, // Holds the user details
+      userReview: [], // Holds the user's quizzes
+      isLoading: true, // 🔹 Tracks loading state
     };
   },
   computed: {
@@ -140,7 +106,7 @@ export default {
       return this.userReview.filter(review =>
         review.quizName.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
-    }
+    },
   },
   methods: {
     toggleSidebar() {
@@ -149,10 +115,47 @@ export default {
     handleResize() {
       this.isSidebarOpen = window.innerWidth >= 768;
     },
-    loadUserDetails() {
-      const userId = Number(this.$route.params.id);
-      this.selectedUser = this.userData.find(user => user.id === userId) || null;
-    }
+    async loadUserDetails() {
+      const userId = this.$route.params.id;
+      if (!userId) return;
+
+      this.isLoading = true; // 🔹 Start loading
+
+      try {
+        const db = getDatabase();
+
+        // 🔹 Fetch User Details
+        const userRef = ref(db, `users/${userId}`);
+        const userSnap = await get(userRef);
+        if (userSnap.exists()) {
+          this.selectedUser = userSnap.val();
+        } else {
+          console.error("User not found");
+          this.isLoading = false;
+          return;
+        }
+
+        // 🔹 Fetch User's Quizzes
+        const quizzesRef = ref(db, `user_quizzes/${userId}`);
+        const quizzesSnap = await get(quizzesRef);
+
+        if (quizzesSnap.exists()) {
+          const quizzesData = quizzesSnap.val();
+          this.userReview = Object.entries(quizzesData).map(([key, quiz]) => ({
+            code: key,
+            quizName: quiz.name || "Unknown Quiz",
+            degree: quiz.degree || "N/A",
+            date: quiz.date || "Unknown Date",
+          }));
+        } else {
+          this.userReview = []; // No quizzes found
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+
+      this.isLoading = false; // 🔹 Stop loading
+    },
   },
   watch: {
     "$route.params.id": "loadUserDetails",
@@ -163,6 +166,6 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.handleResize);
-  }
+  },
 };
 </script>

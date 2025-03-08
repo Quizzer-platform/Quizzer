@@ -26,6 +26,10 @@
             ➕ Create Quiz
           </button>
         </div>
+        <!-- Loading Spinner -->
+        <div v-if="loading" class="flex justify-center mt-10">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+        </div>
 
         <!-- Quiz Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-6 mx-auto max-w-6xl px-4 justify-items-center">
@@ -53,23 +57,28 @@
     </div>
   </div>
 </template>
-
 <script>
+// import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+// import { getDatabase, ref, get } from "firebase/database";
 import OrganizationSidebar from "@/components/organization/OrganizationSidebar.vue";
 import OrganizationNavbar from "@/components/organization/OrganizationNavbar.vue";
 import QuizCard from "@/components/quiz/QuizEditDeleteCard.vue";
 import SearchBar from "@/components/layout/Searchbar.vue"; 
+import { getDatabase, ref, onValue ,get } from "firebase/database";
 
 export default {
   components: { OrganizationSidebar, OrganizationNavbar, QuizCard, SearchBar },
 
   data() {
     return {
+      loading: true,
       isSidebarOpen: window.innerWidth >= 768, 
       searchQuery: "",
       quizzes: [],
       showDeletePopup: false,
       quizToDeleteId: null,
+      organizationId: null, // Store organization ID dynamically
     };
   },
 
@@ -82,20 +91,55 @@ export default {
   },
 
   methods: {
-    async fetchQuizzes() {
-      try {
-        const organizationId = "test-org-123"; // Replace with authenticated org ID later
-        const response = await fetch('https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes.json');
-        const data = await response.json();
-
-        if (data) {
-          this.quizzes = Object.keys(data)
-            .map((key) => ({ id: key, ...data[key] }))
-            .filter((quiz) => quiz.organizationId === organizationId);
-        }
-      } catch (error) {
-        console.error("Error fetching quizzes:", error);
+    async fetchOrganizationId() {
+  const auth = getAuth();
+  
+  return new Promise((resolve, reject) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.error("User not logged in");
+        reject("No user");
+        return;
       }
+
+      try {
+        this.organizationId = user.uid;  // ✅ Directly use user.uid as organizationId
+        console.log("Fetched Organization ID:", this.organizationId);
+        resolve(this.organizationId);
+      } catch (error) {
+        console.error("Error fetching organization ID:", error);
+        reject(error);
+      }
+    });
+  });
+},
+    fetchQuizzes() {
+      if (!this.organizationId) return;
+      this.loading = true;
+   console.log("Fetching quizzes for organization:", this.organizationId); // 🔍 Debugging Log
+
+      const db = getDatabase();
+      const quizzesRef = ref(db, "organizationQuizzes");
+
+      // Listen for real-time updates
+      onValue(quizzesRef, (snapshot) => {
+             console.log("Snapshot exists:", snapshot.exists()); // 🔍 Debugging Log
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          // console.log("Fetched quizzes:", data); // 🔍 Debugging Log
+          this.quizzes = Object.keys(data)
+  .map((key) => ({ id: key, ...data[key] }))
+  .filter((quiz) => {
+    // console.log(`Checking quiz: ${quiz.organizationId}, Expected: ${this.organizationId}`);
+    return String(quiz.organizationId) === String(this.organizationId);
+  });
+
+// console.log("Filtered quizzes after fix:", this.quizzes);
+        } else {
+          this.quizzes = [];
+        }
+        this.loading = false;
+      });
     },
 
     toggleSidebar() {
@@ -127,6 +171,7 @@ export default {
       if (!this.quizToDeleteId) return;
 
       try {
+        const db = getDatabase();
         await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${this.quizToDeleteId}.json`, {
           method: "DELETE",
         });
@@ -140,20 +185,28 @@ export default {
       // Close popup
       this.showDeletePopup = false;
       this.quizToDeleteId = null;
-    }
+    },
+  },
+
+  watch: {
+    organizationId(newId) {
+      console.log("Organization ID changed:", newId);
+      this.fetchQuizzes();
+    },
   },
 
   mounted() {
-    window.addEventListener("resize", this.handleResize);
-    this.fetchQuizzes();
-  },
-
+  console.log("Component Mounted: Fetching Organization ID");
+  this.fetchOrganizationId()
+    .then(() => {
+      this.fetchQuizzes();
+    })
+    .catch((err) => console.error("Error fetching organization ID:", err));
+},
   beforeUnmount() {
     window.removeEventListener("resize", this.handleResize);
   },
 };
+
 </script>
 
-<style scoped>
-/* Add custom styles if needed */
-</style>

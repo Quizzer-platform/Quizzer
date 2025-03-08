@@ -10,7 +10,7 @@
                     <div>
                         <label for="title" class="block text-sm font-medium text-black">Title</label>
                         <input id="title" v-model.trim="quiz.title" type="text"
-                            class="mt-2 p-2 block w-full bg-gray-300 rounded-lg  shadow-md" required>
+                            class="mt-2 p-2 block w-full bg-gray-300 rounded-lg shadow-md" required>
                     </div>
                     <div>
                         <label for="description" class="block text-sm font-medium text-black">Description</label>
@@ -69,15 +69,15 @@
 
             <div class="flex justify-center m-2">
                 <!-- Add Question Button -->
-                <div class="mx-2 ">
+                <div class="mx-2">
                     <button type="button" @click="addQuestion"
-                        class="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-400 hover:rounded-lg hover:cursor-pointer ">Add
+                        class="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-400 hover:cursor-pointer">Add
                         Question</button>
                 </div>
                 <!-- Submit Button -->
-                <div class="mx-2 ">
+                <div class="mx-2">
                     <button type="submit"
-                        class="bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-500 hover:rounded-lg hover:cursor-pointer ">Submit
+                        class="bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-500 hover:cursor-pointer">Submit
                         Quiz</button>
                 </div>
             </div>
@@ -86,36 +86,38 @@
 </template>
 
 <script>
+import { getAuth } from 'firebase/auth';
+
 export default {
     data() {
-    return {
-        quiz: {
-            title: '',
-            duration: 10,
-            numberOfQuestions: 10,
-            description: '',
-            revealAnswers: 'no',
-            scorePerQuestion: 1,
-            questions: [
-                {
-                    questionHead: '',
-                    options: ['', '', '', ''],
-                    correctAnswer: ''
-                }
-            ]
-        },
-        isEditing: false,
-        quizId: null
-    };
+        return {
+            quiz: {
+                title: '',
+                duration: 10,
+                numberOfQuestions: 10,
+                description: '',
+                revealAnswers: 'no',
+                scorePerQuestion: 1,
+                questions: [
+                    {
+                        questionHead: '',
+                        options: ['', '', '', ''],
+                        correctAnswer: ''
+                    }
+                ]
+            },
+            isEditing: false,
+            quizId: null
+        };
     },
-created() {
-    const quizId = this.$route.params.quizId; // Get quizId from route
-    if (quizId) {
-        this.isEditing = true;
-        this.quizId = quizId;
-        this.fetchQuiz(quizId);
-    }
-},
+    created() {
+        const quizId = this.$route.params.quizId;
+        if (quizId) {
+            this.isEditing = true;
+            this.quizId = quizId;
+            this.fetchQuiz(quizId);
+        }
+    },
     methods: {
         addQuestion() {
             this.quiz.questions.push({
@@ -123,55 +125,40 @@ created() {
                 options: ['', '', '', ''],
                 correctAnswer: ''
             });
-        },  fetchQuiz(quizId) {
-        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${quizId}.json`)
-        .then(response => response.json())
-        .then(data => {
-            if (data) {
-                this.quiz = data; // Load the quiz into the form
+        },
+        fetchQuiz(quizId) {
+            fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${quizId}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        this.quiz = data;
+                    }
+                })
+                .catch(error => console.error('Error fetching quiz:', error));
+        },
+        async submitQuiz() {
+            const auth = getAuth();
+            const user = auth.currentUser;
+            if (!user) {
+                console.error('User not authenticated');
+                return;
             }
-        })
-        .catch(error => console.error('Error fetching quiz:', error));
-    },
-        submitQuiz() {
-    const organizationId = "test-org-123"; // Temporary test organization ID
-    const updatedQuiz = {
-        ...this.quiz,
-        organizationId
-    };
+            const organizationId = user.uid;
+            const updatedQuiz = { ...this.quiz, organizationId };
+            const url = this.isEditing ?
+                `https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${this.quizId}.json` :
+                'https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes.json';
+            const method = this.isEditing ? 'PATCH' : 'POST';
 
-    if (this.isEditing) {
-        // Edit existing quiz (PATCH request)
-        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${this.quizId}.json`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedQuiz)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Quiz Updated:', data);
-        })
-        .catch(error => {
-            console.error('Error updating quiz:', error);
-        });
-    } else {
-        // Create new quiz (POST request)
-        fetch('https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes.json', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedQuiz)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Quiz Created:', data);
-        })
-        .catch(error => {
-            console.error('Error creating quiz:', error);
-        });
-    }
-}
-
-
+            fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedQuiz)
+            })
+            .then(response => response.json())
+            .then(data => console.log(`Quiz ${this.isEditing ? 'Updated' : 'Created'}:`, data))
+            .catch(error => console.error(`Error ${this.isEditing ? 'updating' : 'creating'} quiz:`, error));
+        }
     }
 };
 </script>

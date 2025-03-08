@@ -27,8 +27,9 @@ import Quizzes from './components/home/Quizzes.vue';
 import QuizDetailsView from './views/QuizDetailsView.vue';
 import QuizList from './views/QuizList.vue';
 import OrganizationSignupForm from './components/auth/OrganizationSignupForm.vue';
-import RankPage from './views/RankPage.vue';
-
+import UserQuizzes from './components/user/UserQuizzes.vue';
+import UserOrganization from './components/user/UserOrganization.vue';
+import UserSubscription from './components/user/UserSubscription.vue';
 
 
 const routes = [
@@ -60,7 +61,9 @@ const routes = [
   { path: '/quizzes', component: Quizzes },
   { path: '/quizDetails', component: QuizDetailsView },
   { path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true ,meta: { requiresAuth: true } },
-  { path: '/rankpage', component: RankPage },
+  { path: '//profile/userQuizzes', component: UserQuizzes  ,meta: { requiresAuth: true } },
+  { path: '//profile/userOrg', component: UserOrganization  ,meta: { requiresAuth: true } },
+  { path: '//profile/userSubscription', component: UserSubscription  ,meta: { requiresAuth: true } },
 
   { path: '/:notFound(.*)', component: NotFoundView }, // this must be at end all time
 ];

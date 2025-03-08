@@ -28,6 +28,7 @@ import QuizDetailsView from './views/QuizDetailsView.vue';
 import QuizList from './views/QuizList.vue';
 import OrganizationSignupForm from './components/auth/OrganizationSignupForm.vue';
 import RankPage from './views/RankPage.vue';
+import NotifyUser from './components/organization/NotifyUser.vue';
 
 
 
@@ -53,12 +54,20 @@ const routes = [
   { path: '/leaderboard', component: Leaderboard },
   { path: '/categories', component: CategoryView },
   { path: '/admin/categorycreation', component: CategoryCreation ,meta: { requiresAuth: true } },
+  { path: '/notifyuser', component: NotifyUser },
 
   { path: '/quizLevels', component: Quizlevels },
   { path: '/contactus', component: ContactUs },
   { path: '/pricing', component: PricingPage },
   { path: '/quizzes', component: Quizzes },
-  { path: '/quizDetails', component: QuizDetailsView },
+  // { path: '/quizDetails', component: QuizDetailsView },
+  {
+    path: "/quiz/:quizId",
+    name: "quizDetails",
+    component: QuizDetailsView,
+    props: true 
+  },
+  
   { path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true ,meta: { requiresAuth: true } },
   { path: '/rankpage', component: RankPage },
 

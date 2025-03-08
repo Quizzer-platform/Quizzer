@@ -128,19 +128,45 @@ export default {
                         phone: this.user.phone,
                         organization: this.user.organization,
                         role: this.user.role,
-                        createdAt: new Date().toISOString()
+                        createdAt: new Date().toISOString(),
+                        attemptedQuizzes: [],
+                        overallScore: 0,
+                        quizzesToTake: 5,
                     }
                 });
                 
-                // Store user data in database
                 await set(ref(database, `users/${userData.uid}`), userData);
                 
-                // Redirect based on organization
-                if (this.user.organization === 'guest') {
-                    router.push('/');
-                } else {
-                    router.push('/');
+                if (this.user.organization !== 'guest') {
+                    const org = this.organizations.find(org => org.name === this.user.organization);
+                    if (org) {
+                        // Add user to organization members using PUT request
+                        const membersCount = org.members ? Object.keys(org.members).length + 1 : 1;
+                        const updateData = {
+                            members: {
+                                ...org.members,
+                                [userData.uid]: true
+                            }
+                        };
+
+                        const response = await fetch(
+                            `https://quizzer-platform-default-rtdb.firebaseio.com/organizations/${org.id}.json`,
+                            {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(updateData)
+                            }
+                        );
+
+                        if (!response.ok) {
+                            throw new Error('Failed to update organization members');
+                        }
+                    }
                 }
+                
+                router.push('/');
             } catch (error) {
                 console.error("Signup error:", error);
                 if (error.code === 'auth/email-already-in-use') {

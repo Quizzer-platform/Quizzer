@@ -2,10 +2,11 @@
   <div class="flex h-full bg-gray-100">
     <!-- Sidebar -->
     <OrganizationSidebar 
-      :isOpen="isSidebarOpen" 
-      @toggleSidebar="toggleSidebar"
-      class="fixed md:fixed z-50"
-    />
+  :isOpen="isSidebarOpen" 
+  @toggleSidebar="toggleSidebar"
+  class="fixed z-50 md:fixed transition-transform duration-300"
+  :class="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen}" />
+
     <!-- Main Content -->
     <div class="flex-1 flex flex-col md:ml-64">
       <!-- Navbar -->
@@ -78,6 +79,11 @@ export default {
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
+    handleResize() {
+    if (window.innerWidth >= 768) {
+      this.isSidebarOpen = true; // Auto-show sidebar on large screens
+    }
+  },
     updateSearchQuery(query) {
       this.searchQuery = query;
     },
@@ -148,6 +154,7 @@ export default {
   },
   async mounted() {
     try {
+        window.addEventListener("resize", this.handleResize);
       await this.fetchOrganization();
       await this.fetchUsers();
     } catch (error) {

@@ -29,7 +29,8 @@ import QuizList from './views/QuizList.vue';
 import OrganizationSignupForm from './components/auth/OrganizationSignupForm.vue';
 import UserQuizzes from './components/user/UserQuizzes.vue';
 import UserOrganization from './components/user/UserOrganization.vue';
-import UserSubscription from './components/user/UserSubscription.vue';import NotifyUser from './components/organization/NotifyUser.vue';
+import UserSubscription from './components/user/UserSubscription.vue';
+import NotifyUser from './components/organization/NotifyUser.vue';
 
 
 

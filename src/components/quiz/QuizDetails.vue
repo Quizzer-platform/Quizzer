@@ -1,6 +1,13 @@
 
 <template>
-    <div class="flex flex-col items-center md:w-full md:flex-row  md:items-start md:gap-4 max-w-6xl mx-auto p-6">
+    <div v-if="loading" class="flex justify-center items-center min-h-[50vh]">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
+            <p class="text-gray-600 mt-4">Loading quiz details...</p>
+        </div>
+    </div>
+
+    <div v-else class="flex flex-col items-center md:w-full md:flex-row md:items-start md:gap-4 max-w-6xl mx-auto p-6">
         <div class="flex flex-col my-4 p-4 rounded-xl shadow-md bg-gray-100 md:w-[50%] ">
             <div class="flex flex-col items-start bg-gray-100 p-4 rounded-xl shadow-md md:flex-row md:items-center md:justify-between">
                 <div>
@@ -13,7 +20,9 @@
                 </div>
             </div>
             <div class="flex flex-col mt-4 font-semibold m-2 p-4 rounded-xl w-fit">
-                <div class="bg-teal-200 m-2 p-4 rounded-xl shadow-md hover:bg-teal-100">&#10004;{{ category }}</div>
+                <div class="bg-teal-200 m-2 p-4 rounded-xl shadow-md hover:bg-teal-100">
+                    &#10004; {{ categoryTitle || 'Category not found' }}
+                </div>
                 <div class="bg-red-200 m-2 p-4 rounded-xl shadow-md hover:bg-red-100">&#10004; 10 min </div>
                 <div class="bg-orange-200 m-2 p-4 rounded-xl shadow-md hover:bg-orange-100">&#10004; low</div>
             </div>
@@ -41,59 +50,53 @@
 
 <script>
 export default {
-  data() {
-    return {
-      quiz: {},
-      QuizName: "",
-      QuizDescribtion: "",
-      category: "",
-    };
-  },
-
-  methods: {
-    goToQuiz(quizId) {
-      if (quizId) {
-        console.log("Navigating to quiz with ID:", quizId);
-        this.$router.push({ name: "quizlist", params: { quizId } });
-      } else {
-        console.error("Error: quizId is undefined!");
-      }
+    data() {
+        return {
+            quiz: {},
+            QuizName: "",
+            QuizDescribtion: "",
+            category: "",
+            categoryTitle: "",
+            loading: true
+        };
     },
 
-    testQuizId() {
-      console.log("Current Quiz Object:", this.quiz);
-      if (this.quiz.id) {
-        this.goToQuiz(this.quiz.id);
-      } else {
-        console.error("Error: quiz.id is undefined!");
-      }
+    methods: {
+        async loadQuizDetails() {
+            const quizId = this.$route.params.quizId;
+            if (!quizId) {
+                this.loading = false;
+                return;
+            }
+
+            try {
+                const quizResponse = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/quizData/${quizId}.json`);
+                const quizData = await quizResponse.json();
+
+                if (quizData) {
+                    this.quiz = { ...quizData, id: quizId };
+                    this.QuizName = quizData.title;
+                    this.QuizDescribtion = quizData.description;
+                    this.category = quizData.category;
+
+                    const categoryResponse = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/categories/${quizData.category}.json`);
+                    const categoryData = await categoryResponse.json();
+                    
+                    if (categoryData) {
+                        this.categoryTitle = categoryData.title;
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading quiz details:", error);
+            } finally {
+                this.loading = false;
+            }
+        }
     },
 
-    loadQuizDetails() {
-      const quizId = this.$route.params.quizId;
-      console.log("Quiz ID from route:", quizId);
-      if (!quizId) return;
-
-      fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/quizData/${quizId}.json`)
-        .then(response => response.json())
-        .then(data => {
-          if (data) {
-            this.quiz = { ...data, id: quizId }; // ✅ احتفظ بالـ id داخل الكائن
-            this.QuizName = data.title;
-            this.QuizDescribtion = data.description;
-            this.category = data.category;
-          }
-          console.log("Loaded Quiz Data:", this.quiz);
-        })
-        .catch(error => {
-          console.error("Error loading quiz details:", error);
-        });
-    },
-  },
-
-  mounted() {
-    this.loadQuizDetails();
-  },
+    mounted() {
+        this.loadQuizDetails();
+    }
 };
 </script>
 

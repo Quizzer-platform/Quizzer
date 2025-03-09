@@ -3,14 +3,14 @@
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       <div v-for="(category, index) in categories"
         :key="index" >
-      <div class="bg-white p-6 rounded-xl shadow-lg m-2 w-64 text-center">
+      <div class="bg-white p-6 rounded-xl shadow-lg m-2 w-64 text-center h-65 flex flex-col">
       <div class="bg-teal-100 p-3 w-12 h-12 mx-auto rounded-md flex items-center justify-center">
         <span class="text-teal-700 text-lg font-semibold">{{ category.icon }}</span>
       </div>
   
       <h3 class="font-semibold text-lg text-gray-900 mt-4">{{ category.title }}</h3>
   
-      <p class="text-gray-600 mt-2 text-sm">
+      <p class="text-gray-600 mt-2 text-sm flex-grow overflow-y-auto">
         {{ category.description }}
       </p>
   

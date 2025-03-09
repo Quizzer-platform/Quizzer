@@ -1,7 +1,8 @@
 <template>
-  <div class="flex h-full bg-gray-100">
-    <AdminSidebar 
-      :isOpen="isSidebarOpen" 
+  <div class="flex min-h-screen bg-gray-100">
+    <!-- Sidebar -->
+    <AdminSidebar
+      :isOpen="isSidebarOpen"
       @toggleSidebar="toggleSidebar"
       class="fixed md:fixed z-50"
     />
@@ -12,13 +13,24 @@
       <div class="flex-1 p-4">
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
           <h2 class="text-xl font-semibold text-teal-900 sm:pl-5">Organizations</h2>
-          <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-160" />
+          <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateSearchQuery" />
+        </div>
+
+        <!-- Show Loading Spinner -->
+        <div v-if="loading" class="flex justify-center my-10">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900"></div>
+          </div>
+
+        <!-- Show No Data Message -->
+        <div v-else-if="filteredOrganizations.length === 0" class="text-center text-gray-500">
+          No organizations found.
         </div>
 
         <!-- Organizations Table -->
-        <DynamicTable 
-          :headers="orgHeaders" 
-          :rows="orgData" 
+        <DynamicTable
+          v-else
+          :headers="['Org. ID', 'Name', 'No. Quizzes', 'Admin Email']"
+          :rows="filteredOrganizations.map(org => [org.id, org.name, org.quizzes, org.adminEmail])"
           @view-details="goToDetails"
           class="w-full max-w-5xl mx-auto"
         />
@@ -28,6 +40,7 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
 import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavbar from "@/components/admin/AdminNavBar.vue";
 import SearchBar from "@/components/layout/Searchbar.vue";
@@ -43,36 +56,82 @@ export default {
   data() {
     return {
       isSidebarOpen: window.innerWidth >= 768,
-      orgHeaders: ["Org. Id", "Name of Org", "No. Quizzes", "Due Date"],
-      orgData: [
-        [1, "Valeo", 10, "30/5/2025"],
-        [2, "Huawei", 30, "5/3/2025"],
-        [3, "ITI", 25, "27/7/2025"],
-        [4, "Orange", 15, "20/8/2025"],
-        [5, "Valeo", 10, "30/5/2025"],
-        [6, "Huawei", 30, "5/3/2025"],
-        [7, "ITI", 25, "27/7/2025"],
-        [8, "Orange", 15, "20/8/2025"],
-      ],
+      organizations: [],
+      searchQuery: "",
+      loading: true,
     };
+  },
+  computed: {
+    filteredOrganizations() {
+      if (!this.searchQuery) return this.organizations;
+      return this.organizations.filter(org =>
+        org.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   methods: {
     toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  },
+      this.isSidebarOpen = !this.isSidebarOpen;
+    },
+    handleResize() {
+      this.isSidebarOpen = window.innerWidth >= 768;
+    },
+    updateSearchQuery(query) {
+      this.searchQuery = query;
+    },
+    async fetchOrganizations() {
+  this.loading = true;
+  try {
+    const db = getDatabase();
 
-  handleResize() {
-    this.isSidebarOpen = window.innerWidth >= 768;
-  },
+    // Fetch all organizations
+    const orgRef = ref(db, "organizations");
+    const orgSnap = await get(orgRef);
+
+    // Fetch all quizzes
+    const quizzesRef = ref(db, "organizationQuizzes");
+    const quizzesSnap = await get(quizzesRef);
+
+    const quizzesData = quizzesSnap.exists() ? quizzesSnap.val() : {};
+
+    if (orgSnap.exists()) {
+      const orgData = orgSnap.val();
+
+      // Process organizations
+      this.organizations = Object.entries(orgData).map(([id, org]) => {
+        // Count quizzes belonging to this organization (based on adminUid)
+        const quizCount = Object.values(quizzesData).filter(
+          (quiz) => String(quiz.organizationId) === String(org.adminUid)
+        ).length;
+
+        return {
+          id,
+          name: org.name || "Unknown",
+          quizzes: quizCount,  // Assign calculated quiz count
+          adminEmail: org.adminEmail || "N/A",
+        };
+      });
+
+      console.log("Updated Organizations Data:", this.organizations);
+    } else {
+      this.organizations = [];
+    }
+  } catch (error) {
+    console.error("Error fetching organizations:", error);
+  } finally {
+    this.loading = false;
+  }
+},
     goToDetails(orgId) {
       this.$router.push(`/admin/organizations/${orgId}`);
-    }
+    },
   },
-  mounted() {
-  window.addEventListener("resize", this.handleResize);
-},
-beforeUnmount() {
-  window.removeEventListener("resize", this.handleResize);
-}
+  async mounted() {
+    window.addEventListener("resize", this.handleResize);
+    await this.fetchOrganizations();
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  },
 };
 </script>

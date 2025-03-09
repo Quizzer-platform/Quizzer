@@ -188,9 +188,9 @@ export default {
 <template>
     <div class="flex flex-col min-h-screen bg-gray-100">
         <div class="flex flex-1 flex-col md:flex-row">
-            <UserSidebar v-model:isMenuOpen="isMenuOpen" />
+        <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
 
-            <div class="flex-1 min-h-screen bg-gray-100">
+            <div class="flex-1 min-h-screen bg-gray-100 md:ml-54">
                 <div class="container mx-auto px-4 py-8">
                     <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                         <div class="flex flex-col md:flex-row justify-between items-center mb-6">

@@ -2,10 +2,10 @@
     <div class="flex flex-col min-h-screen bg-gray-100">
         <div class="flex flex-1 flex-col md:flex-row">
             <!-- Sidebar Toggle for Small Screens -->
-            <UserSidebar v-model:isMenuOpen="isMenuOpen" />
+        <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
 
             <!-- Main Content -->
-            <main class="flex-1 p-6">
+            <main class="flex-1 p-6 md:ml-54">
                 <div
                     class="bg-teal-800 text-white p-10 rounded-lg flex flex-col md:flex-row justify-between items-center">
                     <div>

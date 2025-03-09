@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-full bg-gray-100">
+  <div class="flex min-h-screen bg-gray-100">
     <!-- Sidebar -->
     <AdminSidebar 
       :isOpen="isSidebarOpen" 
@@ -8,36 +8,48 @@
     />
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col md:ml-64">
       <!-- Navbar -->
       <AdminNavbar @toggleSidebar="toggleSidebar" />
 
       <!-- Organization Details Content -->
       <main class="flex-1 p-6">
-        <!-- Organization Info -->
-        <div v-if="selectedOrg" class="bg-teal-100 p-6 rounded-lg shadow-md flex items-center mt-4">
-          <img :src="selectedOrg.image" alt="Organization Logo" class="w-40 h-40 rounded-full object-cover mr-6">
+        <!-- Show Loading Spinner -->
+        <div v-if="loading" class="flex justify-center my-10">
+          <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900"></div>
+        </div>
+
+        <!-- Show No Data Message -->
+        <div v-else-if="!selectedOrg" class="text-center text-gray-500">
+          Organization not found.
+        </div>
+
+        <!-- Organization Info (Without Description) -->
+        <div v-else class="bg-teal-100 p-6 rounded-lg shadow-md flex items-center mt-4">
+          <img :src="selectedOrg.image || 'https://placehold.co/200x200/green/white'" 
+            alt="Organization Logo" 
+            class="w-40 h-40 rounded-full object-cover mr-6">
           <div>
             <h2 class="text-2xl font-bold">{{ selectedOrg.name }}</h2>
-            <p class="text-gray-600 mt-2">{{ selectedOrg.description }}</p>
-            <p class="mt-2"><strong>Total Bundles:</strong> {{ selectedOrg.bundles }}</p>
-            <p><strong>Total Quizzes:</strong> {{ selectedOrg.quizzes }}</p>
+            <p class="mt-2"><strong>Total Bundles:</strong> {{ selectedOrg.bundles || 0 }}</p>
+            <p><strong>Total Quizzes:</strong> {{ quizzes.length }}</p>
           </div>
         </div>
 
-        <!-- Subscriptions Table -->
-        <h3 class="text-xl font-bold mt-8 mb-3">Subscriptions</h3>
-        <TableStructure 
-          :headers="['ID', 'Price', 'Quizzes', 'Due Date']" 
-          :rows="subscriptions.map(s => [s.id, s.price, s.quizzes, s.due])" 
-        />
-
         <!-- Created Quizzes Table -->
         <h3 class="text-xl font-bold mt-8 mb-3">Created Quizzes</h3>
+
+        <!-- Show No Quizzes Message -->
+        <div v-if="quizzes.length === 0" class="text-center text-gray-500">
+          No quizzes available.
+        </div>
+
         <TableStructure
-          :headers="['QUIZ ID', 'Name of Quiz', 'No. takes', 'Date']"
-          :rows="quizzes.map(quiz => [quiz.id, quiz.name, quiz.takes, quiz.date])"
+          v-else
+          :headers="['QUIZ ID', 'Name of Quiz', 'No. Questions', 'Duration (mins)']"
+          :rows="quizzes.map(quiz => [quiz.id, quiz.name, quiz.numberOfQuestions, quiz.duration])"
           :showActions="true"
+          @view-details="editQuiz"
         />
       </main>
     </div>
@@ -45,6 +57,7 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
 import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavbar from "@/components/admin/AdminNavBar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
@@ -58,21 +71,9 @@ export default {
   data() {
     return {
       isSidebarOpen: window.innerWidth >= 768,
-      orgData: [
-        { id: 1, name: "Valeo", description: "Description for Valeo", bundles: 10, quizzes: 13, image: "https://placehold.co/200x200/green/white" },
-        { id: 2, name: "Huawei", description: "Description for Huawei", bundles: 30, quizzes: 20, image: "https://placehold.co/200x200/green/white" },
-        { id: 3, name: "ITI", description: "Description for ITI", bundles: 25, quizzes: 18, image: "https://placehold.co/200x200/green/white" },
-        { id: 4, name: "Orange", description: "Description for Orange", bundles: 15, quizzes: 22, image: "https://placehold.co/200x200/green/white" },
-      ],
       selectedOrg: null,
-      subscriptions: [
-        { id: 1, price: "$30", quizzes: 10, due: "30/5/2025" },
-        { id: 2, price: "$50", quizzes: 30, due: "5/3/2025" },
-      ],
-      quizzes: [
-        { id: 1, name: "HTML Fundamentals", takes: 10, date: "30/5/2025" },
-        { id: 2, name: "CSS Basics", takes: 8, date: "5/3/2025" },
-      ],
+      quizzes: [],
+      loading: true,
     };
   },
   methods: {
@@ -82,20 +83,79 @@ export default {
     handleResize() {
       this.isSidebarOpen = window.innerWidth >= 768;
     },
-    loadOrganizationDetails() {
-      const orgId = Number(this.$route.params.id);
-      this.selectedOrg = this.orgData.find(org => org.id === orgId) || null;
+    
+    async fetchOrganizationDetails() {
+  const orgId = this.$route.params.id;
+  if (!orgId) return;
+
+  try {
+    this.loading = true;
+    const db = getDatabase();
+
+    // Fetch Organization Details
+    const orgRef = ref(db, `organizations/${orgId}`);
+    const orgSnap = await get(orgRef);
+
+    if (orgSnap.exists()) {
+      this.selectedOrg = orgSnap.val();
+      console.log("Organization Data:", this.selectedOrg);
+    } else {
+      console.error("Organization not found");
+      this.selectedOrg = null;
+      this.loading = false;
+      return;
+    }
+
+    // Get adminUid from the fetched organization
+    const adminUid = this.selectedOrg.adminUid;
+    console.log("Admin UID for filtering quizzes:", adminUid);
+
+    // Fetch Organization's Quizzes
+    const quizzesRef = ref(db, "organizationQuizzes");
+    const quizzesSnap = await get(quizzesRef);
+
+    if (quizzesSnap.exists()) {
+      const quizzesData = quizzesSnap.val();
+      console.log("Raw Quizzes Data:", quizzesData);
+
+      this.quizzes = Object.keys(quizzesData)
+        .map((key) => ({ id: key, ...quizzesData[key] }))
+        .filter((quiz) => {
+          console.log(`Quiz ${quiz.id} OrgID:`, quiz.organizationId, "Expected:", adminUid);
+          return String(quiz.organizationId) === String(adminUid);
+        })
+        .map(quiz => ({
+          id: quiz.id,
+          name: quiz.title || "Untitled Quiz",
+          numberOfQuestions: quiz.numberOfQuestions || 0,
+          duration: quiz.duration || "N/A"
+        }));
+
+      console.log("Filtered Quizzes:", this.quizzes);
+    } else {
+      console.warn("No quizzes found.");
+      this.quizzes = [];
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    this.loading = false;
+  }
+},
+
+    editQuiz(quizId) {
+      this.$router.push({ name: "editQuiz", params: { quizId } });
     }
   },
   watch: {
-    "$route.params.id": "loadOrganizationDetails",
+    "$route.params.id": "fetchOrganizationDetails",
   },
-  mounted() {
-    this.loadOrganizationDetails();
+  async mounted() {
     window.addEventListener("resize", this.handleResize);
+    await this.fetchOrganizationDetails();
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.handleResize);
-  }
+  },
 };
 </script>

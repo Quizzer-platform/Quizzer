@@ -195,13 +195,29 @@ export default {
     <search />
     
     <div class="flex justify-center">
-        <!-- عرض الفئات فقط إذا لم يتم تحديد فئة -->
-        <CategriesCards v-if="showCategories" :categories="categories" @view-quizzes="viewCategoryQuizzes" />
+        <!-- Loading State -->
+        <div v-if="loading || loadingQuizzes" class="text-center py-8">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
+            <p class="text-gray-600 mt-4">{{ loading ? 'Loading categories...' : 'Loading quizzes...' }}</p>
+        </div>
+
+        <!-- Categories View -->
+        <CategriesCards v-else-if="showCategories" 
+            :categories="categories" 
+            @view-quizzes="viewCategoryQuizzes" />
         
-        <!-- عرض الاختبارات إذا تم تحديد فئة -->
+        <!-- Quizzes View -->
         <div v-else>
-            <button @click="showCategories = true" class="mt-4 bg-teal-700  text-white px-5 py-2 rounded-lg shadow-md  hover:bg-teal-900 transition">Back to Categories</button>
-            <QuizesCards v-if="selectedCategoryQuizzes.length" :cards="selectedCategoryQuizzes" :categoryTitle="selectedCategoryTitle" />
+            <button @click="showCategories = true" 
+                class="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-teal-900 transition">
+                Back to Categories
+            </button>
+            <QuizesCards v-if="selectedCategoryQuizzes.length" 
+                :cards="selectedCategoryQuizzes" 
+                :categoryTitle="selectedCategoryTitle" />
+            <div v-else-if="!loadingQuizzes" class="text-center py-8">
+                <p class="text-gray-600">No quizzes found in this category.</p>
+            </div>
         </div>
     </div>
  

@@ -80,9 +80,9 @@
                 <li v-if="!isAuthenticated">
                     <router-link to="/usersignup" class="hover:text-teal-600">Signup</router-link>
                 </li>
-                <li v-if="isAuthenticated">
+                <!-- <li v-if="isAuthenticated">
                     <button @click="handleLogout" class="hover:text-teal-600">Logout</button>
-                </li>
+                </li> -->
             </ul>
         </div>
     </nav>

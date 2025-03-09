@@ -4,7 +4,7 @@
     :class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }"
   >
     <button class="absolute top-4 right-4 md:hidden text-white text-2xl" @click="toggleSidebar">
-      ✖<i>icon</i>
+      ✖
     </button>
 
     <h2 class="text-2xl font-bold p-6">QUIZZER</h2>
@@ -35,6 +35,15 @@
             active-class="bg-teal-700"
           >
             Organizations
+          </router-link>
+        </li>
+        <li>
+          <router-link 
+            to="/admin/users" 
+            class="block py-3 px-6 hover:bg-teal-600 transition"
+            active-class="bg-teal-700"
+          >
+            Users
           </router-link>
         </li>
         <li>

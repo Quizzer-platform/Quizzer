@@ -16,6 +16,8 @@
                     class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
                     @click="viewQuiz">VIEW
                     / EDIT QUIZ</button>
+                    <button  @click="$router.push('/notifyuser')" class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md cursor-pointer" >Notify</button>
+
             </div>
         </div>
 

@@ -36,8 +36,10 @@
 >
   See More
 </router-link> -->
+<!-- @click="goToQuiz(card.id)" -->
 <button 
-  @click="goToQuiz(card.id)"
+@click="$router.push({ name: 'quizDetails', params: { quizId: card.id } })"
+
   class="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg  shadow-md w-full hover:bg-teal-900 cursor-pointer transition">
   See More
 </button>
@@ -61,13 +63,13 @@
 //     }
 //   },
 
-    methods: {
-  goToQuiz(quizId) {
-    if (quizId) {
-      this.$router.push({ name: "quizlist", params: { quizId } });
-    }
-  }
-}
+//     methods: {
+//   goToQuiz(quizId) {
+//     if (quizId) {
+//       this.$router.push({ name: "quizlist", params: { quizId } });
+//     }
+//   }
+// }
 
   //   loadQuizzes() {
   //           fetch('https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json', {})
@@ -90,7 +92,7 @@
     // window.addEventListener("resize", this.handleResize);
   //   this.loadQuizzes();
   //
- ,
+ 
   props: 
   
    

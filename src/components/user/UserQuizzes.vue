@@ -243,7 +243,6 @@ export default {
             </div>
         </div>
 
-        <!-- Popup إذا كان quizzesToTake = 0 -->
         <div v-if="quizzesToTake === 0" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div class="bg-white p-6 rounded-lg shadow-lg text-center">
                 <h2 class="text-xl font-bold text-red-600">Subscription Required</h2>
@@ -272,7 +271,7 @@ export default {
             userQuizzes: [],
             userRank: 0,
             totalScore: 0,
-            quizzesToTake: 1, // افتراضي حتى يتم التحديث
+            quizzesToTake: 5, // افتراضي حتى يتم التحديث
             quizzesRef: null,
             listener: null,
             loading: true

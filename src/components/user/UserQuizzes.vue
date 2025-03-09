@@ -272,7 +272,7 @@ export default {
             userQuizzes: [],
             userRank: 0,
             totalScore: 0,
-            quizzesToTake: 1, // افتراضي حتى يتم التحديث
+            quizzesToTake: 5, // افتراضي حتى يتم التحديث
             quizzesRef: null,
             listener: null,
             loading: true

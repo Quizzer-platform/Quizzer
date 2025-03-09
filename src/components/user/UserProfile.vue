@@ -25,7 +25,7 @@
                     <!-- Left Section -->
                     <!-- In the Recent Quizzes section -->
                     <div class="flex-1">
-                        <h2 class="text-xl font-bold">Recent Quizzes</h2>
+                        <!-- <h2 class="text-xl font-bold">Recent Quizzes</h2>
                         <div v-if="userQuizzes.length > 0"
                             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                             <div v-for="quiz in userQuizzes" :key="quiz.id"
@@ -34,8 +34,8 @@
                                     <div class="w-16 h-10 bg-teal-100 flex items-center justify-center">
                                         {{ quiz.category }}
                                     </div>
-                                    <p class="font-bold text-teal-800">Score: {{ quiz.score }}/{{ quiz.totalQuestions }}
-                                    </p>
+                                    <p class="font-bold text-teal-800">Score: {{ quiz.quizScore }}/{{ quiz.totalQuestions }}</p>
+
                                 </div>
                                 <p class="font-bold mt-2 truncate">{{ quiz.title }}</p>
                                 <p class="text-gray-500 mt-2">Completed: {{ new
@@ -56,7 +56,34 @@
                                 class="inline-block bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-800 transition-colors">
                                 Browse Quizzes
                             </router-link>
-                        </div>
+                        </div> -->
+                        <h2 class="text-xl font-bold">Recent Quizzes</h2>
+<div v-if="userQuizzes.length > 0"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+    <div v-for="quiz in userQuizzes" :key="quiz.quizId"
+        class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
+               {{ quiz.title }}
+            </span>
+            <span class="text-sm font-semibold text-gray-700">
+                {{ new Date(quiz.timestamp).toLocaleDateString() }}
+            </span>
+        </div>
+        <!-- <h3 class="font-bold text-lg text-gray-800 truncate"> {{ quiz.category|| 'General' }}</h3> -->
+        <p class="text-sm text-gray-600 mt-1">
+            Questions: {{ quiz.totalQuestions }}
+        </p>
+        <p class="mt-2 text-sm font-medium">
+            Score:
+            <span class="text-green-600 font-bold">
+                {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
+            </span>
+        </p>
+       
+    </div>
+</div>
+
 
                         <!-- Badges Section -->
                         <h2 class="mt-7 text-xl font-bold">Badges</h2>
@@ -156,19 +183,65 @@ export default {
             });
             this.listeners.push([userRef, listener]);
         },
-        async fetchUserQuizzes() {
-            if (!this.userId) return;
+        // async fetchUserQuizzes() {
+        //     if (!this.userId) return;
 
-            const quizzesRef = dbRef(database, `userQuizzes/${this.userId}`);
-            const listener = onValue(quizzesRef, (snapshot) => {
-                const quizzes = snapshot.val();
-                this.userQuizzes = quizzes ?
-                    Object.values(quizzes)
-                        .sort((a, b) => b.timestamp - a.timestamp)
-                        .slice(0, 6) : [];
-            });
-            this.listeners.push([quizzesRef, listener]);
-        },
+        //     const quizzesRef = dbRef(database, `userQuizzes/${this.userId}`);
+        //     const listener = onValue(quizzesRef, (snapshot) => {
+        //         const quizzes = snapshot.val();
+        //         this.userQuizzes = quizzes ?
+        //             Object.values(quizzes)
+        //                 .sort((a, b) => b.timestamp - a.timestamp)
+        //                 .slice(0, 6) : [];
+        //     });
+        //     this.listeners.push([quizzesRef, listener]);
+        // },
+//         async fetchUserQuizzes() {
+//     if (!this.userId) return;
+
+//     const quizzesRef = dbRef(database, `users/${this.userId}/attemptedQuizzes`);
+//     const listener = onValue(quizzesRef, (snapshot) => {
+//         const quizzes = snapshot.val();
+//         this.userQuizzes = quizzes
+//             ? quizzes
+//                 .map((q, index) => ({
+//                     ...q,
+//                     id: index, // fallback ID
+//                     totalQuestions: q.totalQuestions || 10, 
+//                     title: q.title || "Quiz", // لو مش محفوظة، ممكن تستخدمي الكويز ID وتجيبي العنوان من مسار تاني
+//                     description: q.category|| "General"
+//                 }))
+//                 .sort((a, b) => b.timestamp - a.timestamp)
+//                 .slice(0, 6)
+//             : [];
+//     });
+
+//     this.listeners.push([quizzesRef, listener]);
+// }
+async fetchUserQuizzes() {
+    if (!this.userId) return;
+
+    const quizzesRef = dbRef(database, `users/${this.userId}/attemptedQuizzes`);
+    const listener = onValue(quizzesRef, (snapshot) => {
+        const quizzes = snapshot.val();
+        this.userQuizzes = quizzes
+            ? Object.values(quizzes)
+                .map((q, index) => ({
+                    ...q,
+                    id: q.quizId || index,
+                    totalQuestions: q.totalQuestions || 10,
+                    title: q.title || "Quiz",
+                    category: q.category || "General"
+                }))
+                .sort((a, b) => b.timestamp - a.timestamp) // 🕒 ترتيب من الأحدث للأقدم
+                .slice(1, 4) // ✅ استثناء أول كويز (الأحدث) وعرض التاليين
+            : [];
+    });
+
+    this.listeners.push([quizzesRef, listener]);
+}
+
+,
         async fetchUserBadges() {
             if (!this.userId) return;
 

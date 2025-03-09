@@ -114,74 +114,140 @@ export default {
             if (!this.user.phone) this.errors.phone = "Phone is required";
             return Object.keys(this.errors).length === 0;
         },
-        async handleSignup() {
-            if (!this.validateForm()) return;
+        // async handleSignup() {
+        //     if (!this.validateForm()) return;
             
-            this.loading = true;
-            try {
-                const userData = await store.dispatch('register', {
-                    email: this.user.email,
-                    password: this.user.password,
-                    userData: {
-                        name: this.user.name,
-                        email: this.user.email,
-                        phone: this.user.phone,
-                        organization: this.user.organization,
-                        role: this.user.role,
-                        createdAt: new Date().toISOString(),
-                        attemptedQuizzes: [],
-                        overallScore: 0,
-                        quizzesToTake: 5,
-                    }
-                });
+        //     this.loading = true;
+        //     try {
+        //         const userData = await store.dispatch('register', {
+        //             email: this.user.email,
+        //             password: this.user.password,
+        //             userData: {
+        //                 name: this.user.name,
+        //                 email: this.user.email,
+        //                 phone: this.user.phone,
+        //                 organization: this.user.organization,
+        //                 role: this.user.role,
+        //                 createdAt: new Date().toISOString(),
+        //                 attemptedQuizzes: [],
+        //                 overallScore: 0,
+        //                 quizzesToTake: 5,
+        //             }
+        //         });
                 
-                await set(ref(database, `users/${userData.uid}`), userData);
+        //         await set(ref(database, `users/${userData.uid}`), userData);
                 
-                if (this.user.organization !== 'guest') {
-                    const org = this.organizations.find(org => org.name === this.user.organization);
-                    if (org) {
-                        // Add user to organization members using PUT request
-                        const membersCount = org.members ? Object.keys(org.members).length + 1 : 1;
-                        const updateData = {
-                            members: {
-                                ...org.members,
-                                [userData.uid]: true
-                            }
-                        };
+        //         if (this.user.organization !== 'guest') {
+        //             const org = this.organizations.find(org => org.name === this.user.organization);
+        //             if (org) {
+        //                 // Add user to organization members using PUT request
+        //                 const membersCount = org.members ? Object.keys(org.members).length + 1 : 1;
+        //                 const updateData = {
+        //                     members: {
+        //                         ...org.members,
+        //                         [userData.uid]: true
+        //                     }
+        //                 };
 
-                        const response = await fetch(
-                            `https://quizzer-platform-default-rtdb.firebaseio.com/organizations/${org.id}.json`,
-                            {
-                                method: 'PATCH',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(updateData)
-                            }
-                        );
+        //                 const response = await fetch(
+        //                     `https://quizzer-platform-default-rtdb.firebaseio.com/organizations/${org.id}.json`,
+        //                     {
+        //                         method: 'PATCH',
+        //                         headers: {
+        //                             'Content-Type': 'application/json',
+        //                         },
+        //                         body: JSON.stringify(updateData)
+        //                     }
+        //                 );
 
-                        if (!response.ok) {
-                            throw new Error('Failed to update organization members');
-                        }
-                    }
-                }
+        //                 if (!response.ok) {
+        //                     throw new Error('Failed to update organization members');
+        //                 }
+        //             }
+        //         }
                 
-                router.push('/');
-            } catch (error) {
-                console.error("Signup error:", error);
-                if (error.code === 'auth/email-already-in-use') {
-                    this.errors.email = "Email is already registered";
-                } else if (error.code === 'auth/invalid-email') {
-                    this.errors.email = "Invalid email format";
-                } else if (error.code === 'auth/weak-password') {
-                    this.errors.password = "Password is too weak";
-                } else {
-                    this.errors.general = "Failed to create account. Please try again.";
-                }
-            } finally {
-                this.loading = false;
+        //         router.push('/');
+        //     } catch (error) {
+        //         console.error("Signup error:", error);
+        //         if (error.code === 'auth/email-already-in-use') {
+        //             this.errors.email = "Email is already registered";
+        //         } else if (error.code === 'auth/invalid-email') {
+        //             this.errors.email = "Invalid email format";
+        //         } else if (error.code === 'auth/weak-password') {
+        //             this.errors.password = "Password is too weak";
+        //         } else {
+        //             this.errors.general = "Failed to create account. Please try again.";
+        //         }
+        //     } finally {
+        //         this.loading = false;
+        //     }
+        // }
+        async handleSignup() {
+    if (!this.validateForm()) return;
+    
+    this.loading = true;
+    try {
+        const userData = await store.dispatch('register', {
+            email: this.user.email,
+            password: this.user.password,
+            userData: {
+                name: this.user.name,
+                email: this.user.email,
+                phone: this.user.phone,
+                organization: this.user.organization,
+                role: this.user.role,
+                createdAt: new Date().toISOString(),
+                attemptedQuizzes: [],
+                overallScore: 0,
+                quizzesToTake: 5,
+            }
+        });
+        
+        await set(ref(database, `users/${userData.uid}`), userData);
+        
+        if (this.user.organization !== 'guest') {
+            const org = this.organizations.find(org => org.name === this.user.organization);
+            if (org) {
+                const updateData = {
+                    members: {
+                        ...org.members,
+                        [userData.uid]: true
+                    }
+                };
+
+                await fetch(
+                    `https://quizzer-platform-default-rtdb.firebaseio.com/organizations/${org.id}.json`,
+                    {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updateData)
+                    }
+                );
             }
         }
+
+        if (this.user.organization !== 'guest') {
+            router.push('/entercode');
+        } else {
+            router.push('/'); 
+        }
+
+    } catch (error) {
+        console.error("Signup error:", error);
+        if (error.code === 'auth/email-already-in-use') {
+            this.errors.email = "Email is already registered";
+        } else if (error.code === 'auth/invalid-email') {
+            this.errors.email = "Invalid email format";
+        } else if (error.code === 'auth/weak-password') {
+            this.errors.password = "Password is too weak";
+        } else {
+            this.errors.general = "Failed to create account. Please try again.";
+        }
+    } finally {
+        this.loading = false;
+    }
+}
+
     }
 };
 </script>

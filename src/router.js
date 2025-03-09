@@ -31,6 +31,7 @@ import UserQuizzes from './components/user/UserQuizzes.vue';
 import UserOrganization from './components/user/UserOrganization.vue';
 import UserSubscription from './components/user/UserSubscription.vue';
 import NotifyUser from './components/organization/NotifyUser.vue';
+import EnterCode from './components/home/EnterCode.vue';
 
 
 
@@ -57,12 +58,13 @@ const routes = [
   { path: '/categories', component: CategoryView },
   { path: '/admin/categorycreation', component: CategoryCreation ,meta: { requiresAuth: true } },
   { path: '/notifyuser', component: NotifyUser },
-
   { path: '/quizLevels', component: Quizlevels },
   { path: '/contactus', component: ContactUs },
   { path: '/pricing', component: PricingPage },
   { path: '/quizzes', component: Quizzes },
   // { path: '/quizDetails', component: QuizDetailsView },
+  { path: '/entercode', component: EnterCode },
+
   {
     path: "/quiz/:quizId",
     name: "quizDetails",

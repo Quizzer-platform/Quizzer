@@ -7,6 +7,8 @@ import SignupView from './views/SignupView.vue';
 import AdminDashboardView from './views/AdminDashboardView.vue';
 import OrganizationDashboardView from './views/OrganizationDashboardView.vue';
 import AdminOrganizationsView from './views/AdminOrganizationsView.vue';
+import AdminUsersView from './views/AdminUsersView.vue';
+import AdminUserView from './views/AdminUserView.vue';
 import AdminQuizzesEditDeleteView from "./views/AdminQuizzesEditDeleteView.vue";
 import OrganizationQuizzesEditDeleteView from "./views/OrganizationQuizzesEditDelete.vue"
 import AdminOrganizationDetailsView from "./views/AdminOrganizationDetailsView.vue";
@@ -43,9 +45,11 @@ const routes = [
   { path: '/organizationsignup', component: OrganizationSignupForm },
   { path: '/admin', component: AdminDashboardView ,meta: { requiresAuth: true, requiresAdmin: true } },
   { path: '/organization', component: OrganizationDashboardView ,meta: { requiresAuth: true } },
-  { path: '/admin/organizations', component: AdminOrganizationsView ,meta: { requiresAuth: true } },
+  { path: '/admin/organizations', component: AdminOrganizationsView, meta: { requiresAuth: true } },
+  { path: '/admin/users', component: AdminUsersView ,meta: { requiresAuth: true } },
   { path: '/admin/organizations/:id', component: AdminOrganizationDetailsView ,meta: { requiresAuth: true } },
-  { path: '/organization/user/:id', component: OrganizationUserView ,meta: { requiresAuth: true } },
+  { path: '/organization/user/:id', component: OrganizationUserView, meta: { requiresAuth: true } },
+  { path: '/admin/user/:id', component: AdminUserView ,meta: { requiresAuth: true } },
   { path: '/organization/users', component: OrganizationUsersView ,meta: { requiresAuth: true } },
   { path: '/admin/quizzes', component: AdminQuizzesEditDeleteView ,meta: { requiresAuth: true } },
   { path: '/organization/quizzes',component: OrganizationQuizzesEditDeleteView,meta: { requiresAuth: true }},

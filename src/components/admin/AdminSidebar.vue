@@ -39,6 +39,15 @@
         </li>
         <li>
           <router-link 
+            to="/admin/users" 
+            class="block py-3 px-6 hover:bg-teal-600 transition"
+            active-class="bg-teal-700"
+          >
+            Users
+          </router-link>
+        </li>
+        <li>
+          <router-link 
             to="/admin/quizzes" 
             class="block py-3 px-6 hover:bg-teal-600 transition"
             active-class="bg-teal-700"

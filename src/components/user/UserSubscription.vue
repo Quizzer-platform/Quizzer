@@ -2,10 +2,10 @@
 
     <div class="flex flex-col min-h-screen bg-gray-100">
         <div class="flex flex-1 flex-col md:flex-row">
-            <UserSidebar v-model:isMenuOpen="isMenuOpen" />
+        <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
 
             <!-- Main Content -->
-            <div class="min-h-screen w-full bg-gray-100">
+            <div class="min-h-screen w-full bg-gray-100 md:ml-54">
                 <div class="container mx-auto px-4 py-8">
                     <div class="bg-white rounded-lg shadow-lg p-6">
                         <h1 class="text-2xl font-bold text-teal-800 mb-6">Your Subscription</h1>

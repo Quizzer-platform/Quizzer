@@ -4,7 +4,7 @@
     :class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }"
   >
     <button class="absolute top-4 right-4 md:hidden text-white text-2xl" @click="toggleSidebar">
-      ✖<i>icon</i>
+      ✖
     </button>
 
     <h2 class="text-2xl font-bold p-6">QUIZZER</h2>

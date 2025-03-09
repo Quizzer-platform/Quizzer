@@ -42,6 +42,7 @@
             <div class="mt-4 md:mt-0 text-center md:text-right">
               <p class="font-semibold">Rank: {{ selectedUser.rank }}</p>
               <p>Total No of Quizzes: {{ selectedUser.totalQuizzes }}</p>
+
             </div>
           </div>
         </div>

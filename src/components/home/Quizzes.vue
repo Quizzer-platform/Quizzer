@@ -67,7 +67,7 @@ export default {
         .then(data => {
             console.log('Data:', data);
             this.cards = Object.keys(data).map(id => ({
-                id, // إضافة معرف الاختبار
+                id, 
                 title: data[id].title,
                 description: data[id].description
             }));

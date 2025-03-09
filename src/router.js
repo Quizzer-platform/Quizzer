@@ -30,6 +30,8 @@ import OrganizationSignupForm from './components/auth/OrganizationSignupForm.vue
 import UserQuizzes from './components/user/UserQuizzes.vue';
 import UserOrganization from './components/user/UserOrganization.vue';
 import UserSubscription from './components/user/UserSubscription.vue';
+import NotifyUser from './components/organization/NotifyUser.vue';
+
 
 
 const routes = [
@@ -54,12 +56,20 @@ const routes = [
   { path: '/leaderboard', component: Leaderboard },
   { path: '/categories', component: CategoryView },
   { path: '/admin/categorycreation', component: CategoryCreation ,meta: { requiresAuth: true } },
+  { path: '/notifyuser', component: NotifyUser },
 
   { path: '/quizLevels', component: Quizlevels },
   { path: '/contactus', component: ContactUs },
   { path: '/pricing', component: PricingPage },
   { path: '/quizzes', component: Quizzes },
-  { path: '/quizDetails', component: QuizDetailsView },
+  // { path: '/quizDetails', component: QuizDetailsView },
+  {
+    path: "/quiz/:quizId",
+    name: "quizDetails",
+    component: QuizDetailsView,
+    props: true 
+  },
+  
   { path: '/quizzes/:quizId', name: 'quizlist', component: QuizList, props: true ,meta: { requiresAuth: true } },
   { path: '//profile/userQuizzes', component: UserQuizzes  ,meta: { requiresAuth: true } },
   { path: '//profile/userOrg', component: UserOrganization  ,meta: { requiresAuth: true } },

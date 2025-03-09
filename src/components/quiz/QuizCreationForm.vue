@@ -136,7 +136,9 @@ export default {
     <div class="container mx-auto p-4">
         <form @submit.prevent="submitQuiz" class="space-y-6">
             <div class="bg-gray-100 p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-4">Create a New Quiz</h2>
+                <h2 class="text-2xl font-bold mb-4">
+                    {{ isEditing ? 'Edit Quiz' : 'Create a New Quiz' }}
+                </h2>
                 <div class="space-y-5">
                     <div>
                         <label for="title" class="block text-sm font-medium text-black">Title</label>
@@ -229,15 +231,18 @@ export default {
     },
     methods: {
         fetchQuiz(quizId) {
-        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/quizData/${quizId}.json`)
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    this.quiz = data; // Fill form with existing quiz data
-                }
-            })
-            .catch(error => console.error('Error fetching quiz:', error));
-    },
+    const isAdminQuiz = this.$route.name === "adminEditQuiz";
+    const path = isAdminQuiz ? `adminQuizzes/${quizId}` : `organizationQuizzes/${quizId}`;
+
+    fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/${path}.json`)
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                this.quiz = data;
+            }
+        })
+        .catch(error => console.error('Error fetching quiz:', error));
+},
         loadCategories() {
             fetch("https://quizzer-platform-default-rtdb.firebaseio.com/categories.json")
                 .then(response => response.json())
@@ -259,9 +264,12 @@ export default {
         return;
     }
 
+    const isAdminQuiz = this.$route.name === "adminEditQuiz";
+    const path = isAdminQuiz ? `adminQuizzes/${this.quizId}` : `organizationQuizzes/${this.quizId}`;
+
     if (this.isEditing) {
         // Edit quiz (PATCH request)
-        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/quizData/${this.quizId}.json`, {
+        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/${path}.json`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.quiz)
@@ -275,7 +283,7 @@ export default {
         });
     } else {
         // Create new quiz (POST request)
-        fetch('https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json', {
+        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/${path}.json`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.quiz)
@@ -288,7 +296,7 @@ export default {
             console.error('Error creating quiz:', error);
         });
     }
-}
+},
     }
 };
 </script>

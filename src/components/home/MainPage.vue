@@ -5,13 +5,13 @@
         
         <div class="container mx-auto px-4 sm:px-6 flex items-center justify-center min-h-[calc(100vh-64px)]">
             <div class="max-w-4xl mx-auto w-full text-center py-8 sm:py-12">
-                <span class="inline-block bg-gray-100 text-gray-900 border border-gray-300 text-sm px-4 py-1 rounded-full">
+                <span class="inline-block bg-teal-100 text-gray-900 border border-teal-300 text-sm px-4 py-1 rounded-full">
                     🚀 Measure Skills, Not Just Words
                 </span>
 
                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-6 sm:mt-8">
-                    The <span class="bg-teal-200 px-2 rounded-lg">Ultimate</span> Quiz Platform
-                    <span class="block mt-2">for Smarter Hiring</span>
+                    The <span class="bg-teal-200 p-2 rounded-lg">Ultimate</span> Quiz Platform
+                    <span class="block mt-3">for Smarter Hiring</span>
                 </h1>
 
                 <div class="text-gray-600 mt-4">

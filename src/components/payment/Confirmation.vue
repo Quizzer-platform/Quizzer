@@ -14,12 +14,12 @@
       <div class="w-8 h-8 mx-auto border-4 border-green-500 rounded-full animate-ping"></div>
     </div>
     <h3 class="text-xl font-bold">Order #123RGR231567Y Confirmed</h3>
-    <button class="w-full mt-4 bg-teal-800 text-white py-2 rounded cursor-pointer hover:bg-teal-900">
+    <button class="w-full mt-4 bg-teal-800 text-white py-2 rounded cursor-pointer hover:bg-teal-900"  @click="$router.push('/')" >
      OK
     </button>
-    <button class="w-full mt-2 text-gray-500 py-2 rounded cursor-pointer">
+    <!-- <button class="w-full mt-2 text-gray-500 py-2 rounded cursor-pointer">
       Generate Receipt
-    </button>
+    </button> -->
   </div> </div>
 </template>
 

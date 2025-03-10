@@ -21,6 +21,8 @@ import CategoryView from './views/CategoryView.vue';  // The category page
 import Quizlevels from "./views/QuizLevelsView.vue";
 import ContactUs from "./views/ContactUsView.vue";
 import PricingPage from "./components/home/PricingPage.vue";
+import PaymentPage from "./components/payment/PaymentPage.vue"
+import ConfirmationPage from "./components/payment/Confirmation.vue"
 import CategoryCreation from "./components/home/CategoryCreation.vue";
 
 import CreateQuizView from './views/CreateQuizView.vue';
@@ -35,11 +37,12 @@ import UserSubscription from './components/user/UserSubscription.vue';
 import NotifyUser from './components/organization/NotifyUser.vue';
 import EnterCode from './components/home/EnterCode.vue';
 
-
+// import CardPayment from './components/payment/CardPayment.vue'
 
 const routes = [
   { path: '/', component: HomeView },
   { path: '/home', redirect: '/' },
+  // { path: '/cardpayment', component: CardPayment },
   { path: '/login', component: LoginView ,meta: { requiresGuest: true }},
   { path: '/usersignup', component: SignupView ,meta: { requiresGuest: true } },
   { path: '/organizationsignup', component: OrganizationSignupForm },
@@ -65,6 +68,8 @@ const routes = [
   { path: '/quizLevels', component: Quizlevels },
   { path: '/contactus', component: ContactUs },
   { path: '/pricing', component: PricingPage },
+  { path: '/payment', component: PaymentPage },
+  { path: '/payment/confirmation', component: ConfirmationPage },
   { path: '/quizzes', component: Quizzes },
   // { path: '/quizDetails', component: QuizDetailsView },
   { path: '/entercode', component: EnterCode },

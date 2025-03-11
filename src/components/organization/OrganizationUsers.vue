@@ -18,26 +18,31 @@
         
 
         <!-- User Review Section -->
-        <div class="mt-8">
-          <div class="flex justify-between items-center mb-3">
-            <h3 class="text-xl font-bold text-gray-800">User Review</h3>
-            <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-170" @search="updateSearchQuery" />
-          </div>
+<div class="mt-8">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mb-3">
+  <h3 class="text-xl font-bold text-gray-800 sm:mb-0 mb-2">User Review</h3>
+  <SearchBar class="w-full sm:w-auto sm:ml-4" @search="updateSearchQuery" />
+</div>
+  <!-- Loading Spinner -->
+  <div v-if="loading" class="flex justify-center my-10">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900"></div>
+  </div>
 
-          <!-- Loading Spinner -->
-          <div v-if="loading" class="flex justify-center my-10">
-            <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900"></div>
-          </div>
+  <!-- No Users Message -->
+  <div v-else-if="users.length === 0" class="text-center text-gray-600 mt-10">
+    <p class="text-lg font-semibold">Your organization has no users yet.</p>
+  </div>
 
-          <!-- Table (Hidden While Loading) -->
-          <TableStructure 
-            v-else
-            :headers="['User Id', 'User Name', 'Last Quiz', 'Degree']" 
-            :rows="filteredUsers.map(user => [user.id, user.name, user.lastQuiz, user.degree])" 
-            :showActions="true"
-            @view-details="goToUserDetails"
-          />
-        </div>
+  <!-- Table (Hidden While Loading or No Users) -->
+  <TableStructure 
+    v-else
+    :headers="['User Id', 'User Name', 'Last Quiz', 'Degree']" 
+    :rows="filteredUsers.map(user => [user.id, user.name, user.lastQuiz, user.degree])" 
+    :showActions="true"
+    @view-details="goToUserDetails"
+  />
+</div>
+
       </main>
     </div>
   </div>

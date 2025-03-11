@@ -83,25 +83,26 @@ export default {
       }
     },
     async fetchSubscriptions() {
-      if (!this.orgId) return;
+  if (!this.orgId) return;
 
-      try {
-        const orgRef = dbRef(database, `organizations/${this.orgId}`);
-        const snapshot = await get(orgRef);
-        if (snapshot.exists() && snapshot.val().plans) {
-          this.subscriptions = snapshot.val().plans.map((plan) => ({
-            name: plan.name || "No Name",
-            maxQuizzes: plan.noOfQuizzes || "N/A",
-            price: plan.price ? `${plan.price}` : "EGP 0",
-            description: plan.description || "No description available",
-          }));
-        } else {
-          console.warn("No subscriptions found for this organization.");
-        }
-      } catch (error) {
-        console.error("Error fetching subscriptions:", error);
-      }
-    },
+  try {
+    const orgRef = dbRef(database, `organizations/${this.orgId}`);
+    const snapshot = await get(orgRef);
+    if (snapshot.exists() && snapshot.val().plans) {
+      const plans = snapshot.val().plans.slice(1); // Ignore the first element
+      this.subscriptions = plans.map((plan) => ({
+        name: plan.name || "No Name",
+        maxQuizzes: plan.noOfQuizzes || "N/A",
+        price: plan.price ? `${plan.price}` : "EGP 0",
+        description: plan.description || "No description available",
+      }));
+    } else {
+      console.warn("No subscriptions found for this organization.");
+    }
+  } catch (error) {
+    console.error("Error fetching subscriptions:", error);
+  }
+},
   },
 };
 </script>

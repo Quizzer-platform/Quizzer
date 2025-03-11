@@ -1,12 +1,15 @@
 <template>
     <Navbar />
-    <search />
-    <div class="flex justify-center">
+    <search class="" @search="updateSearchQuery" />
+    <div class="flex flex-col justify-center items-center">
         <div v-if="loading" class="text-center py-8">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
             <p class="text-gray-600 mt-4">Loading quizzes...</p>
         </div>
-        <Quizzes v-else :cards="cards" />
+        <div v-else-if="filteredQuizzes.length === 0" class="text-center text-gray-500 my-20">
+          No quizzes found.
+        </div>
+        <Quizzes v-else :cards="filteredQuizzes" />
     </div>
     <Footer />
 </template>
@@ -27,8 +30,18 @@ export default {
     data() {
         return {
             cards: [],
-            loading: true
+            loading: true,
+            searchQuery: "",
         };
+    },
+    computed: {
+        filteredQuizzes() {
+            if (!this.searchQuery) return this.cards;
+            return this.cards.filter(quiz =>
+                quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                quiz.description.toLowerCase().includes(this.searchQuery.toLowerCase())
+            );
+        },
     },
     methods: {
         loadQuizzes() {
@@ -37,7 +50,7 @@ export default {
                 .then(response => response.json())
                 .then(data => {
                     this.cards = Object.keys(data).map(id => ({
-                        id, 
+                        id,
                         title: data[id].title,
                         description: data[id].description
                     }));
@@ -49,7 +62,10 @@ export default {
                 .finally(() => {
                     this.loading = false;
                 });
-        }
+        },
+        updateSearchQuery(query) {
+            this.searchQuery = query;
+        },
     },
     mounted() {
         this.loadQuizzes();

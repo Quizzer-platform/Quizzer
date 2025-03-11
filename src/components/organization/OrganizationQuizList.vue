@@ -22,7 +22,7 @@
         quiz.questions.length,
         quiz.duration 
       ])"
-      :showActions="true"
+      :showActions="false"
       @view-details="editQuiz"
     />
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-full min-w-screen bg-gray-100">
+  <div class="flex min-h-screen bg-gray-100">
     <!-- Sidebar (Always visible on large screens, Toggles on small screens) -->
     <OrganizationSidebar 
       :isOpen="isSidebarOpen" 

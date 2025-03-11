@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen min-w-screen bg-gray-100">
+  <div class="flex min-h-screen bg-gray-100">
     <!-- Sidebar -->
     <OrganizationSidebar 
   :isOpen="isSidebarOpen" 
@@ -14,7 +14,8 @@
       
       <!-- Main Content -->
       <main class="flex-1 p-4">
-        <DashboardOverview />
+        <!-- <DashboardOverview />-->
+        
 
         <!-- User Review Section -->
         <div class="mt-8">

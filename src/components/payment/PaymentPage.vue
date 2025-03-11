@@ -8,9 +8,9 @@
             <UserProfileIcon />
         </template>
 </Navbar>
-    <div class="max-w-2xl mx-auto p-6 shadow-md rounded-lg m-24">
+    <div class="max-w-2xl mx-auto p-6 shadow-md rounded-lg mt-6">
     <h2 class="text-xl font-semibold mb-4">Payment</h2>
-    <div class="mb-4">
+    <!-- <div class="mb-4">
       <label class="flex items-center space-x-2">
         <input type="radio" v-model="selectedMethod" value="card" /> Card
       </label>
@@ -20,9 +20,9 @@
       <label class="flex items-center space-x-2">
         <input type="radio" v-model="selectedMethod" value="transfer" /> Transfer
       </label>
-    </div>
+    </div> -->
     
-    <CardPayment v-if="selectedMethod === 'card'" />
+    <CardPayment v-if="selectedMethod === 'card'" :plan="selectedPlan" />
     <BankPayment v-if="selectedMethod === 'bank'" />
     <TransferPayment v-if="selectedMethod === 'transfer'" />
   </div>
@@ -39,9 +39,19 @@ export default {
   components: { CardPayment, BankPayment, TransferPayment ,Navbar,UserProfileIcon },
   data() {
     return {
-      selectedMethod: 'card' // Default selection
+      selectedMethod: "card", // Default selection
+      selectedPlan: null,
     };
-  }
+  },
+  created() {
+    // ✅ Retrieve the plan from the route query parameters
+    this.selectedPlan = {
+      name: this.$route.query.name || "No Plan Selected",
+      price: this.$route.query.price || "N/A",
+      description: this.$route.query.description || "",
+      noOfQuizzes: this.$route.query.noOfQuizzes || "N/A",
+    };
+  },
 };
 </script>
 

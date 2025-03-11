@@ -157,10 +157,8 @@ export default {
                         <input id="numberOfQuestions" v-model="quiz.numberOfQuestions" type="number" class="mt-2 p-2 block w-full rounded-lg bg-gray-300 shadow-md" required>
                     </div>
                     <div class="md:w-1/2">
-                        <label for="scorePerQuestion" class="block text-sm font-medium text-black">Score per
-                            Question</label>
-                        <input id="scorePerQuestion" v-model="quiz.scorePerQuestion" type="number"
-                            class="mt-2 p-2 block w-full rounded-lg bg-gray-300 shadow-md" required>
+                        <label for="scorePerQuestion" class="block text-sm font-medium text-black">Score per Question</label>
+                        <input id="scorePerQuestion" v-model="quiz.scorePerQuestion" type="number" class="mt-2 p-2 block w-full rounded-lg bg-gray-300 shadow-md" required>
                     </div>
                     <div class="md:w-1/2">
                         <label for="category" class="block text-sm font-medium text-black">Category</label>
@@ -190,8 +188,8 @@ export default {
                 </div>
             </div>
             <div class="flex justify-center m-2">
-                <button type="button" @click="addQuestion" class=" bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-400 hover:cursor-pointer">Add Question</button>
-                <button type="submit" class="  bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-500 hover:cursor-pointer">Submit Quiz</button>
+                <button type="button" @click="addQuestion" class="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-400 hover:cursor-pointer">Add Question</button>
+                <button type="submit" class="bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-500 hover:cursor-pointer">Submit Quiz</button>
             </div>
         </form>
     </div>
@@ -214,35 +212,33 @@ export default {
                 }]
             },
             categories: [],
-            isEditing: false, // Track if we're editing
-            quizId: null // Store the ID of the quiz being edited
+            isEditing: false,
+            quizId: null
         };
     },
     created() {
-    const quizId = this.$route.params.quizId; // Get quizId from route
-    if (quizId) {
-        this.isEditing = true;
-        this.quizId = quizId;
-        this.fetchQuiz(quizId); // Fetch quiz data
-    }
-},
+        const quizId = this.$route.params.quizId;
+        if (quizId) {
+            this.isEditing = true;
+            this.quizId = quizId;
+            this.fetchQuiz(quizId);
+        }
+    },
     mounted() {
         this.loadCategories();
     },
     methods: {
         fetchQuiz(quizId) {
-    const isAdminQuiz = this.$route.name === "adminEditQuiz";
-    const path = isAdminQuiz ? `adminQuizzes/${quizId}` : `organizationQuizzes/${quizId}`;
-
-    fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/${path}.json`)
-        .then(response => response.json())
-        .then(data => {
-            if (data) {
-                this.quiz = data;
-            }
-        })
-        .catch(error => console.error('Error fetching quiz:', error));
-},
+            const path = `adminQuizzes/${quizId}`; // Always fetch from adminQuizzes
+            fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/${path}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        this.quiz = data;
+                    }
+                })
+                .catch(error => console.error('Error fetching quiz:', error));
+        },
         loadCategories() {
             fetch("https://quizzer-platform-default-rtdb.firebaseio.com/categories.json")
                 .then(response => response.json())
@@ -259,46 +255,68 @@ export default {
             });
         },
         submitQuiz() {
-    if (!this.quiz.category) {
-        alert("Please select a category!");
-        return;
-    }
+            if (!this.quiz.category) {
+                alert("Please select a category!");
+                return;
+            }
 
-    const isAdminQuiz = this.$route.name === "adminEditQuiz";
-    const path = isAdminQuiz ? `adminQuizzes/${this.quizId}` : `organizationQuizzes/${this.quizId}`;
+            // Always save under adminQuizzes
+            const basePath = "adminQuizzes";
 
-    if (this.isEditing) {
-        // Edit quiz (PATCH request)
-        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/${path}.json`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(this.quiz)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Quiz Updated:', data);
-        })
-        .catch(error => {
-            console.error('Error updating quiz:', error);
-        });
-    } else {
-        // Create new quiz (POST request)
-        fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/${path}.json`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(this.quiz)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Quiz Created:', data);
-        })
-        .catch(error => {
-            console.error('Error creating quiz:', error);
-        });
-    }
-},
+            let url;
+            let method;
+
+            if (this.isEditing) {
+                if (!this.quizId) {
+                    console.error("Quiz ID is missing for editing.");
+                    alert("An error occurred. Quiz ID is missing.");
+                    return;
+                }
+                url = `https://quizzer-platform-default-rtdb.firebaseio.com/${basePath}/${this.quizId}.json`;
+                method = "PUT";
+            } else {
+                url = `https://quizzer-platform-default-rtdb.firebaseio.com/${basePath}.json`;
+                method = "POST";
+            }
+
+            fetch(url, {
+                method: method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(this.quiz),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Quiz Saved:", data);
+                    alert("Quiz saved successfully!");
+                    if (!this.isEditing) {
+                        this.resetForm();
+                        this.$router.push("/admin/quizzes");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error saving quiz:", error);
+                    alert("An error occurred while saving the quiz. Please try again.");
+                });
+        },
+        resetForm() {
+            this.quiz = {
+                title: "",
+                duration: 10,
+                numberOfQuestions: 10,
+                description: "",
+                category: "",
+                questions: [
+                    {
+                        questionHead: "",
+                        options: ["", "", "", ""],
+                        correctAnswer: "",
+                    },
+                ],
+            };
+        },
     }
 };
 </script>
 
+<style scoped></style>
 <style scoped></style>

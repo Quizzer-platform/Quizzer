@@ -12,7 +12,7 @@
                 <p class="text-gray-600 mt-2 text-sm flex-grow overflow-y-auto">
                     {{ category.description }}
                 </p>
-                <button @click="$router.push('/categories')"
+                <button @click="$emit('view-quizzes', category.id)"
                     class="mt-4 bg-teal-700  text-white px-5 py-2 rounded-lg shadow-md w-full hover:bg-teal-900 cursor-pointer transition">
                     See More
                 </button>

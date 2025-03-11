@@ -10,7 +10,6 @@
             />
             <button type="submit"
                 :class="['absolute end-1 top-1/2 -translate-y-1/2 text-white px-3 py-1 text-sm rounded-md', customClass]">
-                🔍
             </button>
         </div>
     </form>

@@ -143,22 +143,100 @@ export default {
                 console.error('User not authenticated');
                 return;
             }
-            const organizationId = user.uid;
-            const updatedQuiz = { ...this.quiz, organizationId };
-            const url = this.isEditing ?
-                `https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${this.quizId}.json` :
-                'https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes.json';
+
+            const organizationUid = user.uid; // The UID of the logged-in organization
+            const updatedQuiz = { ...this.quiz, organizationUid };
+
+            // Determine Firebase URL and HTTP method
+            const url = this.isEditing
+                ? `https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${this.quizId}.json`
+                : `https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes.json`;
             const method = this.isEditing ? 'PATCH' : 'POST';
 
-            fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedQuiz)
-            })
-            .then(response => response.json())
-            .then(data => console.log(`Quiz ${this.isEditing ? 'Updated' : 'Created'}:`, data))
-            .catch(error => console.error(`Error ${this.isEditing ? 'updating' : 'creating'} quiz:`, error));
-        }
+            try {
+                // Send quiz data to Firebase
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedQuiz),
+                });
+
+                const responseData = await response.json();
+
+                if (!this.isEditing) {
+                    await this.incrementOrganizationQuizzes(organizationUid);
+                }
+
+                console.log(`Quiz ${this.isEditing ? 'Updated' : 'Created'} successfully`);
+            } catch (error) {
+                console.error(`Error ${this.isEditing ? 'updating' : 'creating'} quiz:`, error);
+            }
+        },
+
+        async incrementOrganizationQuizzes(organizationUid) {
+            try {
+                // Step 1: Find the organization with the matching adminUid
+                const orgsUrl = `https://quizzer-platform-default-rtdb.firebaseio.com/organizations.json`;
+                const response = await fetch(orgsUrl);
+                const orgsData = await response.json();
+
+                let organizationKey = null;
+                let currentQuizCount = 0;
+
+                // Loop through organizations to find the one matching adminUid
+                for (const key in orgsData) {
+                    if (orgsData[key].adminUid === organizationUid) {
+                        organizationKey = key;
+                        currentQuizCount = orgsData[key].quizzes || 0; // Default to 0
+                        break;
+                    }
+                }
+
+                if (!organizationKey) {
+                    console.error("Organization not found for this admin UID!");
+                    return;
+                }
+
+                const updatedQuizCount = currentQuizCount + 1; // Increment count
+                const updateUrl = `https://quizzer-platform-default-rtdb.firebaseio.com/organizations/${organizationKey}.json`;
+
+                // Step 2: Update the quiz count in Firebase
+                await fetch(updateUrl, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quizzes: updatedQuizCount }),
+                });
+
+                console.log(`Organization's quiz count updated to: ${updatedQuizCount}`);
+            } catch (error) {
+                console.error('Error updating organization quiz count:', error);
+            }
+        },
+
+        async updateOrganizationQuizzes(organizationId, quizId) {
+            try {
+                const orgUrl = `https://quizzer-platform-default-rtdb.firebaseio.com/organizations/${organizationId}/quizzes.json`;
+
+                // Fetch the current quizzes list
+                const response = await fetch(orgUrl);
+                let quizzes = await response.json();
+                quizzes = quizzes ? quizzes : []; // Ensure it's an array
+
+                // Add the new quiz ID
+                quizzes.push(quizId);
+
+                // Update Firebase with the new list
+                await fetch(orgUrl, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(quizzes),
+                });
+
+                console.log('Organization quizzes updated successfully:', quizzes);
+            } catch (error) {
+                console.error('Error updating organization quizzes:', error);
+            }
+        },
     }
 };
 </script>

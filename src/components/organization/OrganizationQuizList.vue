@@ -12,6 +12,14 @@
       <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900"></div>
     </div>
 
+    <!-- 🔹 No Quizzes Message -->
+    <div v-else-if="quizzes.length === 0" class="text-center text-gray-600 mt-6">
+      <p class="text-lg">You haven't created any quizzes yet.</p>
+      <router-link to="/organization/createQuiz" class="text-teal-700 font-semibold hover:underline">
+        Create your first quiz
+      </router-link>
+    </div>
+
     <!-- Quizzes Table (Hidden While Loading) -->
     <TableStructure
       v-else

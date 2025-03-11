@@ -110,9 +110,6 @@ export default {
           if (this.orgId) {
             await this.savePlanInDatabase();
           }
-if (this.orgId) {
-  await this.savePlanInDatabase(); // ✅ Wait for database update before redirecting
-}
           // ✅ Redirect to confirmation page
           setTimeout(() => {
   this.$router.push({

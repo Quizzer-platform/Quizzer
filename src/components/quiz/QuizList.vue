@@ -377,31 +377,80 @@ export default {
     },
     methods: {
       async loadQuestions() {
-        this.isLoading = true;
-        const quizId = this.$route.params.quizId;
-        try {
-          const response = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/quizData/${quizId}.json`);
-          const data = await response.json();
+  this.isLoading = true;
+  const quizId = this.$route.params.quizId;
+
+  try {
+    // نجرب نجيب الكويز من adminQuizzes
+    const adminQuizRes = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes/${quizId}.json`);
+    const adminData = await adminQuizRes.json();
+    console.log("Admin Data:", adminData);
+
+    if (adminData && adminData.questions) {
+      this.quizName = adminData.title;
+      this.description = adminData.description;
+      this.questions = adminData.questions.map(q => ({
+        text: q.questionHead,
+        options: q.options
+      }));
+      this.correctAnswers = adminData.questions.map(q => q.correctAnswer);
+    } else {
+      // لو ملقيناهوش في admin نروح لل organizationQuizzes
+      const orgQuizRes = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${quizId}.json`);
+      const orgData = await orgQuizRes.json();
+      console.log("org Data:", orgData);
+
+      if (orgData && orgData.questions) {
+        this.quizName = orgData.title;
+        this.description = orgData.description;
+        this.questions = orgData.questions.map(q => ({
+          text: q.questionHead,
+          options: q.options
+        }));
+        this.correctAnswers = orgData.questions.map(q => q.correctAnswer);
+      } else {
+        console.error("Quiz not found in either source!");
+        alert("Quiz not found.");
+        return;
+      }
+    }
+
+    await this.checkSubscription();
+
+  } catch (error) {
+    console.error("Error loading quiz:", error);
+    alert("Error loading quiz. Please try again.");
+  } finally {
+    this.isLoading = false;
+  }
+}
+,
+      // async loadQuestions() {
+      //   this.isLoading = true;
+      //   const quizId = this.$route.params.quizId;
+      //   try {
+      //     const response = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes/${quizId}.json`);
+      //     const data = await response.json();
   
-          if (data) {
-            this.quizName = data.title;
-            this.category=data.description;
-            this.questions = data.questions.map(q => ({
-              text: q.questionHead,
-              options: q.options
-            }));
-            this.correctAnswers = data.questions.map(q => q.correctAnswer);
-            await this.checkSubscription();
-          } else {
-            console.error("Quiz not found!");
-          }
-        } catch (error) {
-          console.error("Error loading quiz:", error);
-          alert("Error loading quiz. Please try again.");
-        } finally {
-          this.isLoading = false;
-        }
-      },
+      //     if (data) {
+      //       this.quizName = data.title;
+      //       this.category=data.description;
+      //       this.questions = data.questions.map(q => ({
+      //         text: q.questionHead,
+      //         options: q.options
+      //       }));
+      //       this.correctAnswers = data.questions.map(q => q.correctAnswer);
+      //       await this.checkSubscription();
+      //     } else {
+      //       console.error("Quiz not found!");
+      //     }
+      //   } catch (error) {
+      //     console.error("Error loading quiz:", error);
+      //     alert("Error loading quiz. Please try again.");
+      //   } finally {
+      //     this.isLoading = false;
+      //   }
+      // },
   
       async checkSubscription() {
         if (!this.userId) return;

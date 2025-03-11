@@ -33,7 +33,7 @@ export default {
     methods: {
         loadQuizzes() {
             this.loading = true;
-            fetch('https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json')
+            fetch('https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json')
                 .then(response => response.json())
                 .then(data => {
                     this.cards = Object.keys(data).map(id => ({

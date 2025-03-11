@@ -37,8 +37,9 @@
             <div class="mt-4 space-y-2 md:w-full">
                 <details class="bg-gray-100 p-4 rounded-lg">
                     <summary class="font-semibold cursor-pointer">About this test</summary>
-                    <p class="mt-2">This test is designed to assess your proficiency in {{ QuizName }} concepts.</p>
-                </details>
+                    <p class="mt-2">
+    This test consists of {{ quiz.numberOfQuestions }} multiple-choice questions designed to assess your knowledge in {{ QuizName }}. You will have {{ quiz.duration }} minutes to complete the quiz. It's ideal for beginners or those looking to review the basics. The questions are curated to give you a quick but effective evaluation of your understanding in this topic.
+  </p>                </details>
                 <details class="bg-gray-100 p-4 rounded-lg">
                     <summary class="font-semibold cursor-pointer">Who Created it</summary>
                     <p class="mt-2">Industry experts and professionals created this test.</p>
@@ -48,55 +49,67 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            quiz: {},
-            QuizName: "",
-            QuizDescribtion: "",
-            category: "",
-            categoryTitle: "",
-            loading: true
-        };
+ <script>
+ export default {
+     data() {
+         return {
+             quiz: {},
+             QuizName: "",
+             QuizDescribtion: "",
+             category: "",
+             categoryTitle: "",
+             loading: true
+         };
+     },
+ 
+     methods: {
+        testQuizId() {
+        this.$router.push(`/quizzes/${this.quiz.id}`);
     },
-
-    methods: {
-        async loadQuizDetails() {
-            const quizId = this.$route.params.quizId;
-            if (!quizId) {
-                this.loading = false;
-                return;
-            }
-
-            try {
-                const quizResponse = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/quizData/${quizId}.json`);
-                const quizData = await quizResponse.json();
-
-                if (quizData) {
-                    this.quiz = { ...quizData, id: quizId };
-                    this.QuizName = quizData.title;
-                    this.QuizDescribtion = quizData.description;
-                    this.category = quizData.category;
-
-                    const categoryResponse = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/categories/${quizData.category}.json`);
-                    const categoryData = await categoryResponse.json();
-                    
-                    if (categoryData) {
-                        this.categoryTitle = categoryData.title;
-                    }
-                }
-            } catch (error) {
-                console.error("Error loading quiz details:", error);
-            } finally {
-                this.loading = false;
-            }
-        }
-    },
-
-    mounted() {
-        this.loadQuizDetails();
-    }
-};
-</script>
-
+         async loadQuizDetails() {
+             const quizId = this.$route.params.quizId;
+             if (!quizId) {
+                 this.loading = false;
+                 return;
+             }
+ 
+             try {
+                 const quizResponse = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes/${quizId}.json`);
+                 const quizData = await quizResponse.json();
+ 
+                 if (quizData) {
+                     this.quiz = { ...quizData, id: quizId };
+                     this.QuizName = quizData.title;
+                     this.QuizDescribtion = quizData.description;
+                     this.category = quizData.category;
+ 
+                     // بدل ما نعتمد على ID مش مظبوط، ندور على الكاتيجوري اللي فيها الكويز
+                     const categoriesResponse = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/categories.json`);
+                     const categoriesData = await categoriesResponse.json();
+ 
+                     if (categoriesData) {
+                         const matchedCategory = Object.entries(categoriesData).find(
+                             ([_, cat]) => cat.quizzes && cat.quizzes.includes(quizId)
+                         );
+ 
+                         if (matchedCategory) {
+                             this.categoryTitle = matchedCategory[1].title;
+                         } else {
+                             this.categoryTitle = "Category not found";
+                         }
+                     }
+                 }
+             } catch (error) {
+                 console.error("Error loading quiz details:", error);
+             } finally {
+                 this.loading = false;
+             }
+         }
+     },
+ 
+     mounted() {
+         this.loadQuizDetails();
+     }
+ };
+ </script>
+ 

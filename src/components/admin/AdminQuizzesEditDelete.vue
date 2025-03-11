@@ -42,10 +42,7 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Delete Confirmation Popup -->
-  <div v-if="showDeletePopup" class="fixed inset-0 z-[100] flex items-center justify-center bg-gray-600/75">
+    <div v-if="showDeletePopup" class="fixed inset-0 z-[100] flex items-center justify-center bg-gray-600/75">
     <div class="bg-white p-6 rounded-lg shadow-md">
       <p class="text-lg font-semibold mb-4">Are you sure you want to delete this quiz?</p>
       <div class="flex justify-center space-x-4">
@@ -54,6 +51,10 @@
       </div>
     </div>
   </div>
+  </div>
+
+  <!-- Delete Confirmation Popup -->
+
 </template>
 
 <script>
@@ -80,18 +81,26 @@ export default {
     };
   },
 
-  computed: {
-    filteredAdminQuizzes() {
-      return this.adminQuizzes.filter((quiz) =>
-        quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    },
-    filteredOrgQuizzes() {
-      return this.orgQuizzes.filter((quiz) =>
-        quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    },
+computed: {
+  filteredAdminQuizzes() {
+    return this.adminQuizzes.filter((quiz) => {
+      if (!quiz || !quiz.title) {
+        console.warn('Undefined quiz or quiz title in adminQuizzes:', quiz);
+        return false;
+      }
+      return quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase());
+    });
   },
+  filteredOrgQuizzes() {
+    return this.orgQuizzes.filter((quiz) => {
+      if (!quiz || !quiz.title) {
+        console.warn('Undefined quiz or quiz title in orgQuizzes:', quiz);
+        return false;
+      }
+      return quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase());
+    });
+  },
+},
 
   methods: {
     async fetchQuizzes() {

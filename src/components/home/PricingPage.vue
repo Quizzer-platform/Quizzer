@@ -145,13 +145,26 @@ export default {
           <h3 class="text-xl font-semibold text-gray-700">{{ plan.name }}</h3>
           <p class="text-gray-500 mt-2">{{ plan.description }}</p>
           <p class="text-2xl font-bold text-gray-800 mt-4">{{ plan.price }}</p>
-          <button class="mt-4 px-6 py-2 bg-teal-800 hover:bg-teal-900 text-white rounded-lg mb-6 cursor-pointer" @click="goToPaymentPage">
-            {{ plan.buttonText }}
+          <button class="mt-4 px-6 py-2 bg-teal-800 hover:bg-teal-900 text-white rounded-lg mb-6 cursor-pointer" @click="selectPlan(plan)">
+            Get Started
           </button>
           <hr>
-          <ul class="text-left mt-4 text-gray-600">
-            <li v-for="feature in plan.features" :key="feature">✔ {{ feature }}</li>
+          <ul class="text-left mt-4 text-gray-600" v-if="plan.name=='Free'">
+            <!-- <li v-for="feature in plan.features" :key="feature">✔ {{ plan.noOfQuizzes }}</li> -->
+             <li> ✔  Kickstart your journey with {{ plan.noOfQuizzes}} free tests! No risk, just learning!</li>
           </ul>
+          <ul class="text-left mt-4 text-gray-600" v-else-if="plan.name=='Starter Plan'">
+            <!-- <li v-for="feature in plan.features" :key="feature">✔ {{ plan.noOfQuizzes }}</li> -->
+             <li> ✔  Empower your team with {{ plan.noOfQuizzes}} custom quizzes! Boost learning and engagement!</li>
+          </ul>
+          <ul class="text-left mt-4 text-gray-600" v-else-if="plan.name=='Pro Plan'">
+            <!-- <li v-for="feature in plan.features" :key="feature">✔ {{ plan.noOfQuizzes }}</li> -->
+             <li> ✔ Unleash limitless potential with {{ plan.noOfQuizzes}} quizzes! Elevate your training game!</li>
+          </ul>
+          <!-- <ul class="text-left mt-4 text-gray-600">
+            <li v-for="feature in plan.features" :key="feature">✔ {{ plan.noOfQuizzes }}</li>
+             <li v-for="feature in plan.features"> plan.noOfQuizzes</li>
+          </ul> -->
         </div>
       </div>
 
@@ -182,7 +195,10 @@ export default {
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, ref as vueRef, nextTick } from "vue";
+import { ref as dbRef, get, update } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { database } from "@/firebase";
 import { useRouter } from "vue-router";
 import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "../layout/Navbar.vue";
@@ -191,34 +207,34 @@ import Footer from "../layout/Footer.vue";
 export default {
   components: { Navbar, Footer },
   setup() {
-    const stripe = ref(null);
-    const elements = ref(null);
-    const card = ref(null);
+    const stripe = vueRef(null);
+    const elements = vueRef(null);
+    const card = vueRef(null);
     const router = useRouter();
 
     onMounted(async () => {
-  stripe.value = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
-  if (!stripe.value) {
-    console.error("Stripe failed to load.");
-    return;
-  }
-  elements.value = stripe.value.elements();
-  
-  // Properly set link.enabled while creating the card element
-  card.value = elements.value.create("card", {
-    hidePostalCode: true, // Optional, if you don't need postal code
-    link: { enabled: false } // Disable autofill link properly
-  });
+      stripe.value = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+      if (!stripe.value) {
+        console.error("Stripe failed to load.");
+        return;
+      }
+      
+      elements.value = stripe.value.elements();
+      card.value = elements.value.create("card", {
+        hidePostalCode: true,
+        link: { enabled: false },
+      });
 
-  card.value.mount("#card-element");
-});
+      await nextTick();
+      card.value.mount("#card-element");
+    });
 
     const handleSubmit = async () => {
       if (!stripe.value || !card.value) {
         console.error("Stripe or Card element not initialized");
         return;
       }
-      
+
       const { paymentMethod, error } = await stripe.value.createPaymentMethod({
         type: "card",
         card: card.value,
@@ -228,23 +244,24 @@ export default {
         console.error("Payment Error:", error.message);
       } else {
         console.log("Payment Success:", paymentMethod);
-        // Send paymentMethod.id to the backend for processing
       }
     };
 
     const goToPaymentPage = () => {
-      router.push('/payment');
+      router.push("/payment");
     };
 
-    return { handleSubmit, goToPaymentPage };
+    return { handleSubmit, goToPaymentPage, stripe, elements, card };
   },
   data() {
     return {
-      monthlyActive: true,
+      userData: null,
+      userId: null, // Store user ID
+      orgId: null,      monthlyActive: true,
       plans: [
-        { name: "Free", description: "Basic access", price: "Free", buttonText: "Get Started", features: ["5 free tests", "Invite unlimited candidates"] },
-        { name: "Starter Plan", description: "For small teams", price: "EGP 1000 / month", buttonText: "Get Started", features: ["Create 30 Quizzes", "Take this for better experience"] },
-        { name: "Pro Plan", description: "Advanced features", price: "EGP 3000 / month", buttonText: "Get Started", features: ["Create 70 Quizzes", "Can't believe the number! Just try now"] }
+        { name: "Free", description: "Basic access", price: "Free", noOfQuizzes: "5" },
+        { name: "Starter Plan", description: "For small teams", price: "EGP 1000 / month", noOfQuizzes: "20" },
+        { name: "Pro Plan", description: "Advanced features", price: "EGP 3000 / month", noOfQuizzes: "70" },
       ],
       features: [
         { name: "Edge content delivery", free: "✔", starter: "✔", pro: "✔" },
@@ -254,19 +271,73 @@ export default {
         { name: "Advanced analytics", free: "✔", starter: "✔", pro: "✔" },
         { name: "Basic reports", free: "-", starter: "✔", pro: "✔" },
         { name: "Professional reports", free: "-", starter: "-", pro: "✔" },
-      ]
+      ],
     };
   },
+  created() {
+        this.fetchOrganizationId();
+  },
   methods: {
+        async fetchOrganizationId() {
+      const auth = getAuth();
+
+      return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+          if (!user) {
+            console.error("User not logged in");
+            reject("No user");
+            return;
+          }
+
+          try {
+            this.userId = user.uid; // ✅ Store the logged-in user ID
+            console.log("User ID:", this.userId);
+
+            // 🔹 Fetch organization ID from users collection
+            const userRef = dbRef(database, `users/${this.userId}`);
+            const snapshot = await get(userRef);
+
+            if (snapshot.exists()) {
+              this.orgId = snapshot.val().organizationId; // ✅ Correct organization ID
+              console.log("Fetched Organization ID:", this.orgId);
+              resolve(this.orgId);
+            } else {
+              console.error("User data not found");
+              reject("User data not found");
+            }
+          } catch (error) {
+            console.error("Error fetching organization ID:", error);
+            reject(error);
+          }
+        });
+      });
+    },
     updatePricing() {
       if (this.monthlyActive) {
-        this.plans[1].price = "EGP 1000 / month"; // Starter Plan
-        this.plans[2].price = "EGP 3000 / month"; // Pro Plan
+        this.plans[1].price = "EGP 1000 / month";
+        this.plans[2].price = "EGP 3000 / month";
       } else {
-        this.plans[1].price = "EGP 800 / year"; // Starter Plan (Annual)
-        this.plans[2].price = "EGP 2500 / year"; // Pro Plan (Annual)
+        this.plans[1].price = "EGP 10000 / year";
+        this.plans[2].price = "EGP 30000 / year";
       }
+    },
+     async selectPlan(plan) {
+    if (!this.orgId) {
+      alert("Organization ID not found.");
+      return;
     }
-  }
+
+    // ✅ Redirect to the Payment Page with plan details (but don't save it yet)
+    this.$router.push({
+      path: "/payment",
+      query: {
+        name: plan.name,
+        price: plan.price,
+        description: plan.description,
+        noOfQuizzes: plan.noOfQuizzes,
+      },
+    });
+  },
+  },
 };
 </script>

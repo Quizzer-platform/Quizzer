@@ -6,15 +6,15 @@
     </button>
 
     <!-- Title -->
-    <h1 class="text-xl font-bold text-gray-800 sm:text-center md:text-left flex-1">Organization Dashboard</h1>
+    <h1 class="text-xl font-bold text-gray-800 text-center flex-1">Organization Dashboard</h1>
 
     <!-- Organization Profile -->
-    <div class="relative flex items-center pr-2 sm:pr-4">
+    <!-- <div class="relative flex items-center pr-2 sm:pr-4">
       <button @click="toggleDropdown" class="flex items-center space-x-2">
         <img :src="user.avatar" alt="User Avatar" class="w-8 h-8 rounded-full border object-cover">
         <span class="hidden md:inline text-gray-700">{{ user.name }}</span>
       </button>
-    </div>
+    </div> -->
   </nav>
 </template>
 

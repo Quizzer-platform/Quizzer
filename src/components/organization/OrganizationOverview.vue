@@ -21,10 +21,9 @@
             </div>
         </div>
 
-        <!-- Right Image -->
-        <div class="mt-6 md:mt-0 flex justify-center md:justify-end w-full md:w-auto">
+        <div class="mt-6 md:mt-0 flex justify-center md:justify-end w-full md:w-auto md:flex-1">
             <img src="../../assets/AdminImg.svg" alt="Dashboard Illustration"
-                class="h-36 md:h-40 lg:h-44 xl:h-48 w-auto md:mr-6 lg:mr-10">
+                class="h-36 md:h-40 lg:h-44 xl:h-48 w-auto">
         </div>
     </div>
 </template>

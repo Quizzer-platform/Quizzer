@@ -26,19 +26,24 @@
             <div
               class="mt-4 sm:mt-6 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-8 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
                 @click="createQuiz">
                 CREATE QUIZ
               </button>
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-8 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
                 @click="viewQuiz">
                 VIEW / EDIT QUIZ
               </button>
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-6 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-8 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
                 @click="createCategory">
-               Create Category
+               CREATE CATEGORY
+              </button>
+              <button
+                class="bg-teal-900 hover:bg-teal-700 text-white px-8 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                @click="editCategory">
+               VIEW / EDIT CATEGORY
               </button>
             </div>
           </div>
@@ -58,14 +63,12 @@
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue';
 import AdminNavbar from '@/components/admin/AdminNavBar.vue';
-// import DashboardOverview from '@/components/admin/AdminOverview.vue';
 import QuizzesTable from '@/components/admin/AdminQuizList.vue';
 
 export default {
   components: {
     AdminSidebar,
     AdminNavbar,
-    // DashboardOverview,
     QuizzesTable,
   },
   data() {
@@ -85,12 +88,13 @@ export default {
     },
     viewQuiz() {
       this.$router.push('/admin/quizzes');
-      console.log('View Quiz');
     },
     createCategory(){
       this.$router.push('/admin/categorycreation');
-      console.log('Create Category');
-    }
+    },
+    editCategory(){
+      this.$router.push('/admin/categories');
+    },
   },
   mounted() {
     window.addEventListener('resize', this.handleResize);

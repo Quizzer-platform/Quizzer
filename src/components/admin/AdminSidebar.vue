@@ -55,6 +55,15 @@
             Quizzes
           </router-link>
         </li>
+        <li>
+          <router-link 
+            to="/admin/categories" 
+            class="block py-3 px-6 hover:bg-teal-600 transition"
+            active-class="bg-teal-700"
+          >
+            Categories
+          </router-link>
+        </li>
       </ul>
     </nav>
     <!-- <div class="absolute bottom-6 left-6 text-sm text-gray-300">

@@ -124,7 +124,7 @@ export default {
 
 <template>
     <Navbar />
-    <search class="" @search="updateSearchQuery" />
+    <search v-if="showCategories" class="" @search="updateSearchQuery" />
 
     <div class="flex justify-center">
         <!-- Loading State -->

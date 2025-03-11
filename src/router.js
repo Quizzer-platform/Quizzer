@@ -36,6 +36,7 @@ import UserOrganization from './components/user/UserOrganization.vue';
 import UserSubscription from './components/user/UserSubscription.vue';
 import NotifyUser from './components/organization/NotifyUser.vue';
 import EnterCode from './components/home/EnterCode.vue';
+import AdminCategoryEditDelete from './components/admin/AdminCategoryEditDelete.vue'
 
 // import CardPayment from './components/payment/CardPayment.vue'
 
@@ -64,6 +65,7 @@ const routes = [
   { path: '/leaderboard', component: Leaderboard },
   { path: '/categories', component: CategoryView },
   { path: '/admin/categorycreation', component: CategoryCreation ,meta: { requiresAuth: true } },
+  { path: '/admin/categories', component: AdminCategoryEditDelete ,meta: { requiresAuth: true } },
   { path: '/notifyuser', component: NotifyUser },
   { path: '/quizLevels', component: Quizlevels },
   { path: '/contactus', component: ContactUs },

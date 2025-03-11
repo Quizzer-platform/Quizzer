@@ -121,159 +121,112 @@ export default {
 <!-- 
 <style scoped></style>  -->
 
-<!-- <template>
-   
-   <Navbar />
-    <search />
-   
-    <div class="flex justify-center">
-        <CategriesCards :categories="categories" @view-quizzes="viewCategoryQuizzes" />
-       
-           
-    <QuizesCards v-if="selectedCategoryQuizzes.length" :cards="selectedCategoryQuizzes" :categoryTitle="selectedCategoryTitle" />
 
-        
-    </div>
-    <Footer />
-
-</template>
-
-<script>
-import Navbar from "../components/layout/Navbar.vue";
-import Footer from "../components/layout/Footer.vue";
-import CategriesCards from "../components/home/CategriesCards.vue";
-import search from "../components/layout/Searchbar.vue";
-import QuizesCards from "../components/home/QuizzesCards.vue";
-
-export default {
-    components: { CategriesCards, QuizesCards,CategriesCards,
-        Navbar,
-        Footer,
-        search },
-    data() {
-        return {
-            categories: [],
-            selectedCategoryQuizzes: [],
-            selectedCategoryTitle: '',
-            loading: true,
-            loadingQuizzes: false
-        };
-    },
-    mounted() {
-        this.loadCategories();
-    },
-    methods: {
-        loadCategories() {
-            fetch("https://quizzer-platform-default-rtdb.firebaseio.com/categories.json")
-                .then(response => response.json())
-                .then(data => {
-                    this.categories = data ? Object.keys(data).map(id => ({ id,icon: data[id].icon, title: data[id].title, description: data[id].description })) : [];
-                })
-                .catch(error => console.error("Error loading categories:", error))
-                .finally(() => this.loading = false);
-        },
-        viewCategoryQuizzes(categoryId) {
-            this.loadingQuizzes = true;
-            fetch("https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json")
-                .then(response => response.json())
-                .then(data => {
-                    this.selectedCategoryQuizzes = data ? Object.keys(data)
-                        .filter(id => data[id].category === categoryId)
-                        .map(id => ({ id, ...data[id] })) : [];
-                    this.selectedCategoryTitle = this.categories.find(cat => cat.id === categoryId)?.title || '';
-                })
-                .catch(error => console.error("Error loading quizzes:", error))
-                .finally(() => this.loadingQuizzes = false);
-        }
-    }
-};
-</script>
-
-<style scoped></style> -->
-<template>
+  <template>
     <Navbar />
     <search />
-    
+  
     <div class="flex justify-center">
-        <!-- Loading State -->
-        <div v-if="loading || loadingQuizzes" class="text-center py-8">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
-            <p class="text-gray-600 mt-4">{{ loading ? 'Loading categories...' : 'Loading quizzes...' }}</p>
+      <!-- Loading State -->
+      <div v-if="loading || loadingQuizzes" class="text-center py-8">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
+        <p class="text-gray-600 mt-4">{{ loading ? 'Loading categories...' : 'Loading quizzes...' }}</p>
+      </div>
+  
+      <!-- Categories View -->
+      <CategriesCards
+        v-else-if="showCategories"
+        :categories="categories"
+        @view-quizzes="viewCategoryQuizzes"
+      />
+  
+      <!-- Quizzes View -->
+      <div v-else>
+        <button
+          @click="showCategories = true"
+          class="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-teal-900 transition"
+        >
+          Back to Categories
+        </button>
+        <QuizesCards
+          v-if="selectedCategoryQuizzes.length"
+          :cards="selectedCategoryQuizzes"
+          :categoryTitle="selectedCategoryTitle"
+        />
+        <div v-else-if="!loadingQuizzes" class="text-center py-8">
+          <p class="text-gray-600">No quizzes found in this category.</p>
         </div>
-
-        <!-- Categories View -->
-        <CategriesCards v-else-if="showCategories" 
-            :categories="categories" 
-            @view-quizzes="viewCategoryQuizzes" />
-        
-        <!-- Quizzes View -->
-        <div v-else>
-            <button @click="showCategories = true" 
-                class="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-teal-900 transition">
-                Back to Categories
-            </button>
-            <QuizesCards v-if="selectedCategoryQuizzes.length" 
-                :cards="selectedCategoryQuizzes" 
-                :categoryTitle="selectedCategoryTitle" />
-            <div v-else-if="!loadingQuizzes" class="text-center py-8">
-                <p class="text-gray-600">No quizzes found in this category.</p>
-            </div>
-        </div>
+      </div>
     </div>
- 
+  
     <Footer />
- </template>
- 
- <script>
- import Navbar from "../components/layout/Navbar.vue";
- import Footer from "../components/layout/Footer.vue";
- import CategriesCards from "../components/home/CategriesCards.vue";
- import search from "../components/layout/Searchbar.vue";
- import QuizesCards from "../components/home/QuizzesCards.vue";
- 
- export default {
-     components: { CategriesCards, QuizesCards, Navbar, Footer, search },
-     data() {
-         return {
-             categories: [],
-             selectedCategoryQuizzes: [],
-             selectedCategoryTitle: '',
-             loading: true,
-             loadingQuizzes: false,
-             showCategories: true 
-         };
-     },
-     mounted() {
-         this.loadCategories();
-     },
-     methods: {
-         loadCategories() {
-             fetch("https://quizzer-platform-default-rtdb.firebaseio.com/categories.json")
-                 .then(response => response.json())
-                 .then(data => {
-                     this.categories = data ? Object.keys(data).map(id => ({ id, icon: data[id].icon, title: data[id].title, description: data[id].description })) : [];
-                 })
-                 .catch(error => console.error("Error loading categories:", error))
-                 .finally(() => this.loading = false);
-         },
-         viewCategoryQuizzes(categoryId) {
-             this.loadingQuizzes = true;
-             this.showCategories = false; 
- 
-             fetch("https://quizzer-platform-default-rtdb.firebaseio.com/quizData.json")
-                 .then(response => response.json())
-                 .then(data => {
-                     this.selectedCategoryQuizzes = data ? Object.keys(data)
-                         .filter(id => data[id].category === categoryId)
-                         .map(id => ({ id, ...data[id] })) : [];
-                     this.selectedCategoryTitle = this.categories.find(cat => cat.id === categoryId)?.title || '';
-                 })
-                 .catch(error => console.error("Error loading quizzes:", error))
-                 .finally(() => this.loadingQuizzes = false);
-         }
-     }
- };
- </script>
- 
- <style scoped></style>
- 
+  </template>
+  
+  <script>
+  import Navbar from "../components/layout/Navbar.vue";
+  import Footer from "../components/layout/Footer.vue";
+  import CategriesCards from "../components/home/CategriesCards.vue";
+  import search from "../components/layout/Searchbar.vue";
+  import QuizesCards from "../components/home/QuizzesCards.vue";
+  
+  export default {
+    components: { CategriesCards, QuizesCards, Navbar, Footer, search },
+    data() {
+      return {
+        categories: [],
+        selectedCategoryQuizzes: [],
+        selectedCategoryTitle: '',
+        loading: true,
+        loadingQuizzes: false,
+        showCategories: true
+      };
+    },
+    mounted() {
+      this.loadCategories();
+    },
+    methods: {
+      loadCategories() {
+        fetch("https://quizzer-platform-default-rtdb.firebaseio.com/categories.json")
+          .then(response => response.json())
+          .then(data => {
+            this.categories = data
+              ? Object.keys(data).map(id => ({
+                  id,
+                  icon: data[id].icon,
+                  title: data[id].title,
+                  description: data[id].description,
+                  quizzes: data[id].quizzes || [] // ✅ ضفنا quizzes هنا
+                }))
+              : [];
+          })
+          .catch(error => console.error("Error loading categories:", error))
+          .finally(() => (this.loading = false));
+      },
+  
+      viewCategoryQuizzes(categoryId) {
+        this.loadingQuizzes = true;
+        this.showCategories = false;
+  
+        const selectedCategory = this.categories.find(cat => cat.id === categoryId);
+        this.selectedCategoryTitle = selectedCategory?.title || '';
+  
+        fetch("https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json")
+          .then(response => response.json())
+          .then(data => {
+            if (data && selectedCategory?.quizzes?.length) {
+              this.selectedCategoryQuizzes = selectedCategory.quizzes
+                .map(qid => data[qid] ? { id: qid, ...data[qid] } : null)
+                .filter(q => q); // Remove nulls
+            } else {
+              this.selectedCategoryQuizzes = [];
+            }
+          })
+          .catch(error => console.error("Error loading quizzes:", error))
+          .finally(() => (this.loadingQuizzes = false));
+      }
+    }
+  };
+  </script>
+  
+  <style scoped></style>
+  

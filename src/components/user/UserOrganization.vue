@@ -42,7 +42,7 @@
                             <div class="text-4xl mb-4">🏢</div>
                             <h3 class="text-lg font-semibold mb-2">No Organizations Yet</h3>
                             <p class="text-gray-600 mb-4">Join an organization or create your own!</p>
-                            <p class="text-gray-600 mt-20 mb-4">See our free to take quizzes!</p>
+                            <p class="text-gray-600 mt-10 mb-4">See our free to take quizzes!</p>
                             <router-link to="/quizzes"
                                 class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors">
                                 Browse Quizzes

@@ -207,27 +207,30 @@ export default {
                         </div>
 
                         <div v-else-if="userQuizzes.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div v-for="quiz in userQuizzes" :key="quiz.id" class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                                <div class="flex items-center justify-between">
-                                    <div class="w-16 h-10 bg-teal-100 flex items-center justify-center">
-                                        {{ quiz.category }}
-                                    </div>
-                                    <p class="font-bold text-teal-700">Score: {{ quiz.score }}/{{ quiz.totalQuestions }}</p>
-                                </div>
-                                <p class="font-bold mt-2 truncate">{{ quiz.title }}</p>
-                                <p class="text-gray-500 mt-2 line-clamp-2">{{ quiz.description }}</p>
-                                <div class="mt-2 text-sm text-gray-600">
-                                    <p>Duration: {{ quiz.duration }} minutes</p>
-                                    <p>Questions: {{ quiz.totalQuestions }}</p>
-                                </div>
-                                <div class="flex justify-end mt-6">
-                                    <router-link :to="`/quiz/${quiz.id}/results`"
-                                        class="bg-teal-600 text-white p-2 rounded hover:bg-teal-700 transition-colors">
-                                        View Details
-                                    </router-link>
-                                </div>
-                            </div>
+                            <div v-for="quiz in userQuizzes" :key="quiz.quizId"
+        class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
+                {{ quiz.title }}            </span>
+            <span class="text-sm font-semibold text-gray-700">
+                {{ new Date(quiz.timestamp).toLocaleDateString() }}
+            </span>
+        </div>
+        <h3 class="font-bold text-sm text-gray-800 truncate">Describtion:   {{ quiz.category|| 'General' }}</h3> 
+        <p class="text-sm text-gray-600 mt-1">
+            Questions: {{ quiz.totalQuestions }}
+        </p>
+        <p class="mt-2 text-sm font-medium">
+            Score:
+            <span class="text-green-600 font-bold">
+                {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
+            </span>
+        </p>
+       
+    </div>
+                            
                         </div>
+                        
 
                         <div v-else class="text-center py-12">
                             <div class="text-6xl mb-4">📝</div>
@@ -244,7 +247,7 @@ export default {
         </div>
 
         <!-- Popup إذا كان quizzesToTake = 0 -->
-        <div v-if="quizzesToTake === 0" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div v-if="quizzesToTake === 0" class="fixed inset-0 bg-teal-600 bg-opacity-50 flex items-center justify-center">
             <div class="bg-white p-6 rounded-lg shadow-lg text-center">
                 <h2 class="text-xl font-bold text-red-600">Subscription Required</h2>
                 <p class="text-gray-700 mt-2">To take another exam, you need to subscribe.</p>
@@ -255,7 +258,6 @@ export default {
         </div>
     </div>
 </template>
-
 <script>
 import { ref as dbRef, get, onValue, off, update } from 'firebase/database';
 import { database } from '@/firebase';
@@ -272,7 +274,7 @@ export default {
             userQuizzes: [],
             userRank: 0,
             totalScore: 0,
-            quizzesToTake: 5, // افتراضي حتى يتم التحديث
+            quizzesToTake: 5,
             quizzesRef: null,
             listener: null,
             loading: true
@@ -298,14 +300,14 @@ export default {
                     this.quizzesToTake = userData.quizzesToTake || 0;
 
                     if (userData.attemptedQuizzes) {
-                        const detailedQuizzes = await Promise.all(
-                            userData.attemptedQuizzes.map(async (attempt) => {
-                                const quizDetails = await this.fetchQuizDetails(attempt.quizId);
-                                return quizDetails ? { ...quizDetails, id: attempt.quizId, score: attempt.quizScore } : null;
-                            })
-                        );
-
-                        this.userQuizzes = detailedQuizzes.filter(quiz => quiz !== null);
+                        this.userQuizzes = userData.attemptedQuizzes.slice(1).map((attempt) => ({
+                            quizId: attempt.quizId,
+                            title: attempt.title || 'Untitled',
+                            category: attempt.category || 'General',
+                            timestamp: attempt.timestamp || '',
+                            totalQuestions: attempt.totalQuestions || 0,
+                            quizScore: attempt.quizScore || 0
+                        }));
                     } else {
                         this.userQuizzes = [];
                     }
@@ -323,17 +325,6 @@ export default {
             this.quizzesRef = userRef;
         },
 
-        async fetchQuizDetails(quizId) {
-            try {
-                const quizRef = dbRef(database, `quizzes/${quizId}`);
-                const snapshot = await get(quizRef);
-                return snapshot.exists() ? snapshot.val() : null;
-            } catch (error) {
-                console.error("Error fetching quiz details:", error);
-                return null;
-            }
-        },
-
         async calculateUserRank() {
             const usersRef = dbRef(database, 'users');
             const usersSnapshot = await get(usersRef);
@@ -342,12 +333,15 @@ export default {
                 this.userRank = users.findIndex(user => user.uid === this.userId) + 1;
             }
         }
+    
     },
     mounted() {
-        this.fetchUserQuizzes();
+        if (this.userId) {
+            this.fetchUserQuizzes();
+        }
     },
     beforeUnmount() {
-        if (this.quizzesRef && this.listener) {
+        if (this.listener && this.quizzesRef) {
             off(this.quizzesRef, this.listener);
         }
     }

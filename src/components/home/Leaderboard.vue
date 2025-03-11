@@ -2,27 +2,27 @@
     <Navbar></Navbar>
     <div class="m-10">
         <h2 class="text-2xl font-semibold text-center">See where you are!</h2>
-        <p class="text-gray-500 text-center mb-5">Here is your Leaderboard</p>
+        <p class="text-gray-500 text-center mb-5">Quizzer Leaderboard</p>
 
-        <div v-if="loading" class="text-center py-8">
+        <div v-if="loading" class="text-center py-20 ">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
             <p class="text-gray-600 mt-4">Loading leaderboard...</p>
         </div>
 
         <div v-else>
             <!-- Top 3 -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center my-6">
-                <div v-if="topUsers[1]" class="bg-gray-200 p-4 rounded-lg shadow transform hover:scale-105 hover:bg-teal-100 transition-transform">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center my-10">
+                <div v-if="topUsers[1]" class="bg-gray-50 p-4 rounded-lg shadow transform hover:scale-105 hover:bg-teal-50 transition-transform">
                     <p class="text-lg font-semibold">🥈 {{ topUsers[1].name }} 
                         <span class="block text-teal-800">{{ topUsers[1].overallScore }}</span>
                     </p>
                 </div>
-                <div v-if="topUsers[0]" class="bg-gray-200 p-4 rounded-lg shadow transform hover:scale-105 hover:bg-teal-100 transition-transform">
+                <div v-if="topUsers[0]" class="bg-gray-50 p-4 rounded-lg shadow transform hover:scale-105 hover:bg-teal-50 transition-transform">
                     <p class="text-lg font-semibold">🥇 {{ topUsers[0].name }}
                         <span class="block text-teal-800">{{ topUsers[0].overallScore }}</span>
                     </p>
                 </div>
-                <div v-if="topUsers[2]" class="bg-gray-200 p-4 rounded-lg shadow transform hover:scale-105 hover:bg-teal-100 transition-transform">
+                <div v-if="topUsers[2]" class="bg-gray-50 p-4 rounded-lg shadow transform hover:scale-105 hover:bg-teal-50 transition-transform">
                     <p class="text-lg font-semibold">🥉 {{ topUsers[2].name }}
                         <span class="block text-teal-800">{{ topUsers[2].overallScore }}</span>
                     </p>
@@ -30,7 +30,7 @@
             </div>
 
             <!-- Leaderboard Table -->
-            <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <div class="overflow-x-auto bg-white shadow">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-teal-800 text-white">

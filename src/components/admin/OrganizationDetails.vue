@@ -25,15 +25,21 @@
         </div>
 
         <!-- Organization Info (Without Description) -->
-        <div v-else class="bg-teal-100 p-6 rounded-lg shadow-md flex items-center mt-4">
-          <img :src="selectedOrg.image || 'https://placehold.co/200x200/green/white'" 
+        <div v-else class="bg-teal-100 p-6 rounded-lg shadow-md  mt-4 flex   items-center justify-between flex-wrap">
+          <!-- <img :src="selectedOrg.image || 'https://placehold.co/200x200/green/white'" 
             alt="Organization Logo" 
-            class="w-40 h-40 rounded-full object-cover mr-6">
-          <div>
-            <h2 class="text-2xl font-bold">{{ selectedOrg.name }}</h2>
+            class="w-40 h-40 rounded-full object-cover mr-6"> -->
+          
+            <div  >
+            <div>
+              <h2 class="text-2xl font-bold">{{ selectedOrg.name }}</h2>
+            <p class="mt-2"><strong>ID:</strong> {{ selectedOrg.id || 0 }}</p>
+            </div>
             <p class="mt-2"><strong>Total Bundles:</strong> {{ selectedOrg.bundles || 0 }}</p>
-            <p><strong>Total Quizzes:</strong> {{ quizzes.length }}</p>
-          </div>
+              <p><strong>Total Quizzes:</strong> {{ quizzes.length }}</p></div>
+
+            
+          
         </div>
 
         <!-- Created Quizzes Table -->

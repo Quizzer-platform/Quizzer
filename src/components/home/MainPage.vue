@@ -1,21 +1,23 @@
 <template>
-    <section class="relative isolate overflow-hidden bg-gradient-to-b from-teal-50 to-white min-h-screen">
+    <Navbar />
+    <section class="py-8 px-6">
         <!-- Decorative background elements remain unchanged -->
-        <Navbar />
-        
-        <div class="container mx-auto px-4 sm:px-6 flex items-center justify-center min-h-[calc(100vh-64px)]">
+
+        <div class="container mx-auto px-4 sm:px-6 flex items-center justify-center mt-5">
             <div class="max-w-4xl mx-auto w-full text-center py-8 sm:py-12">
-                <span class="inline-block bg-gray-100 text-gray-900 border border-gray-300 text-sm px-4 py-1 rounded-full">
+                <span
+                    class="inline-block bg-teal-100 text-gray-900 border border-teal-300 text-sm px-6 py-1 my-2 rounded-full">
                     🚀 Measure Skills, Not Just Words
                 </span>
 
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-6 sm:mt-8">
-                    The <span class="bg-teal-200 px-2 rounded-lg">Ultimate</span> Quiz Platform
-                    <span class="block mt-2">for Smarter Hiring</span>
+                <h1 class="md:text-4xl text-2xl font-bold text-gray-900 mt-6 sm:mt-8">
+                    The <span class="bg-teal-200 px-3 py-2 rounded-lg">Ultimate</span> Quiz Platform
+                    <span class="block mt-4">for Smarter Hiring</span>
                 </h1>
 
                 <div class="text-gray-600 mt-4">
-                    <span class="block">Quizzer is more than a quiz platform—it's a gateway to skills, a tool for evaluation,</span>
+                    <span class="block">Quizzer is more than a quiz platform—it's a gateway to skills, a tool for
+                        evaluation,</span>
                     <span class="block mt-1">and a community that values knowledge.</span>
                 </div>
 
@@ -25,12 +27,12 @@
                 </div>
 
                 <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                    <router-link to="/organizationsignup" 
+                    <router-link to="/organizationsignup"
                         class="bg-teal-700 text-white px-6 py-2 rounded-lg shadow-lg hover:bg-teal-900 transition-colors duration-200">
                         For Employers and Recruiters
                     </router-link>
                     <router-link to="/usersignup"
-                        class="border text-gray-900 border-gray-300 px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200">
+                        class="border text-gray-900 border-gray-300 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-200">
                         For Job Seekers →
                     </router-link>
                 </div>
@@ -40,13 +42,13 @@
         <!-- Bottom decorative element remains unchanged -->
     </section>
 
-    <section class="py-8 px-6 text-center bg-white mt-15">
-        <div class="max-w-4xl mx-auto ">
+    <section class="py-8 px-6 text-center bg-white mt-10">
+        <div class="max-w-4xl mx-auto mt-2">
             <!-- Heading -->
             <h2 class="text-3xl font-bold text-gray-800">
                 What Sets our Quizzes Apart
             </h2>
-            <div class="text-gray-600 mt-2">
+            <div class="text-gray-600 my-4 max-w-xl mx-auto">
                 <p>Our platform connects job seekers to jobs based on their quiz results, helping employers find the
                     right talent and candidates prove their skills.</p>
             </div>
@@ -56,7 +58,8 @@
             </div>
         </div>
     </section>
-    <section class="py-8 px-6 text-center bg-white mt-15">
+
+    <section class="py-8 px-6 text-center bg-white mt-10">
         <div class="max-w-4xl mx-auto">
             <!-- Heading -->
             <h2 class="text-3xl font-bold text-gray-800">
@@ -70,12 +73,13 @@
             <!-- View All Button -->
             <!-- border text-gray-900 border-gray-300 px-6 py-2 rounded-lg hover:bg-teal-50 -->
             <button @click="$router.push('/categories')"
-                class="mt-8 border border-gray-300 px-6 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
+                class="mt-8 border border-gray-300 px-8 py-3 rounded-lg cursor-pointer hover:bg-gray-200">
                 View All →
             </button>
         </div>
     </section>
-    <section class="py-8 px-6 bg-white text-center mt-15 ">
+
+    <section class="py-8 px-6 bg-white text-center mt-10 ">
         <div class="max-w-4xl mx-auto">
             <!-- Heading -->
             <h2 class="text-3xl font-bold text-gray-800">
@@ -86,8 +90,7 @@
             <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                 <!-- Left Column -->
                 <div class="space-y-4">
-                    <!-- Expanded Question -->
-                    <details class="bg-white p-6 rounded-lg shadow-md text-left" open>
+                    <details class="bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50" open>
                         <summary class="flex items-start gap-3 cursor-pointer list-none">
                             <span class="text-xl text-teal-600">+</span>
                             <h3 class="font-semibold text-gray-800">
@@ -101,8 +104,7 @@
                         </p>
                     </details>
 
-                    <!-- Collapsed Question -->
-                    <details class="bg-white p-6 rounded-lg shadow-md text-left">
+                    <details class="bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50">
                         <summary class="flex items-start gap-3 cursor-pointer list-none">
                             <span class="text-xl text-teal-700">+</span>
                             <h3 class="font-semibold text-gray-800">
@@ -114,12 +116,9 @@
                             results help them assess your skills and suitability for the role. </p>
                     </details>
                 </div>
-
                 <!-- Right Column -->
                 <div class="space-y-4">
-
-
-                    <details class="bg-white p-6 rounded-lg shadow-md text-left">
+                    <details class="bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50">
                         <summary class="flex items-start gap-3 cursor-pointer list-none">
                             <span class="text-xl text-teal-700">+</span>
                             <h3 class="font-semibold text-gray-800">
@@ -132,7 +131,7 @@
                         </p>
                     </details>
 
-                    <details class="bg-white p-6 rounded-lg shadow-md text-left">
+                    <details class="bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50" open>
                         <summary class="flex items-start gap-3 cursor-pointer list-none">
                             <span class="text-xl text-teal-700">+</span>
                             <h3 class="font-semibold text-gray-800">
@@ -148,10 +147,11 @@
             </div>
         </div>
     </section>
-    <section class="py-16 px-6 bg-white text-center my-15">
+
+    <section class="py-8 px-6 bg-white text-center my-10">
         <div class="max-w-4xl mx-auto">
             <!-- Section Title -->
-            <p class="text-2xl text-teal-800 font-semibold">Testimonials</p>
+            <p class="text-2xl text-teal-800 font-bold my-2">Testimonials</p>
             <h2 class="text-3xl font-bold text-gray-800">
                 Hear From Happy Customers
             </h2>
@@ -159,19 +159,12 @@
             <!-- Testimonials Grid -->
             <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Testimonial 1 -->
-                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-start text-left">
-                    <div class="flex items-center space-x-4">
-                        <!-- User Image -->
-                        <img src="https://placehold.co/200x200/green/white" alt="User Photo"
-                            class="w-16 h-16 rounded-full border-4 border-teal-700" />
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col text-center hover:shadow-lg transition duration-300 hover:bg-teal-50 hover:scale-105">
+                    <div class="flex flex-col justify-center items-center space-x-4">
                         <!-- User Info -->
-                        <div>
+                        <div class="flex flex-col justify-center items-center">
                             <h3 class="font-semibold text-gray-800">Sarah Johnson</h3>
                             <p class="text-sm text-gray-500">Software Engineer</p>
-                            <!-- Stars -->
-                            <div class="text-yellow-500 text-lg">
-                                ⭐⭐⭐⭐⭐
-                            </div>
                         </div>
                     </div>
 
@@ -186,19 +179,12 @@
                 </div>
 
                 <!-- Testimonial 2 -->
-                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-start text-left">
-                    <div class="flex items-center space-x-4">
-                        <!-- User Image -->
-                        <img src="https://placehold.co/200x200/green/white" alt="User Photo"
-                            class="w-16 h-16 rounded-full border-4 border-teal-700" />
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col text-center hover:shadow-lg transition duration-300 hover:bg-teal-50 hover:scale-105">
+                    <div class="flex flex-col justify-center items-center space-x-4">
                         <!-- User Info -->
-                        <div>
+                        <div class="flex flex-col justify-center items-center">
                             <h3 class="font-semibold text-gray-800">Michael Brown</h3>
                             <p class="text-sm text-gray-500">HR Manager</p>
-                            <!-- Stars -->
-                            <div class="text-yellow-500 text-lg">
-                                ⭐⭐⭐⭐⭐
-                            </div>
                         </div>
                     </div>
 
@@ -213,19 +199,12 @@
                 </div>
 
                 <!-- Testimonial 3 -->
-                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-start text-left">
-                    <div class="flex items-center space-x-4">
-                        <!-- User Image -->
-                        <img src="https://placehold.co/200x200/green/white" alt="User Photo"
-                            class="w-16 h-16 rounded-full border-4 border-teal-700" />
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col text-center hover:shadow-lg transition duration-300 hover:bg-teal-50 hover:scale-105">
+                    <div class="flex flex-col justify-center items-center space-x-4">
                         <!-- User Info -->
-                        <div>
+                        <div class="flex flex-col justify-center items-center">
                             <h3 class="font-semibold text-gray-800">Emily Davis</h3>
                             <p class="text-sm text-gray-500">Data Analyst</p>
-                            <!-- Stars -->
-                            <div class="text-yellow-500 text-lg">
-                                ⭐⭐⭐⭐⭐
-                            </div>
                         </div>
                     </div>
 
@@ -241,6 +220,7 @@
             </div>
         </div>
     </section>
+
     <Footer />
 </template>
 <script>

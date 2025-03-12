@@ -22,7 +22,7 @@
           <SearchBar class="w-full sm:w-64" @search="updateSearchQuery" />
 
           <!-- Create Quiz Button -->
-          <button class="bg-teal-700 text-white px-2 sm:px-4 py-2 rounded-md hover:bg-teal-900 w-full sm:w-auto cursor-pointer transition-all"  @click="createQuiz">
+          <button class="bg-teal-700 text-white text-center px-2 sm:px-10 py-2 rounded-md hover:bg-teal-900 cursor-pointer transition-all"  @click="createQuiz">
             ➕ Create Quiz
           </button>
         </div>
@@ -57,7 +57,7 @@
       </div>
     </div>
     <!-- Subscription Modal -->
-<div v-if="showSubscriptionModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[999]">
+<div v-if="showSubscriptionModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
   <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4">
     <h2 class="text-xl font-bold text-red-600 mb-4">Subscription Required</h2>
     <p class="text-gray-700 mb-4">{{ subscriptionMessage }}</p>
@@ -208,11 +208,17 @@ export default {
     console.log(`Current quizzes: ${currentQuizzes}, Allowed: ${totalAllowed}`);
 
     // ❌ Prevent quiz creation if limit is reached
-    if (currentQuizzes >= totalAllowed) {
-      this.subscriptionMessage = `You've created ${currentQuizzes}/${totalAllowed} allowed quizzes. Upgrade your plan to add more.`;
-      this.showSubscriptionModal = true;
-      return;
-    }
+    if (totalAllowed === 0) {
+    this.subscriptionMessage = `You haven't subscribed to a plan yet. Please choose a plan to start creating quizzes.`;
+    this.showSubscriptionModal = true;
+    return;
+}
+
+if (currentQuizzes >= totalAllowed) {
+    this.subscriptionMessage = `You've created ${currentQuizzes}/${totalAllowed} allowed quizzes. Upgrade your plan to add more.`;
+    this.showSubscriptionModal = true;
+    return;
+}
 
     // ✅ Only navigate if within limit
     this.$router.push('/organization/createQuiz');

@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="fixed h-screen bg-teal-900 text-white w-64 transition-transform duration-300"
+    class="fixed h-screen bg-teal-900 text-white w-64 transition-transform duration-300 cursor-pointer"
     :class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }"
   >
     <button class="absolute top-4 right-4 md:hidden text-white text-2xl" @click="toggleSidebar">
@@ -53,6 +53,15 @@
             active-class="bg-teal-700"
           >
             Quizzes
+          </router-link>
+        </li>
+        <li>
+          <router-link 
+            to="/admin/categories" 
+            class="block py-3 px-6 hover:bg-teal-600 transition"
+            active-class="bg-teal-700"
+          >
+            Categories
           </router-link>
         </li>
       </ul>

@@ -60,7 +60,7 @@
     </section>
 
     <section class="py-8 px-6 text-center bg-white mt-10">
-        <div class="max-w-4xl mx-auto">
+        <div class=" mx-auto">
             <!-- Heading -->
             <h2 class="text-3xl font-bold text-gray-800">
                 Explore Our Quiz Categories

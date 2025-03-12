@@ -1,190 +1,127 @@
-<!-- <template>
-  <div class="container">
-    <h2>Send Email</h2>
-    <form @submit.prevent="sendEmail">
-      <input type="text" v-model="userName" placeholder="Your Name" required />
-      <input type="email" v-model="userEmail" placeholder="Your Email" required />
-      <textarea v-model="message" placeholder="Your Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-    <p v-if="successMessage" class="success">{{ successMessage }}</p>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-  </div>
-</template>
-
-<script>
-import emailjs from "emailjs-com";
-
-export default {
-  data() {
-    return {
-      userName: "",
-      userEmail: "",
-      message: "",
-      successMessage: "",
-      errorMessage: ""
-    };
-  },
-  methods: {
-    sendEmail() {
-      const serviceID = "your_service_id";  // حطي ID الخاص بالخدمة اللي سجلتيها
-      const templateID = "your_template_id"; // حطي ID الخاص بالتيمبلت
-      const publicKey = "your_public_key"; // حطي مفتاح API الخاص بيكِ
-
-      const templateParams = {
-        from_name: this.userName,
-        from_email: this.userEmail,
-        message: this.message
-      };
-
-      emailjs.send(serviceID, templateID, templateParams, publicKey)
-        .then((response) => {
-          console.log("Email sent successfully!", response);
-          this.successMessage = "Email sent successfully!";
-          this.clearForm();
-        })
-        .catch((error) => {
-          console.error("Error sending email:", error);
-          this.errorMessage = "Failed to send email. Please try again.";
-        });
-    },
-    clearForm() {
-      this.userName = "";
-      this.userEmail = "";
-      this.message = "";
-    }
-  }
-};
-</script>
-
-<style scoped>
-.container {
-  max-width: 400px;
-  margin: auto;
-  text-align: center;
-}
-input, textarea {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 8px;
-}
-button {
-  background-color: teal;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-}
-.success {
-  color: green;
-}
-.error {
-  color: red;
-}
-</style> -->
 <template>
-<div class="flex justify-center items-center min-h-screen">
-  <div class="w-full lg:w-1/2 xl:w-5/12 lg:me-25 text-center">
-    <div class="relative p-8 bg-white rounded-lg shadow-lg dark:bg-dark-2 sm:p-12">
-      <form @submit.prevent="sendEmail">
-        <div class="mb-6">
-          <input
-            v-model="OrganizationName"
-            type="text"
-            placeholder="Organization Name"
-            class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none"
-          />
+    <div class="container mx-auto p-6 max-w-4xl">
+        <div class="flex items-center mb-6">
+            <button 
+                @click="$router.push('/organization')" 
+                class="flex items-center gap-2 text-white bg-teal-600 hover:bg-teal-700 
+                       px-4 py-2 rounded-lg shadow-lg transition-all duration-300"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span class="text-lg font-medium">Back to Dashboard</span>
+            </button>
         </div>
-        <div class="mb-6">
-          <input
-            v-model="name"
-            type="text"
-            placeholder="User Name"
-            class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none"
-          />
+
+        <form @submit.prevent="sendEmail" class="space-y-6 bg-white p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-gray-800 text-center">Contact User</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Organization Name</label>
+                    <input v-model="OrganizationName" type="text" placeholder="Organization Name"
+                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
+                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">User Name</label>
+                    <input v-model="name" type="text" placeholder="User Name"
+                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
+                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">User Email</label>
+                    <input v-model="email" type="email" placeholder="User Email"
+                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
+                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Quiz Code</label>
+                    <input v-model="quizcode" type="text" placeholder="Quiz Code"
+                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
+                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Website Link</label>
+                    <input v-model="message" type="text" placeholder="Website Link"
+                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
+                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <button type="submit"
+                    class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-500 
+                           transition-all duration-300 shadow-md">
+                    Send Message
+                </button>
+            </div>
+        </form>
+
+        <!-- Confirmation Popup -->
+        <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
+            <div class="bg-white p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">✅ Message Sent!</h2>
+                <p class="text-gray-600 mb-4">Your message has been successfully sent to the user.</p>
+                <button @click="redirectToDashboard"
+                    class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300">
+                    OK
+                </button>
+            </div>
         </div>
-        <div class="mb-6">
-          <input
-            v-model="email"
-            type="email"
-            placeholder="User Email"
-            class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none"
-          />
-        </div>
-        <div class="mb-6">
-          <input
-            v-model="quizcode"
-            type="text"
-            placeholder="Quiz Code"
-            class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none"
-          />
-        </div>
-        <div class="mb-6">
-          <input
-            v-model="message"
-            type="text"
-            placeholder="Website Link"
-            class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none"
-          ></input>
-        </div>
-        <div>
-          <button
-            type="submit"
-            class="w-full p-3 text-white transition border rounded border-primary text-tear-900 bg-teal-900 hover:bg-teal-700 cursor-pointer"
-          >
-            Send Message
-          </button>   
-        </div>
-      </form>             
     </div>
-  </div>
-</div>
-
-
 </template>
 
 <script>
 import emailjs from "@emailjs/browser";
 
 export default {
-data() {
-return {
-OrganizationName:"",
-name: "",
-email: "",
-quizcode: "",
-message: "",
-};
-},
+    data() {
+        return {
+            OrganizationName: "",
+            name: "",
+            email: "",
+            quizcode: "",
+            message: "",
+            showPopup: false, // Controls popup visibility
+        };
+    },
+    methods: {
+        async sendEmail() {
+            try {
+                const serviceID = "service_vfqov6e";
+                const templateID = "template_jple4br";
+                const publicKey = "wQb6IC1fjIt3_eUVs";
 
-methods: {
-async sendEmail() {
-try {
-const serviceID = "service_vfqov6e";
-const templateID = "template_jple4br";
-const publicKey = "wQb6IC1fjIt3_eUVs";
-
-const templateParams = {
-  OrganizationName:this.OrganizationName,
- to_name: this.name,
-  user_email: this.email,
-  quizcode: this.quizcode,
-  message: this.message,
-};
-
-await emailjs.send(serviceID, templateID, templateParams, publicKey);
-alert("Your message has been sent successfully!");
-this.OrganizationName="";
-
-this.name = "";
-this.email = "";
-this.quizcode = "";
-this.message = "";
-} catch (error) {
-  console.error("Error while sending:", error);
-  alert("An error occurred while sending your message.");
-}
-},
-},
+                const templateParams = {
+                    OrganizationName: this.OrganizationName,
+                    to_name: this.name,
+                    user_email: this.email,
+                    quizcode: this.quizcode,
+                    message: this.message,
+              };
+               // Show success popup
+                this.showPopup = true;
+                await emailjs.send(serviceID, templateID, templateParams, publicKey);
+                // Reset form fields
+                this.OrganizationName = "";
+                this.name = "";
+                this.email = "";
+                this.quizcode = "";
+                this.message = "";
+            } catch (error) {
+                console.error("Error while sending:", error);
+                alert("An error occurred while sending your message.");
+            }
+        },
+        redirectToDashboard() {
+            this.showPopup = false;
+            this.$router.push('/organization');
+        }
+    }
 };
 </script>

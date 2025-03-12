@@ -21,7 +21,7 @@
                 quiz.name,
                 quiz.questions,
                 quiz.organization
-            ])" :showActions="true" @view-details="editQuiz" />
+            ])" :showActions="false" @view-details="editQuiz" />
     </div>
 </template>
 

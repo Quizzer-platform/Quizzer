@@ -10,18 +10,6 @@
 </Navbar>
     <div class="max-w-2xl mx-auto p-6 shadow-md rounded-lg mt-6">
     <h2 class="text-xl font-semibold mb-4">Payment</h2>
-    <!-- <div class="mb-4">
-      <label class="flex items-center space-x-2">
-        <input type="radio" v-model="selectedMethod" value="card" /> Card
-      </label>
-      <label class="flex items-center space-x-2">
-        <input type="radio" v-model="selectedMethod" value="bank" /> Bank
-      </label>
-      <label class="flex items-center space-x-2">
-        <input type="radio" v-model="selectedMethod" value="transfer" /> Transfer
-      </label>
-    </div> -->
-    
     <CardPayment v-if="selectedMethod === 'card'" :plan="selectedPlan" />
     <BankPayment v-if="selectedMethod === 'bank'" />
     <TransferPayment v-if="selectedMethod === 'transfer'" />

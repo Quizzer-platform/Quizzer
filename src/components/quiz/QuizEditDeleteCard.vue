@@ -3,7 +3,7 @@
         <!-- Quiz Icon -->
         <div class="flex justify-left relative">
             <div class=" rounded-lg flex items-center justify-center">
-                <img :src="quiz.icon || '../src/assets/icon.png'" alt="Quiz Icon" class="w-10 h-10">
+                <img :src="quizIcon" alt="Quiz Icon" class="w-10 h-10">
             </div>
             <!-- Edit & Delete Buttons -->
             <div class="absolute top-0 right-0 flex gap-2">
@@ -28,9 +28,18 @@
 </template>
 
 <script>
+import defaultIcon from '@/assets/icon.png';
+import categoryIcon from '@/assets/categoryIcon.png';
+
 export default {
     props: {
         quiz: Object,
+    },
+    computed: {
+        quizIcon() {
+            // Use category icon if specified, otherwise default quiz icon
+            return this.quiz.quizType === 'category' ? categoryIcon : defaultIcon;
+        }
     }
 };
 </script>

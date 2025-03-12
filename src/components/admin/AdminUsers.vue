@@ -1,10 +1,7 @@
 <template>
     <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->
-        <AdminSidebar :isOpen="isSidebarOpen" @toggleSidebar="toggleSidebar"
-            class="fixed z-50 md:fixed transition-transform duration-300"
-            :class="{ '-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen }" />
-
+        <AdminSidebar :isOpen="isSidebarOpen" @toggleSidebar="toggleSidebar" class="fixed md:fixed z-50" />
         <!-- Main Content -->
         <div class="flex-1 flex flex-col md:ml-64">
             <!-- Navbar -->
@@ -24,8 +21,14 @@
                     </div>
 
                     <!-- Table (Hidden While Loading) -->
-                    <TableStructure v-else :headers="['User Id', 'User Name', 'Role']"
-                        :rows="filteredUsers.map(user => [user.id, user.name, user.role])" :showActions="false" />
+                    <TableStructure 
+                        v-else 
+                        :headers="['User Id', 'User Name', 'Role']"
+                        :rows="filteredUsers.map(user => [user.id, user.name, user.role])"
+                        :showActions="true"
+                        @view-details="goToUserDetails"
+                        class="w-full max-w-5xl mx-auto" 
+                    />
                 </div>
             </main>
         </div>

@@ -1,21 +1,34 @@
 <template>
   <main class="flex-1 p-6">
     <hr class="border-gray-400 mb-1 w-40 sm:w-60 md:w-80 lg:w-96 xl:w-170 mx-auto" />
-    
-    <!-- Subscriptions Table -->
+
+    <!-- Subscriptions Header -->
     <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
       <h3 class="text-xl font-semibold text-teal-900 sm:pl-5">Subscriptions</h3>
       <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-150" @search="updateSearchQuery" />
     </div>
-    
-    <TableStructure 
-  :headers="['Name of Plan', 'Quizzes', 'Price', 'Description']" 
-  :rows="filteredSubscriptions
-    .filter(s => s.name && s.maxQuizzes && s.price && s.description) 
-    .map(s => [s.name, s.maxQuizzes, s.price, s.description])"
-  :showActions="false"
-/>
 
+    <!-- Show message if no subscriptions exist -->
+    <!-- No Subscriptions Message -->
+<div v-if="subscriptions.length === 0" class="text-center bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+  <p class="text-lg font-semibold">You have no subscriptions yet.</p>
+  <p class="text-sm">
+    Explore our 
+    <router-link to="/pricing" class="text-teal-600 font-semibold hover:underline">
+      plans
+    </router-link> 
+    to get started!
+  </p>
+</div>
+    <!-- Subscriptions Table -->
+    <TableStructure 
+      v-else
+      :headers="['Name of Plan', 'Quizzes', 'Price', 'Description']" 
+      :rows="filteredSubscriptions
+        .filter(s => s.name && s.maxQuizzes && s.price && s.description) 
+        .map(s => [s.name, s.maxQuizzes, s.price, s.description])"
+      :showActions="false"
+    />
   </main>
 </template>
 

@@ -12,38 +12,35 @@
       <!-- Main Dashboard Content -->
       <main class="flex-1 p-4">
         <div
-          class="bg-white rounded-lg shadow-md mt-6 mx-4 md:mx-6 p-6 sm:p-8 lg:p-10 flex flex-col md:flex-row items-center h-auto lg:h-60">
+          class="bg-white rounded-lg shadow-md mt-6 mx-auto md:mx-6 p-8 sm:p-10 lg:p-12 flex flex-col md:flex-row items-center lg:h-auto">
           <!-- Left Content -->
           <div class="max-w-2xl px-4 md:px-6 lg:px-10 text-center md:text-left">
-            <h2
-              class="text-2xl sm:text-3xl font-bold text-teal-900 mb-3 sm:mb-4">
+            <h2 class="text-2xl sm:text-3xl font-bold text-teal-900 mb-4">
               Time to Manage Your Quizzes!
             </h2>
-            <p class="text-gray-600 mb-3 sm:mb-4 leading-relaxed">
-              ay motivation Lorem ipsum dolor sit amet, consectetur adipiscing
-              elit, sed do eiusmodadipiscing elit, sed do eiusmod.
+            <p class="text-gray-600 mb-4 leading-relaxed">
+              Empower learners and challenge minds! Effortlessly create and manage quizzes to boost engagement, track progress, and make learning interactive. Start shaping knowledge today!
             </p>
-            <div
-              class="mt-4 sm:mt-6 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-8 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md"
                 @click="createQuiz">
                 CREATE QUIZ
               </button>
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-8 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md"
                 @click="viewQuiz">
                 VIEW / EDIT QUIZ
               </button>
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-8 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md"
                 @click="createCategory">
-               CREATE CATEGORY
+                CREATE CATEGORY
               </button>
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-8 sm:px-8 py-2 rounded-md shadow-md cursor-pointer"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md"
                 @click="editCategory">
-               VIEW / EDIT CATEGORY
+                VIEW / EDIT CATEGORY
               </button>
             </div>
           </div>
@@ -52,7 +49,7 @@
           <div class="mt-6 md:mt-0 flex justify-center md:justify-end w-full md:w-auto md:flex-1">
             <img src="../../assets/AdminImg.svg" alt="Dashboard Illustration"
                 class="h-36 md:h-40 lg:h-44 xl:h-48 w-auto">
-        </div>
+          </div>
         </div>
         <QuizzesTable />
       </main>

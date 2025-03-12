@@ -1,7 +1,7 @@
 <template>
   <nav class="bg-white shadow-md p-4 flex justify-between items-center w-full max-w-full">
     <!-- Sidebar Toggle (Only on Small Screens) -->
-    <button class="md:hidden text-2xl text-gray-700" @click="$emit('toggleSidebar')">
+    <button class="md:hidden text-2xl text-gray-700 cursor-pointer" @click="$emit('toggleSidebar')">
       ☰
     </button>
     <!-- Title -->

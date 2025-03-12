@@ -5,8 +5,7 @@
         <div class="max-w-2xl px-4 md:px-6 lg:px-10 text-center md:text-left">
             <h2 class="text-2xl sm:text-3xl font-bold text-teal-900 mb-3 sm:mb-4">Time to Manage Your Quizzes!</h2>
             <p class="text-gray-600 mb-3 sm:mb-4 leading-relaxed">
-                ay motivation Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmodadipiscing elit, sed do eiusmod.
+                Empower learners and challenge minds! Effortlessly create and manage quizzes to boost engagement, track progress, and make learning interactive. Start shaping knowledge today!
             </p>
             <div class="mt-4 sm:mt-6 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                 <button

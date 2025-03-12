@@ -5,22 +5,22 @@
                 <h1 class="text-xl font-extrabold text-teal-700">Quizzer</h1>
                 <ul class="hidden md:flex space-x-4">
                     <li>
-                        <router-link to="/" class="hover:text-teal-600 ">Home</router-link>
+                        <router-link to="/" class="hover:text-teal-600 " active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Home</router-link>
                     </li>
                     <li>
-                        <router-link to="/categories" class="hover:text-teal-600 ">Categories</router-link>
+                        <router-link to="/categories" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Categories</router-link>
                     </li>
                     <li>
-                        <router-link to="/quizzes" class="hover:text-teal-600 ">Quizzes</router-link>
+                        <router-link to="/quizzes" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Quizzes</router-link>
                     </li>
                     <li>
-                        <router-link to="/leaderboard" class="hover:text-teal-600 ">Leaderboard</router-link>
+                        <router-link to="/leaderboard" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Leaderboard</router-link>
                     </li>
                     <li>
-                        <router-link to="/contactus" class="hover:text-teal-600 ">Contact Us</router-link>
+                        <router-link to="/contactus" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Contact Us</router-link>
                     </li>
                     <li>
-                        <router-link to="/pricing" class="hover:text-teal-600 ">Pricing</router-link>
+                        <router-link to="/pricing" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Pricing</router-link>
                     </li>
                     <li v-if="!isAuthenticated" class="ms-20">
                         <button class="mx-2 hover:text-teal-600"><router-link to="/login">Login</router-link></button>
@@ -28,7 +28,7 @@
                                 to="/usersignup">Signup</router-link></button>
                     </li>
                     <li v-if="isAuthenticated">
-                        <router-link :to="dashboardLink" class="hover:text-teal-600">{{ this.user.role === "user" ?
+                        <router-link :to="dashboardLink" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 ">{{ this.user.role === "user" ?
                             "Profile" : "Dashboard" }}</router-link>
                     </li>
                 </ul>
@@ -53,25 +53,25 @@
         <div v-if="mobileMenuOpen" class="md:hidden flex flex-col items-center space-y-4 pb-4 bg-white">
             <ul class="space-x-6 flex flex-col gap-y-2">
                 <li>
-                    <router-link to="/" class="hover:text-teal-600">Home</router-link>
+                    <router-link to="/" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Home</router-link>
                 </li>
                 <li>
-                    <router-link to="/categories" class="hover:text-teal-600">Categories</router-link>
+                    <router-link to="/categories" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Categories</router-link>
                 </li>
                 <li>
-                    <router-link to="/quizzes" class="hover:text-teal-600">Quizzes</router-link>
+                    <router-link to="/quizzes" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Quizzes</router-link>
                 </li>
                 <li>
-                    <router-link to="/leaderboard" class="hover:text-teal-600">Leaderboard</router-link>
+                    <router-link to="/leaderboard" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Leaderboard</router-link>
                 </li>
                 <li>
-                    <router-link to="/contactus" class="hover:text-teal-600">Contact Us</router-link>
+                    <router-link to="/contactus" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Contact Us</router-link>
                 </li>
                 <li>
-                    <router-link to="/pricing" class="hover:text-teal-600">Pricing</router-link>
+                    <router-link to="/pricing" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 text-teal-600">Pricing</router-link>
                 </li>
                 <li v-if="isAuthenticated">
-                    <router-link :to="dashboardLink" class="hover:text-teal-600">{{ this.user.role === "user" ?
+                    <router-link :to="dashboardLink" class="hover:text-teal-600" active-class="border-b-2 border-teal-600 pb-1 ">{{ this.user.role === "user" ?
                         "Profile" :
                         "Dashboard" }}</router-link>
                 </li>

@@ -38,14 +38,26 @@
                             </option>
                         </select>
                     </div>
-                    <button class="w-full bg-teal-600 text-white py-2 rounded-lg cursor-pointer hover:bg-teal-800" :disabled="loading">
+                    <button class="w-full bg-teal-600 text-white py-2 rounded-lg cursor-pointer hover:bg-teal-800"
+                        :disabled="loading">
                         {{ loading ? 'Creating Account...' : 'Sign Up' }}
                     </button>
                     <p class="text-center mt-4 text-gray-600">
-                        Have an account? <router-link to="/login" class="font-semibold text-teal-600  hover:text-teal-800">Sign In</router-link>
+                        Have an account? <router-link to="/login"
+                            class="font-semibold text-teal-600  hover:text-teal-800">Sign In</router-link>
                     </p>
+                    <!-- Add this button after the existing form -->
+                    <div class="text-center mt-4">
+                        <button @click="handleGoogleSignIn"
+                            class="flex items-center justify-center w-full bg-white border-2 border-gray-300 p-2 rounded-lg hover:bg-gray-50 hover:cursor-pointer">
+                            <img src="https://www.google.com/favicon.ico" alt="Google" class="w-6 h-6 mr-2">
+                            Sign up with Google
+                        </button>
+                        <p class="text-[10px] text-red-500">note that if you signed in with google you will have guest account for now</p>
+                    </div>
                     <p class="text-center mt-4 text-gray-600">
-                        <router-link to="/organizationsignup" class="font-semibold text-teal-600  hover:text-teal-800">Signup your organization
+                        <router-link to="/organizationsignup"
+                            class="font-semibold text-teal-600  hover:text-teal-800">Sign up Your Organization
                         </router-link>
                     </p>
                 </form>
@@ -66,6 +78,7 @@ import { ref, set } from 'firebase/database';
 import { database } from '@/firebase';
 import router from '@/router';
 import store from '@/store';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 export default {
     components: {
@@ -175,7 +188,41 @@ export default {
             } finally {
                 this.loading = false;
             }
-        }
+        },
+        async handleGoogleSignIn(event) {
+            event.preventDefault(); // Prevent form submission
+            this.errors = {}; // Clear any existing errors
+            this.loading = true;
+            try {
+                const provider = new GoogleAuthProvider();
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+
+                // Prepare user data with the same structure
+                const userData = {
+                    name: user.displayName || '',
+                    email: user.email,
+                    phone: user.phoneNumber || '',
+                    organization: 'guest',
+                    role: 'user',
+                    createdAt: new Date().toISOString(),
+                    attemptedQuizzes: ['init'],
+                    overallScore: 0,
+                    quizzesToTake: 5,
+                };
+
+                // Save user data to database
+                await set(ref(database, `users/${user.uid}`), userData);
+                // Navigate to home page since Google users start as guests
+                router.push('/');
+
+            } catch (error) {
+                console.error("Google Sign-in error:", error);
+                this.errors.general = "Failed to sign in with Google. Please try again.";
+            } finally {
+                this.loading = false;
+            }
+        },
     }
 };
 </script>

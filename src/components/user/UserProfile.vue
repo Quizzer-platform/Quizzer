@@ -2,7 +2,7 @@
     <div class="flex flex-col min-h-screen bg-gray-100">
         <div class="flex flex-1 flex-col md:flex-row">
             <!-- Sidebar Toggle for Small Screens -->
-        <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
+            <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
 
             <!-- Main Content -->
             <main class="flex-1 p-6 md:ml-54">
@@ -27,29 +27,30 @@
                     <div class="flex-1">
                         <h2 class="text-xl font-bold">Recent Quizzes</h2>
                         <div v-if="userQuizzes.length > 0"
-    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-    <div v-for="quiz in userQuizzes" :key="quiz.quizId"
-        class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
-        <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
-                {{ quiz.title }}            </span>
-            <span class="text-sm font-semibold text-gray-700">
-                {{ new Date(quiz.timestamp).toLocaleDateString() }}
-            </span>
-        </div>
-        <h3 class="font-bold text-sm text-gray-800 truncate">Describtion:   {{ quiz.category|| 'General' }}</h3> 
-        <p class="text-sm text-gray-600 mt-1">
-            Questions: {{ quiz.totalQuestions }}
-        </p>
-        <p class="mt-2 text-sm font-medium">
-            Score:
-            <span class="text-green-600 font-bold">
-                {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
-            </span>
-        </p>
-       
-    </div>
-</div>
+                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                            <div v-for="quiz in userQuizzes" :key="quiz.quizId"
+                                class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
+                                        {{ quiz.title }} </span>
+                                    <span class="text-sm font-semibold text-gray-700">
+                                        {{ new Date(quiz.timestamp).toLocaleDateString() }}
+                                    </span>
+                                </div>
+                                <h3 class="font-bold text-sm text-gray-800 truncate">Describtion: {{ quiz.category ||
+                                    'General' }}</h3>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    Questions: {{ quiz.totalQuestions }}
+                                </p>
+                                <p class="mt-2 text-sm font-medium">
+                                    Score:
+                                    <span class="text-green-600 font-bold">
+                                        {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
+                                    </span>
+                                </p>
+
+                            </div>
+                        </div>
 
                         <div v-else class="mt-4 p-6 bg-white rounded-lg shadow text-center">
                             <div class="text-4xl mb-4">📚</div>
@@ -59,13 +60,13 @@
                                 class="inline-block bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-800 transition-colors">
                                 Browse Quizzes
                             </router-link>
-                        </div> 
+                        </div>
 
-                   
+
 
                         <!-- Badges Section -->
                         <h2 class="mt-7 text-xl font-bold">Badges</h2>
-                        <div v-if="userBadges.length > 0" class="flex flex-wrap justify-around gap-4 mt-4">
+                        <div v-if="userBadges.length > 0" class="flex flex-wrap justify-start gap-4 mt-4">
                             <div v-for="badge in userBadges" :key="badge.id"
                                 class="text-center p-4 bg-white rounded-lg shadow hover:shadow-lg transition-shadow w-full sm:w-48">
                                 <img :src="badge.imageUrl" :alt="badge.name"
@@ -82,26 +83,31 @@
                         </div>
 
                         <!-- Right Section - Recommended Quizzes -->
-                        <div class="w-full md:w-1/3 my-3">
+                        <div class="w-full my-3">
                             <h2 class="text-xl font-bold my-2">Recommended Quizzes</h2>
                             <div v-if="recommendedQuizzes.length > 0"
-                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4 mt-5">
-                                <router-link v-for="quiz in recommendedQuizzes" :key="quiz.id" :to="`/quiz/${quiz.id}`"
-                                    class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow flex items-center space-x-4">
-                                    <img :src="quiz.imageUrl" :alt="quiz.title"
-                                        class="w-16 h-16 rounded-full object-cover" />
-                                    <div>
-                                        <h3 class="font-semibold">{{ quiz.title }}</h3>
-                                        <p class="text-sm text-gray-600">{{ quiz.category }}</p>
-                                        <p class="text-xs text-teal-600">{{ quiz.questionsCount }} questions</p>
+                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                                <div v-for="quiz in recommendedQuizzes" :key="quiz.id"
+                                    class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
+                                            {{ quiz.title }}
+                                        </span>
                                     </div>
-                                </router-link>
+                                    <h3 class="font-bold text-sm text-gray-800 truncate">Description: {{ quiz.category }}</h3>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        Questions: {{ quiz.questionsCount }}
+                                    </p>
+                                    <router-link :to="`/quiz/${quiz.id}`"
+                                        class="mt-4 block text-center bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-800 transition-colors">
+                                        Take Quiz
+                                    </router-link>
+                                </div>
                             </div>
                             <div v-else class="mt-4 p-6 bg-white rounded-lg shadow text-center">
                                 <div class="text-4xl mb-4">🎯</div>
                                 <h3 class="text-lg font-semibold mb-2">No Recommendations Yet</h3>
-                                <p class="text-gray-600 mb-4">Complete more quizzes to get personalized recommendations!
-                                </p>
+                                <p class="text-gray-600 mb-4">Complete more quizzes to get personalized recommendations!</p>
                                 <router-link to="/quizzes"
                                     class="inline-block bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-800 transition-colors">
                                     Explore All Quizzes
@@ -116,7 +122,7 @@
 </template>
 
 <script>
-import { ref as dbRef, get, onValue, off } from 'firebase/database';
+import { ref as dbRef, get, onValue, off, update } from 'firebase/database';
 import { database } from '@/firebase';
 import { mapState } from 'vuex';
 import UserSidebar from './UserSidebar.vue';
@@ -161,84 +167,116 @@ export default {
             });
             this.listeners.push([userRef, listener]);
         },
-        // async fetchUserQuizzes() {
-        //     if (!this.userId) return;
+        async fetchUserQuizzes() {
+            if (!this.userId) return;
 
-        //     const quizzesRef = dbRef(database, `userQuizzes/${this.userId}`);
-        //     const listener = onValue(quizzesRef, (snapshot) => {
-        //         const quizzes = snapshot.val();
-        //         this.userQuizzes = quizzes ?
-        //             Object.values(quizzes)
-        //                 .sort((a, b) => b.timestamp - a.timestamp)
-        //                 .slice(0, 6) : [];
-        //     });
-        //     this.listeners.push([quizzesRef, listener]);
-        // },
-//         async fetchUserQuizzes() {
-//     if (!this.userId) return;
+            const quizzesRef = dbRef(database, `users/${this.userId}/attemptedQuizzes`);
+            const listener = onValue(quizzesRef, (snapshot) => {
+                const quizzes = snapshot.val();
+                this.userQuizzes = quizzes
+                    ? Object.values(quizzes)
+                        .map((q, index) => ({
+                            ...q,
+                            id: q.quizId || index,
+                            totalQuestions: q.totalQuestions || 10,
+                            title: q.title || "Quiz",
+                            category: q.category || "General"
+                        }))
+                        .sort((a, b) => a.timestamp - b.timestamp)
+                        .slice(1, 4)
+                    : [];
+            });
 
-//     const quizzesRef = dbRef(database, `users/${this.userId}/attemptedQuizzes`);
-//     const listener = onValue(quizzesRef, (snapshot) => {
-//         const quizzes = snapshot.val();
-//         this.userQuizzes = quizzes
-//             ? quizzes
-//                 .map((q, index) => ({
-//                     ...q,
-//                     id: index, // fallback ID
-//                     totalQuestions: q.totalQuestions || 10, 
-//                     title: q.title || "Quiz", // لو مش محفوظة، ممكن تستخدمي الكويز ID وتجيبي العنوان من مسار تاني
-//                     description: q.category|| "General"
-//                 }))
-//                 .sort((a, b) => b.timestamp - a.timestamp)
-//                 .slice(0, 6)
-//             : [];
-//     });
+            this.listeners.push([quizzesRef, listener]);
+        }
 
-//     this.listeners.push([quizzesRef, listener]);
-// }
-async fetchUserQuizzes() {
-    if (!this.userId) return;
-
-    const quizzesRef = dbRef(database, `users/${this.userId}/attemptedQuizzes`);
-    const listener = onValue(quizzesRef, (snapshot) => {
-        const quizzes = snapshot.val();
-        this.userQuizzes = quizzes
-            ? Object.values(quizzes)
-                .map((q, index) => ({
-                    ...q,
-                    id: q.quizId || index,
-                    totalQuestions: q.totalQuestions || 10,
-                    title: q.title || "Quiz",
-                    category: q.category || "General"
-                }))
-                .sort((a, b) => b.timestamp - a.timestamp) 
-                .slice(1, 4)
-            : [];
-    });
-
-    this.listeners.push([quizzesRef, listener]);
-}
-
-,
+        ,
         async fetchUserBadges() {
             if (!this.userId) return;
 
-            const badgesRef = dbRef(database, `userBadges/${this.userId}`);
-            const listener = onValue(badgesRef, (snapshot) => {
-                const badges = snapshot.val();
-                this.userBadges = badges ? Object.values(badges) : [];
+            const userRef = dbRef(database, `users/${this.userId}`);
+            const listener = onValue(userRef, async (snapshot) => {
+                const userData = snapshot.val();
+                const attemptedQuizzes = userData?.attemptedQuizzes || [];
+                const quizCount = attemptedQuizzes.length;
+                let badges = [];
+
+                // Junior Quizzer Badge
+                if (quizCount >= 4) {
+                    badges.push({
+                        id: 'junior-quizzer',
+                        name: 'Junior Quizzer',
+                        description: 'Completed 4 quizzes',
+                        imageUrl: '../src/assets/bagde1.PNG',
+                        borderColor: 'border-teal-400'
+                    });
+                }
+
+                // Expert Quizzer Badge
+                if (quizCount >= 8) {
+                    badges.push({
+                        id: 'expert-quizzer',
+                        name: 'Expert Quizzer',
+                        description: 'Completed 8 quizzes',
+                        imageUrl: '../src/assets/badge2.PNG',
+                        borderColor: 'border-teal-600'
+                    });
+                }
+
+                // Master Quizzer Badge
+                if (quizCount >= 12) {
+                    badges.push({
+                        id: 'master-quizzer',
+                        name: 'Master Quizzer',
+                        description: 'Completed 12 quizzes',
+                        imageUrl: '../src/assets/badge2.PNG',
+                        borderColor: 'border-teal-800'
+                    });
+                }
+
+                // Update badges in state
+                this.userBadges = badges;
+
+                // Store badges in database
+                const badgesRef = dbRef(database, `userBadges/${this.userId}`);
+                await update(badgesRef, badges.reduce((acc, badge) => {
+                    acc[badge.id] = badge;
+                    return acc;
+                }, {}));
             });
-            this.listeners.push([badgesRef, listener]);
+
+            this.listeners.push([userRef, listener]);
         },
         async fetchRecommendedQuizzes() {
+            if (!this.userId) return;
+
             try {
-                const allQuizzesRef = dbRef(database, 'quizzes');
-                const snapshot = await get(allQuizzesRef);
-                if (snapshot.exists()) {
-                    const allQuizzes = snapshot.val();
-                    this.recommendedQuizzes = Object.values(allQuizzes)
-                        .filter(quiz => !this.userQuizzes.find(uq => uq.quizId === quiz.id))
-                        .slice(0, 3);
+                const userRef = dbRef(database, `users/${this.userId}`);
+                const userSnapshot = await get(userRef);
+                const userData = userSnapshot.val();
+                const attemptedQuizzes = userData?.attemptedQuizzes || [];
+
+                // Only show recommendations if user has completed 4 or more quizzes
+                if (attemptedQuizzes.length >= 4) {
+                    const adminQuizzesRef = dbRef(database, 'adminQuizzes');
+                    const snapshot = await get(adminQuizzesRef);
+                    
+                    if (snapshot.exists()) {
+                        const allQuizzes = snapshot.val();
+                        this.recommendedQuizzes = Object.entries(allQuizzes)
+                            .map(([id, quiz]) => ({
+                                id,
+                                title: quiz.title,
+                                category: quiz.description || 'General',
+                                questionsCount: quiz.questions?.length || 0,
+                                imageUrl: quiz.imageUrl || '../src/assets/icon.png',
+                                createdAt: quiz.createdAt || Date.now()
+                            }))
+                            .sort((a, b) => b.createdAt - a.createdAt) // Sort by newest first
+                            .slice(0, 3); // Get last 3 quizzes
+                    }
+                } else {
+                    this.recommendedQuizzes = []; // Show no recommendations
                 }
             } catch (error) {
                 console.error('Error fetching recommended quizzes:', error);

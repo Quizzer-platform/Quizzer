@@ -22,11 +22,20 @@
                         </div>
                     </div>
                     <p v-if="errors.general" class="text-red-500 text-sm mb-4">{{ errors.general }}</p>
-                    <button class="w-full bg-teal-600 text-white py-2 rounded-lg cursor-pointer hover:bg-teal-800" :disabled="loading">
+                    <button class="w-full bg-teal-600 text-white py-2 rounded-lg cursor-pointer hover:bg-teal-800"
+                        :disabled="loading">
                         {{ loading ? 'Logging in...' : 'Login' }}
                     </button>
+                    <div class="text-center mt-4">
+                        <button @click="handleGoogleSignIn"
+                            class="flex items-center justify-center w-full bg-white border-2 border-gray-300 p-2 rounded-lg hover:bg-gray-50 hover:cursor-pointer">
+                            <img src="https://www.google.com/favicon.ico" alt="Google" class="w-6 h-6 mr-2">
+                            Sign in with Google
+                        </button>
+                    </div>
                     <p class="text-center mt-4 text-gray-600">
-                        Don't have an account? <router-link to="/usersignup" class="font-semibold text-teal-600  hover:text-teal-800"> Sign Up</router-link>
+                        Don't have an account? <router-link to="/usersignup"
+                            class="font-semibold text-teal-600  hover:text-teal-800"> Sign Up</router-link>
                     </p>
                 </form>
             </div>
@@ -42,7 +51,7 @@
 import imageUrl from "@/assets/img2PNG.PNG";
 import Navbar from "../layout/Navbar.vue";
 import { auth } from '@/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { ref, get, set } from 'firebase/database';  // Add 'set' to imports
 import { database } from '@/firebase';
 import router from '@/router';
@@ -167,6 +176,68 @@ export default {
                     this.errors.password = "Incorrect password";
                 } else {
                     this.errors.general = "Failed to login. Please try again";
+                }
+            } finally {
+                this.loading = false;
+            }
+        },
+        async handleGoogleSignIn(event) {
+            event.preventDefault();
+            this.errors = {};
+            this.loading = true;
+
+            try {
+                const provider = new GoogleAuthProvider();
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+
+                // Check if user exists in database
+                const userRef = ref(database, `users/${user.uid}`);
+                const userSnapshot = await get(userRef);
+
+                if (!userSnapshot.exists()) {
+                    // First time Google sign-in - redirect to signup
+                    this.errors.general = "Please sign up first using Google authentication";
+                    router.push('/usersignup');
+                    return;
+                }
+
+                // Existing user - proceed with login
+                const userData = userSnapshot.val();
+                const token = await user.getIdToken();
+
+                // Create complete user data object
+                const completeUserData = {
+                    ...userData,
+                    uid: user.uid
+                };
+
+                // Store user data and token
+                localStorage.setItem('user', JSON.stringify(completeUserData));
+                localStorage.setItem('token', token);
+                localStorage.setItem('isLoggedIn', 'true');
+
+                // Update Vuex store
+                store.commit('SET_USER', completeUserData);
+                store.commit('SET_AUTH_STATUS', true);
+
+                // Redirect based on role
+                if (userData.role === 'organization_admin') {
+                    router.push('/organization');
+                } else if (userData.role === 'admin') {
+                    router.push('/admin');
+                } else {
+                    router.push('/');
+                }
+
+            } catch (error) {
+                console.error("Google Sign-in error:", error);
+                if (error.code === 'auth/popup-closed-by-user') {
+                    this.errors.general = "Sign-in cancelled. Please try again.";
+                } else if (error.code === 'auth/network-request-failed') {
+                    this.errors.general = "Network error. Please check your connection.";
+                } else {
+                    this.errors.general = "Failed to sign in with Google. Please try again.";
                 }
             } finally {
                 this.loading = false;

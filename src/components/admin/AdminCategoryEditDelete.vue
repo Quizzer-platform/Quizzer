@@ -20,13 +20,20 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                    <QuizCard 
-                        v-for="category in filteredCategories" 
-                        :key="category.id" 
-                        :quiz="category" 
-                        @edit="editCategory(category)" 
-                        @delete="confirmDelete(category.id)" 
-                    />
+                    <!-- Update the QuizCard usage -->
+<QuizCard 
+  v-for="category in filteredCategories" 
+  :key="category.id" 
+  :quiz="{
+    id: category.id,
+    title: category.title,
+    description: category.description,
+    quizType: 'category' // This triggers category icon
+  }" 
+  @edit="editCategory(category)" 
+  @delete="confirmDelete(category.id)" 
+/>
+
                 </div>
 
                 <div v-if="!loading && filteredCategories.length === 0" 
@@ -58,6 +65,7 @@ import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavBar from "@/components/admin/AdminNavBar.vue";
 import QuizCard from "@/components/quiz/QuizEditDeleteCard.vue";
 import SearchBar from "@/components/layout/Searchbar.vue";
+import categoryIcon from '@/assets/categoryIcon.png';
 
 export default {
     components: { AdminSidebar, AdminNavBar, QuizCard, SearchBar },

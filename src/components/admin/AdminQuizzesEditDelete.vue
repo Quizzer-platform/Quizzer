@@ -26,7 +26,16 @@
         <h3 v-if="filteredAdminQuizzes.length" class="text-lg font-semibold text-gray-800 mt-6">Admin Created Quizzes</h3>
         <hr v-if="filteredAdminQuizzes.length" class="my-2 border-gray-300" />
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          <QuizCard v-for="quiz in filteredAdminQuizzes" :key="quiz.id" :quiz="quiz" @edit="editQuiz(quiz)" @delete="confirmDelete(quiz.id, 'admin')" />
+<QuizCard 
+  v-for="quiz in filteredAdminQuizzes" 
+  :key="quiz.id" 
+  :quiz="{
+    ...quiz,
+    icon: quiz.icon ||'@/assets/icon.png'
+  }" 
+  @edit="editQuiz(quiz)" 
+  @delete="confirmDelete(quiz.id, 'admin')" 
+/>
         </div>
 
         <!-- Organization Quizzes Section -->
@@ -118,6 +127,7 @@ computed: {
             id: key,
             ...adminData[key],
             createdBy: "admin",
+            icon: adminData[key].icon || '@/assets/icon.png',
           }));
         } else {
           this.adminQuizzes = [];

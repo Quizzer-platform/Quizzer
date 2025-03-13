@@ -6,7 +6,7 @@
         </button>
 
         <!-- Sidebar -->
-        <aside 
+        <aside
             class="fixed left-0 top-0 h-screen w-64 bg-teal-900 text-white p-6 flex flex-col transition-transform duration-300 md:w-50 md:translate-x-0"
             :class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }">
 
@@ -15,8 +15,10 @@
             </button>
 
             <div class="text-center mb-8">
-                <div class="w-16 h-16 mx-auto bg-gray-400 rounded-full flex items-center justify-center text-3xl overflow-hidden">
-                    <img v-if="userData?.photoURL" :src="userData.photoURL" :alt="userData?.name" class="w-full h-full object-cover">
+                <div
+                    class="w-16 h-16 mx-auto bg-gray-400 rounded-full flex items-center justify-center text-3xl overflow-hidden">
+                    <img v-if="userData?.photoURL" :src="userData.photoURL" :alt="userData?.name"
+                        class="w-full h-full object-cover">
                     <span v-else>👤</span>
                 </div>
                 <h3 class="mt-2 font-semibold">{{ userData?.name || 'User' }}</h3>
@@ -24,23 +26,23 @@
 
             <nav class="flex flex-col space-y-4">
                 <router-link to="/" class="block p-2 rounded transition-colors"
-                    :class="$route.path === '/' ? 'bg-teal-700 font-bold text-white' : 'text-gray-300 hover:bg-teal-700'">
+                    :class="$route.path === '/' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Home
                 </router-link>
                 <router-link to="/profile" class="block p-2 rounded transition-colors"
-                    :class="$route.path === '/profile' ? 'bg-teal-700 font-bold text-white' : 'text-gray-300 hover:bg-teal-700'">
+                    :class="$route.path === '/profile' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Profile
                 </router-link>
                 <router-link to="/profile/userQuizzes" class="block p-2 rounded transition-colors"
-                    :class="$route.path === '/profile/userQuizzes' ? 'bg-teal-700 font-bold text-white' : 'text-gray-300 hover:bg-teal-700'">
+                    :class="$route.path === '/profile/userQuizzes' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Quizzes and Rank
                 </router-link>
                 <router-link to="/profile/userOrg" class="block p-2 rounded transition-colors"
-                    :class="$route.path === '/profile/userOrg' ? 'bg-teal-700 font-bold text-white' : 'text-gray-300 hover:bg-teal-700'">
+                    :class="$route.path === '/profile/userOrg' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Your Organization
                 </router-link>
                 <router-link to="/profile/userSubscription" class="block p-2 rounded transition-colors"
-                    :class="$route.path === '/profile/userSubscription' ? 'bg-teal-700 font-bold text-white' : 'text-gray-300 hover:bg-teal-700'">
+                    :class="$route.path === '/profile/userSubscription' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Your Subscription
                 </router-link>
             </nav>

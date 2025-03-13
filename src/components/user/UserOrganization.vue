@@ -1,8 +1,7 @@
 <template>
-
     <div class="flex flex-col min-h-screen bg-gray-100">
         <div class="flex flex-1 flex-col md:flex-row">
-        <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
+            <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
 
             <!-- Main Content -->
             <div class="min-h-screen w-full bg-gray-100 md:ml-54">
@@ -99,7 +98,7 @@ export default {
             try {
                 const userRef = dbRef(database, `users/${this.userId}`);
                 this.orgsRef = userRef;
-                
+
                 this.listener = onValue(userRef, async (snapshot) => {
                     try {
                         this.userData = snapshot.val();
@@ -109,11 +108,11 @@ export default {
                             // First, get all organizations to find the matching one
                             const orgsRef = dbRef(database, 'organizations');
                             const orgsSnapshot = await get(orgsRef);
-                            
+
                             if (orgsSnapshot.exists()) {
                                 const orgsData = orgsSnapshot.val();
                                 // Find the organization where name matches user's organization
-                                const orgEntry = Object.entries(orgsData).find(([key, org]) => 
+                                const orgEntry = Object.entries(orgsData).find(([key, org]) =>
                                     org.name.toLowerCase() === this.userData.organization.toLowerCase()
                                 );
 

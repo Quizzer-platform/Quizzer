@@ -2,7 +2,7 @@
 
     <div class="flex flex-col min-h-screen bg-gray-100">
         <div class="flex flex-1 flex-col md:flex-row">
-        <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
+            <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
 
             <!-- Main Content -->
             <div class="min-h-screen w-full bg-gray-100 md:ml-54">
@@ -26,7 +26,8 @@
                                     </div>
                                     <div class="text-right">
                                         <p class="text-2xl font-bold text-teal-800">${{ subscription.price }}/mo</p>
-                                        <p class="text-sm text-gray-600">Next billing date: {{subscription.nextBillingDate }}</p>
+                                        <p class="text-sm text-gray-600">Next billing date:
+                                            {{ subscription.nextBillingDate }}</p>
                                     </div>
                                 </div>
 

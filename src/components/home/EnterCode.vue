@@ -1,22 +1,22 @@
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen bg-teal-600">
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-      <h2 class="text-xl font-semibold mb-4">Enter Quiz Code</h2>
-      
+  <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-2 text-center">Enter Quiz Code</h2>
+      <p class="text-sm text-gray-500 mb-6 text-center">Please enter the code provided to access the quiz.</p>
+
       <input 
         v-model="quizCode" 
         type="text" 
         placeholder="Enter quiz code..." 
-        class="border p-2 rounded-lg w-full mb-4"
+        class="w-full border border-gray-300 p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200"
       />
       
       <button 
         @click="updateURL" 
-        class="bg-teal-700 text-white px-4 py-2 rounded-lg hover:bg-teal-800 cursor-pointer"
+        class="mt-6 w-full bg-teal-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-teal-500 transition-all duration-300 shadow-md"
       >
-        OK
+        Submit
       </button>
-
     </div>
   </div>
 </template>
@@ -27,11 +27,6 @@ export default {
     return {
       quizCode: this.$route.params.code || "", 
     };
-  },
-  computed: {
-    currentUrl() {
-      return window.location.href;  
-    },
   },
   methods: {
     updateURL() {

@@ -1,12 +1,10 @@
 <template>
     <div class="container mx-auto p-6 max-w-4xl">
         <div class="flex items-center mb-6">
-            <button 
-                @click="$router.push('/admin')" 
-                class="flex items-center gap-2 text-white bg-teal-600 hover:bg-teal-700 
-                       px-4 py-2 rounded-lg shadow-lg transition-all duration-300"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+            <button @click="$router.push('/admin')" class="flex items-center gap-2 text-white bg-teal-600 hover:bg-teal-700 
+                       px-4 py-2 rounded-lg shadow-lg transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>
                 <span class="text-lg font-medium">Back to Dashboard</span>
@@ -23,37 +21,45 @@
                 <div>
                     <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
                     <input id="title" v-model.trim="quiz.title" type="text"
-                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                        required>
                 </div>
 
                 <div>
                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                     <textarea id="description" rows="4" v-model.trim="quiz.description"
-                        class="mt-2 p-3 w-full rounded-lg bg-gray-50 shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" required></textarea>
+                        class="mt-2 p-3 w-full rounded-lg bg-gray-50 shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                        required></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="duration" class="block text-sm font-medium text-gray-700">Duration (in minutes)</label>
+                        <label for="duration" class="block text-sm font-medium text-gray-700">Duration (in
+                            minutes)</label>
                         <input id="duration" v-model="quiz.duration" type="number"
-                            class="mt-2 p-3 w-full rounded-lg bg-gray-50 shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                            class="mt-2 p-3 w-full rounded-lg bg-gray-50 shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                            required>
                     </div>
                     <div>
-                        <label for="numberOfQuestions" class="block text-sm font-medium text-gray-700">Number of Questions</label>
+                        <label for="numberOfQuestions" class="block text-sm font-medium text-gray-700">Number of
+                            Questions</label>
                         <input id="numberOfQuestions" v-model="quiz.numberOfQuestions" type="number"
-                            class="mt-2 p-3 w-full rounded-lg bg-gray-50 shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                            class="mt-2 p-3 w-full rounded-lg bg-gray-50 shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                            required>
                     </div>
                 </div>
 
                 <div>
-                    <label for="scorePerQuestion" class="block text-sm font-medium text-gray-700">Score per Question</label>
+                    <label for="scorePerQuestion" class="block text-sm font-medium text-gray-700">Score per
+                        Question</label>
                     <input id="scorePerQuestion" v-model="quiz.scorePerQuestion" type="number"
-                        class="mt-2 p-3 w-full rounded-lg bg-gray-50 shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                        class="mt-2 p-3 w-full rounded-lg bg-gray-50 shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                        required>
                 </div>
 
                 <div>
                     <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-                    <select id="category" v-model="quiz.category" 
+                    <select id="category" v-model="quiz.category"
                         class="mt-2 p-3 w-full rounded-lg bg-gray-50 shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none">
                         <option v-for="category in categories" :key="category.id" :value="category.id">
                             {{ category.title }}
@@ -69,17 +75,20 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Question</label>
                         <input v-model.trim="question.questionHead" type="text"
-                            class="mt-2 p-3 w-full rounded-lg bg-white shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                            class="mt-2 p-3 w-full rounded-lg bg-white shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                            required>
                     </div>
                     <div v-for="(option, optIndex) in question.options" :key="optIndex">
                         <label class="block text-sm font-medium text-gray-700">Option {{ optIndex + 1 }}</label>
                         <input v-model.trim="question.options[optIndex]" type="text"
-                            class="mt-2 p-3 w-full rounded-lg bg-white shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                            class="mt-2 p-3 w-full rounded-lg bg-white shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                            required>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Correct Answer</label>
                         <input v-model.trim="question.correctAnswer" type="text"
-                            class="mt-2 p-3 w-full rounded-lg bg-white shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                            class="mt-2 p-3 w-full rounded-lg bg-white shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                            required>
                     </div>
                 </div>
             </div>
@@ -95,9 +104,10 @@
                 </button>
             </div>
         </form>
-         <!-- Elegant Popup -->
+        <!-- Elegant Popup -->
         <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
-            <div class="bg-white p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
+            <div
+                class="bg-white p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">🎉 Quiz Created Successfully!</h2>
                 <p class="text-gray-600 mb-4">Your quiz has been successfully saved.</p>
                 <button @click="redirectToDashboard"
@@ -163,7 +173,7 @@ export default {
                 .catch(error => console.error("Error:", error));
         },
         addQuestion() {
-            this.numberOfQuestions += 1;
+            this.quiz.numberOfQuestions += 1;
             this.quiz.questions.push({
                 questionHead: '',
                 options: ['', '', '', ''],
@@ -171,46 +181,46 @@ export default {
             });
         },
         submitQuiz() {
-    if (!this.quiz.category) {
-        alert("Please select a category!");
-        return;
-    }
+            if (!this.quiz.category) {
+                alert("Please select a category!");
+                return;
+            }
 
-    const basePath = "adminQuizzes";
-    let url;
-    let method;
-    
-    if (this.isEditing) {
-        if (!this.quizId) {
-            console.error("Quiz ID is missing for editing.");
-            alert("An error occurred. Quiz ID is missing.");
-            return;
-        }
-        url = `https://quizzer-platform-default-rtdb.firebaseio.com/${basePath}/${this.quizId}.json`;
-        method = "PUT";
-    } else {
-        url = `https://quizzer-platform-default-rtdb.firebaseio.com/${basePath}.json`;
-        method = "POST";
-    }
+            const basePath = "adminQuizzes";
+            let url;
+            let method;
 
-    fetch(url, {
-        method: method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(this.quiz),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log("Quiz Saved:", data);
-        if (!this.isEditing) {
-            this.resetForm();
-        }
-        this.showPopup = true; // Show the popup after saving
-    })
-    .catch((error) => {
-        console.error("Error saving quiz:", error);
-        alert("An error occurred while saving the quiz. Please try again.");
-    });
-},
+            if (this.isEditing) {
+                if (!this.quizId) {
+                    console.error("Quiz ID is missing for editing.");
+                    alert("An error occurred. Quiz ID is missing.");
+                    return;
+                }
+                url = `https://quizzer-platform-default-rtdb.firebaseio.com/${basePath}/${this.quizId}.json`;
+                method = "PUT";
+            } else {
+                url = `https://quizzer-platform-default-rtdb.firebaseio.com/${basePath}.json`;
+                method = "POST";
+            }
+
+            fetch(url, {
+                method: method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(this.quiz),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Quiz Saved:", data);
+                    if (!this.isEditing) {
+                        this.resetForm();
+                    }
+                    this.showPopup = true; // Show the popup after saving
+                })
+                .catch((error) => {
+                    console.error("Error saving quiz:", error);
+                    alert("An error occurred while saving the quiz. Please try again.");
+                });
+        },
 
         resetForm() {
             this.quiz = {

@@ -1,10 +1,10 @@
 <template>
     <Navbar></Navbar>
-    <div class="m-10">
+    <div class="mx-auto max-w-5xl p-6">
         <h2 class="text-2xl font-semibold text-center">See where you are!</h2>
         <p class="text-gray-500 text-center mb-5">Quizzer Leaderboard</p>
 
-        <div v-if="loading" class="text-center py-20 ">
+        <div v-if="loading" class="text-center py-20">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
             <p class="text-gray-600 mt-4">Loading leaderboard...</p>
         </div>
@@ -30,23 +30,23 @@
             </div>
 
             <!-- Leaderboard Table -->
-            <div class="overflow-x-auto bg-white shadow">
-                <table class="w-full text-left border-collapse">
+            <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+                <table class="w-full border-collapse rounded-lg overflow-hidden">
                     <thead>
-                        <tr class="bg-teal-800 text-white">
-                            <th class="p-4">Username</th>
-                            <th class="p-4">Rank</th>
-                            <th class="p-4">Score</th>
+                        <tr class="bg-gradient-to-r from-teal-800 to-teal-600 text-white">
+                            <th class="p-4 text-left uppercase tracking-wider">Username</th>
+                            <th class="p-4 text-left uppercase tracking-wider">Rank</th>
+                            <th class="p-4 text-left uppercase tracking-wider">Score</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(user, index) in remainingUsers" 
                             :key="user.uid"
-                            class="border-b hover:bg-teal-100 transition-colors"
+                            class="border-b border-gray-300 transition-colors hover:bg-teal-100"
                             :class="{'bg-gray-50': index % 2 === 0}">
-                            <td class="p-4 font-bold">{{ user.name }}</td>
-                            <td class="p-4 font-semibold">{{ index + 4 }}</td>
-                            <td class="p-4 font-semibold">{{ user.overallScore }}</td>
+                            <td class="p-4 font-bold text-gray-800">{{ user.name }}</td>
+                            <td class="p-4 font-semibold text-gray-700">{{ index + 4 }}</td>
+                            <td class="p-4 font-semibold text-gray-700">{{ user.overallScore }}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -206,7 +206,7 @@ export default {
                     badges.push({
                         id: 'junior-quizzer',
                         name: 'Junior Quizzer',
-                        description: 'Completed 4 quizzes',
+                        description: 'Completed 3 quizzes',
                         imageUrl: '../src/assets/bagde1.PNG',
                         borderColor: 'border-teal-400'
                     });
@@ -217,7 +217,7 @@ export default {
                     badges.push({
                         id: 'expert-quizzer',
                         name: 'Expert Quizzer',
-                        description: 'Completed 8 quizzes',
+                        description: 'Completed 7 quizzes',
                         imageUrl: '../src/assets/badge2.PNG',
                         borderColor: 'border-teal-600'
                     });
@@ -228,7 +228,7 @@ export default {
                     badges.push({
                         id: 'master-quizzer',
                         name: 'Master Quizzer',
-                        description: 'Completed 12 quizzes',
+                        description: 'Completed +10 quizzes',
                         imageUrl: '../src/assets/badge2.PNG',
                         borderColor: 'border-teal-800'
                     });

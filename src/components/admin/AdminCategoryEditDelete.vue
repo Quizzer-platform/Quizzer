@@ -9,7 +9,8 @@
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
                     <h2 class="text-xl font-semibold text-teal-900">Edit Categories</h2>
                     <SearchBar class="w-full sm:w-auto" @search="updateSearchQuery" />
-                    <button class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 w-1/2 sm:w-auto cursor-pointer" 
+                    <button
+                        class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 w-1/2 sm:w-auto cursor-pointer"
                         @click="createCategory">
                         ➕ Create Category
                     </button>
@@ -21,23 +22,16 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                     <!-- Update the QuizCard usage -->
-<QuizCard 
-  v-for="category in filteredCategories" 
-  :key="category.id" 
-  :quiz="{
-    id: category.id,
-    title: category.title,
-    description: category.description,
-    quizType: 'category' // This triggers category icon
-  }" 
-  @edit="editCategory(category)" 
-  @delete="confirmDelete(category.id)" 
-/>
+                    <QuizCard v-for="category in filteredCategories" :key="category.id" :quiz="{
+                        id: category.id,
+                        title: category.title,
+                        description: category.description,
+                        quizType: 'category' // This triggers category icon
+                    }" @edit="editCategory(category)" @delete="confirmDelete(category.id)" />
 
                 </div>
 
-                <div v-if="!loading && filteredCategories.length === 0" 
-                    class="text-center text-gray-500 mt-6">
+                <div v-if="!loading && filteredCategories.length === 0" class="text-center text-gray-500 mt-6">
                     No categories available.
                 </div>
             </div>
@@ -89,7 +83,7 @@ export default {
                     return false;
                 }
                 return category.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                       category.description.toLowerCase().includes(this.searchQuery.toLowerCase());
+                    category.description.toLowerCase().includes(this.searchQuery.toLowerCase());
             });
         },
     },
@@ -131,7 +125,7 @@ export default {
         },
 
         editCategory(category) {
-            this.$router.push({ 
+            this.$router.push({
                 path: '/admin/categorycreation',
                 query: { edit: 'true', id: category.id }
             });
@@ -175,4 +169,3 @@ export default {
     },
 };
 </script>
-  

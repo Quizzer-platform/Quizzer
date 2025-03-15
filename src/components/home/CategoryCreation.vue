@@ -41,7 +41,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Select Quizzes</label>
                     <select v-model="category.quizzes" class="w-full p-3 border rounded-lg bg-gray-50 shadow-sm focus:ring-teal-500 focus:border-teal-500 outline-none" multiple>
-                        <option v-for="quiz in quizzes" :key="quiz.id" :value="quiz.id">
+                        <option v-for="quiz in quizzes" :key="quiz.id" :value="quiz.id" class="my-2">
                             {{ quiz.title }}
                         </option>
                     </select>

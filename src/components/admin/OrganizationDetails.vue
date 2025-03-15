@@ -63,7 +63,7 @@
                 <h4 class="text-xl font-semibold text-teal-800">{{ plan.name }}</h4>
                 <p class="text-gray-700">{{ plan.description }}</p>
                 <p class="text-teal-900 font-medium">Price: {{ plan.price }}</p>
-                <p class="text-gray-600">Quizzes Allowed: {{ plan.noOfQuizzes }}</p>
+                <p class="text-gray-600">Quizzes Allowed: {{ plan.noOfQuizzes - selectedOrg.quizzes }}</p>
               </div>
             </div>
 

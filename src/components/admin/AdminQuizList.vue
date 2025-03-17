@@ -17,11 +17,11 @@
 
         <!-- Quizzes Table -->
         <TableStructure v-else :headers="['QUIZ ID', 'Name of Quiz', 'No. of Questions', 'Org. Name']" :rows="filteredQuizzes.map(quiz => [
-                quiz.id,
-                quiz.name,
-                quiz.questions,
-                quiz.organization
-            ])" :showActions="false" @view-details="editQuiz" />
+            quiz.id,
+            quiz.name,
+            quiz.questions,
+            quiz.organization
+        ])" :showActions="false" @view-details="editQuiz" />
     </div>
 </template>
 

@@ -2,7 +2,7 @@
     <div class="container mx-auto p-6 max-w-4xl">
         <div class="flex items-center mb-6">
             <button 
-                @click="$router.push('/admin')" 
+                @click="$router.push('/admin/categories')" 
                 class="flex items-center gap-2 text-white bg-teal-600 hover:bg-teal-700 
                        px-4 py-2 rounded-lg shadow-lg transition-all duration-300"
             >
@@ -33,11 +33,31 @@
                 </div>
 
                 <div>
-                    <label for="icon" class="block text-sm font-medium text-gray-700">Icon (URL)</label>
-                    <input id="icon" v-model.trim="category.icon" type="text"
-                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                    <label for="icon" class="block text-sm font-medium text-gray-700">Select Icon</label>
+                    <select id="icon" v-model="category.icon"
+                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-teal-500 focus:border-teal-500 outline-none" 
+                        required>
+                        <option value="" disabled>Choose an icon</option>
+                        <option v-for="icon in icons" :key="icon.value" :value="icon.value">
+                            {{ icon.label }}
+                        </option>
+                    </select>
                 </div>
 
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Selected Icon Preview</label>
+                    <div class="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-300 text-center">
+                        <div v-if="category.icon" class="flex items-center justify-center">
+                            <img :src="category.icon" alt="Selected icon" class="w-12 h-12">
+                        </div>
+                        <div v-else class="text-gray-500 py-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <p>No icon selected</p>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Select Quizzes</label>
                     <select v-model="category.quizzes" class="w-full p-3 border rounded-lg bg-gray-50 shadow-sm focus:ring-teal-500 focus:border-teal-500 outline-none" multiple>
@@ -75,6 +95,18 @@
 export default {
     data() {
         return {
+            icons: [
+                { label: 'Books Icon', value: '../src/assets/icons8-books-100.png' },
+                { label: 'Bot Icon', value: '../src/assets/icons8-bot-100.png' },
+                { label: 'Language Icon', value: '../src/assets/icons8-language-100.png' },
+                { label: 'Math Icon', value: '../src/assets/icons8-math-100.png' },
+                { label: 'Microscope Icon', value: '../src/assets/icons8-microscope-100.png' },
+                { label: 'Physics Icon', value: '../src/assets/icons8-physics-100.png' },
+                { label: 'Programming Icon', value: '../src/assets/icons8-programming-100.png' },
+                { label: 'Technology Icon', value: '../src/assets/icons8-technology-100.png' },
+                { label: 'Cloud connection Icon', value: '../src/assets/icons8-cloud-connection-100.png' },
+                { label: 'Cloud development Icon', value: '../src/assets/icons8-cloud-development-100.png' },
+            ],
             category: {
                 title: '',
                 description: '',

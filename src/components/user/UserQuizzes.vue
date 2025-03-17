@@ -65,16 +65,25 @@
 
         <!-- Popup إذا كان quizzesToTake = 0 -->
         <div v-if="quizzesToTake === 0"
-            class="fixed inset-0 bg-teal-600 bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                <h2 class="text-xl font-bold text-red-600">Subscription Required</h2>
-                <p class="text-gray-700 mt-2">To take another exam, you need to subscribe.</p>
-                <router-link to="/pricing"
-                    class="mt-4 inline-block bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors">
-                    Go to Pricing
-                </router-link>
+            class="fixed inset-0 bg-black/40 backdrop-blur-xs flex justify-center items-center z-50 px-4">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+                <h2 class="text-lg sm:text-xl font-semibold text-red-600">❌ Access Denied!</h2>
+                <p class="text-gray-600 mt-2 text-sm sm:text-base">
+                    To take another exam, you need to subscribe.
+                </p>
+                <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button @click="goToPricing"
+                        class="w-full sm:w-auto px-5 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition">
+                        Go to pricing
+                    </button>
+                    <button @click="goToProfile"
+                        class="w-full sm:w-auto px-5 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition">
+                        Go back to Profile
+                    </button>
+                </div>
             </div>
         </div>
+
     </div>
 </template>
 <script>
@@ -167,8 +176,13 @@ export default {
                 console.error('Error calculating user rank:', error);
                 this.userRank = 0;
             }
+        },
+        goToPricing() {
+            this.$router.push("/pricing");
+        },
+        goToProfile() {
+            this.$router.push("/profile");
         }
-
     },
     mounted() {
         if (this.userId) {

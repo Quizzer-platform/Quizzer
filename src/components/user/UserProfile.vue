@@ -32,26 +32,28 @@
                                 class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
-                                        {{ quiz.title }} </span>
+                                        {{ quiz.title }}
+                                    </span>
                                     <span class="text-sm font-semibold text-gray-700">
                                         {{ new Date(quiz.timestamp).toLocaleDateString() }}
                                     </span>
                                 </div>
-                                <h3 class="font-bold text-sm text-gray-800 truncate">Describtion: {{ quiz.category ||
-                                    'General' }}</h3>
+                                <h3 class="font-bold text-sm text-gray-800 truncate">
+                                    Describtion: {{ quiz.category || 'General' }}
+                                </h3>
                                 <p class="text-sm text-gray-600 mt-1">
                                     Questions: {{ quiz.totalQuestions }}
                                 </p>
                                 <p class="mt-2 text-sm font-medium">
                                     Score:
-                                    <span class="text-green-600 font-bold">
+                                    <span
+                                        :class="quiz.quizScore >= quiz.totalQuestions / 2 ? 'text-green-600' : 'text-red-600'"
+                                        class="font-bold">
                                         {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
                                     </span>
                                 </p>
-
                             </div>
                         </div>
-
                         <div v-else class="mt-4 p-6 bg-white rounded-lg shadow text-center">
                             <div class="text-4xl mb-4">📚</div>
                             <h3 class="text-lg font-semibold mb-2">No Quizzes Completed Yet</h3>
@@ -90,11 +92,13 @@
                                 <div v-for="quiz in recommendedQuizzes" :key="quiz.id"
                                     class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
                                     <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
+                                        <span
+                                            class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
                                             {{ quiz.title }}
                                         </span>
                                     </div>
-                                    <h3 class="font-bold text-sm text-gray-800 truncate">Description: {{ quiz.category }}</h3>
+                                    <h3 class="font-bold text-sm text-gray-800 truncate">Description: {{ quiz.category
+                                    }}</h3>
                                     <p class="text-sm text-gray-600 mt-1">
                                         Questions: {{ quiz.questionsCount }}
                                     </p>
@@ -107,7 +111,8 @@
                             <div v-else class="mt-4 p-6 bg-white rounded-lg shadow text-center">
                                 <div class="text-4xl mb-4">🎯</div>
                                 <h3 class="text-lg font-semibold mb-2">No Recommendations Yet</h3>
-                                <p class="text-gray-600 mb-4">Complete more quizzes to get personalized recommendations!</p>
+                                <p class="text-gray-600 mb-4">Complete more quizzes to get personalized recommendations!
+                                </p>
                                 <router-link to="/quizzes"
                                     class="inline-block bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-800 transition-colors">
                                     Explore All Quizzes
@@ -260,7 +265,7 @@ export default {
                 if (attemptedQuizzes.length >= 4) {
                     const adminQuizzesRef = dbRef(database, 'adminQuizzes');
                     const snapshot = await get(adminQuizzesRef);
-                    
+
                     if (snapshot.exists()) {
                         const allQuizzes = snapshot.val();
                         this.recommendedQuizzes = Object.entries(allQuizzes)

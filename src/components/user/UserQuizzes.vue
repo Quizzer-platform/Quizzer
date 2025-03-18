@@ -10,9 +10,9 @@
                             <h1 class="text-2xl font-bold text-teal-800">Your Quiz Performance</h1>
                             <div class="mt-4 md:mt-0">
                                 <p class="text-lg font-semibold">Overall Rank: <span class="text-teal-600">#{{ userRank
-                                }}</span></p>
+                                        }}</span></p>
                                 <p class="text-lg font-semibold">Total Score: <span class="text-teal-600">{{ totalScore
-                                }}</span></p>
+                                        }}</span></p>
                             </div>
                         </div>
 
@@ -43,18 +43,15 @@
                                         {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
                                     </span>
                                 </p>
-
                             </div>
-
                         </div>
-
 
                         <div v-else class="text-center py-12">
                             <div class="text-6xl mb-4">📝</div>
                             <h3 class="text-xl font-semibold text-gray-800 mb-4">No Quizzes Completed Yet</h3>
                             <p class="text-gray-600 mb-8">Start your learning journey by taking your first quiz!</p>
                             <router-link to="/quizzes"
-                                class="inline-block bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors">
+                                class="inline-block bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors  cursor-pointer">
                                 Browse Available Quizzes
                             </router-link>
                         </div>
@@ -73,11 +70,11 @@
                 </p>
                 <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
                     <button @click="goToPricing"
-                        class="w-full sm:w-auto px-5 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition">
+                        class="w-full sm:w-auto px-5 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition cursor-pointer">
                         Go to pricing
                     </button>
                     <button @click="goToProfile"
-                        class="w-full sm:w-auto px-5 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition">
+                        class="w-full sm:w-auto px-5 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition cursor-pointer">
                         Go back to Profile
                     </button>
                 </div>
@@ -122,7 +119,7 @@ export default {
             this.listener = onValue(userRef, async (snapshot) => {
                 if (snapshot.exists()) {
                     const userData = snapshot.val();
-                    console.log("User Data from Firebase:", userData);
+                    // console.log("User Data from Firebase:", userData);
 
                     this.totalScore = userData.overallScore || 0;
                     this.quizzesToTake = userData.quizzesToTake || 0;

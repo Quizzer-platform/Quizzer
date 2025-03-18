@@ -21,14 +21,25 @@
                     </div>
 
                     <!-- Table (Hidden While Loading) -->
-                    <TableStructure 
-                        v-else 
-                        :headers="['User Id', 'User Name', 'Role']"
-                        :rows="filteredUsers.map(user => [user.id, user.name, user.role])"
-                        :showActions="true"
-                        @view-details="goToUserDetails"
-                        class="w-full max-w-5xl mx-auto" 
-                    />
+                    <TableStructure v-else :headers="['User Id', 'User Name', 'Email']"
+                        :rows="filteredUsers.map(user => [user.id, user.name, user.email])" :showActions="true"
+                        @view-details="goToUserDetails" class="w-full max-w-5xl mx-auto" />
+
+                    <div class="mt-8">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">System Administrators</h3>
+                        <!-- Admin Table -->
+                        <TableStructure v-if="!loading && filteredAdmins.length > 0"
+                            :headers="['Admin Id', 'Name', 'Email']" :rows="filteredAdmins.map(admin => [
+                                admin.id,
+                                admin.name,
+                                admin.email
+                            ])" :showActions="true" @view-details="goToUserDetails"
+                            class="w-full max-w-5xl mx-auto" />
+                        <!-- No Admins Message -->
+                        <div v-else-if="!loading && admins.length === 0" class="text-center text-gray-500 mt-6">
+                            No administrators found.
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
@@ -55,15 +66,27 @@ export default {
             searchQuery: "",
             users: [], // Stores fetched users
             loading: true, // Spinner state
+            admins: [], // Add this new property
         };
     },
     computed: {
         filteredUsers() {
             if (!this.searchQuery) return this.users;
+            const query = this.searchQuery.toLowerCase();
             return this.users.filter(user =>
-                user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                user.name.toLowerCase().includes(query) ||
+                user.email.toLowerCase().includes(query)
             );
         },
+
+        filteredAdmins() {
+            if (!this.searchQuery) return this.admins;
+            const query = this.searchQuery.toLowerCase();
+            return this.admins.filter(admin =>
+                admin.name.toLowerCase().includes(query) ||
+                admin.email.toLowerCase().includes(query)
+            );
+        }
     },
     methods: {
         toggleSidebar() {
@@ -87,20 +110,23 @@ export default {
 
                 if (snapshot.exists()) {
                     const data = snapshot.val();
-                    this.users = Object.entries(data).map(([id, user]) => ({
-                        id,
-                        name: user.name || "Unknown",
-                        lastQuiz: user.lastQuiz || "No Quiz Taken",
-                        degree: user.degree || "N/A",
-                        role: user.role || "user", // Default role if not found
-                    }));
+                    this.users = Object.entries(data)
+                        .filter(([_, user]) => user.role === 'user') // Exclude admin users
+                        .map(([id, user]) => ({
+                            id,
+                            name: user.name || "Unknown User",
+                            email: user.email || "No Email",
+                            role: user.role || "user",
+                            createdAt: user.createdAt || null
+                        }))
+                        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)); // Sort by creation date
 
-                    console.log("Fetched all users:", this.users);
                 } else {
                     this.users = [];
                 }
             } catch (error) {
                 console.error("Error fetching users:", error);
+                this.users = [];
             } finally {
                 this.loading = false; // Hide spinner
             }
@@ -108,14 +134,52 @@ export default {
         goToUserDetails(userId) {
             this.$router.push(`/admin/user/${userId}`);
         },
+        formatDate(timestamp) {
+            if (!timestamp) return 'N/A';
+            return new Date(timestamp).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        },
+
+        async fetchAdmins() {
+            try {
+                const db = getDatabase();
+                const usersRef = ref(db, "users");
+                const snapshot = await get(usersRef);
+
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    this.admins = Object.entries(data)
+                        .filter(([_, user]) => user.role === 'organization_admin')
+                        .map(([id, admin]) => ({
+                            id,
+                            name: admin.name || "Unknown Admin",
+                            email: admin.email || "No Email",
+                            createdAt: admin.createdAt || null
+                        }))
+                        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                } else {
+                    this.admins = [];
+                }
+            } catch (error) {
+                console.error("Error fetching admins:", error);
+                this.admins = [];
+            }
+        },
     },
     async mounted() {
         try {
             window.addEventListener("resize", this.handleResize);
-            await this.fetchUsers();
+            await Promise.all([
+                this.fetchUsers(),
+                this.fetchAdmins()
+            ]);
         } catch (error) {
             console.error("Error initializing component:", error);
-            this.loading = false; // Hide spinner if an error occurs
+        } finally {
+            this.loading = false;
         }
     },
 };

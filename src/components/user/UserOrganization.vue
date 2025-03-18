@@ -23,7 +23,7 @@
                                         <p class="text-gray-600">{{ org.role || 'Member' }}</p>
                                     </div>
                                     <router-link to="/quizzes"
-                                        class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors">
+                                        class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors cursor-pointer">
                                         View Quizzes
                                     </router-link>
                                 </div>
@@ -43,7 +43,7 @@
                             <p class="text-gray-600 mb-4">Join an organization or create your own!</p>
                             <p class="text-gray-600 mt-10 mb-4">See our free to take quizzes!</p>
                             <router-link to="/quizzes"
-                                class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors">
+                                class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors cursor-pointer">
                                 Browse Quizzes
                             </router-link>
                         </div>
@@ -60,8 +60,6 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useStore } from 'vuex';
 import { ref as dbRef, get, onValue, off } from 'firebase/database';
 import { database } from '@/firebase';
 import UserSidebar from './UserSidebar.vue';
@@ -102,7 +100,7 @@ export default {
                 this.listener = onValue(userRef, async (snapshot) => {
                     try {
                         this.userData = snapshot.val();
-                        console.log('User Data:', this.userData);
+                        // console.log('User Data:', this.userData);
 
                         if (this.userData && this.userData.organization) {
                             // First, get all organizations to find the matching one
@@ -118,7 +116,7 @@ export default {
 
                                 if (orgEntry) {
                                     const [orgId, orgData] = orgEntry;
-                                    console.log('Found Organization:', orgData);
+                                    // console.log('Found Organization:', orgData);
 
                                     this.userOrgs = [{
                                         id: orgId,

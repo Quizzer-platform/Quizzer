@@ -1,7 +1,7 @@
 <template>
     <Navbar />
     <search class="" @search="updateSearchQuery" />
-    <div class="flex flex-col justify-center items-center">
+    <div class="flex flex-col justify-center items-center min-h-screen">
         <div v-if="loading" class="text-center py-8">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
             <p class="text-gray-600 mt-4">Loading quizzes...</p>

@@ -1,6 +1,6 @@
 <template>
     <Navbar></Navbar>
-    <div class="mx-auto max-w-5xl p-6">
+    <div class="mx-auto max-w-5xl p-6 min-h-screen">
         <h2 class="text-2xl font-semibold text-center">See where you are!</h2>
         <p class="text-gray-500 text-center mb-5">Quizzer Leaderboard</p>
 

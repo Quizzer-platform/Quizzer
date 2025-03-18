@@ -126,11 +126,15 @@ export default {
     <Navbar />
     <search v-if="showCategories" class="" @search="updateSearchQuery" />
 
-    <div class="flex justify-center">
+    <div class="flex justify-center items-center">
         <!-- Loading State -->
-        <div v-if="loading || loadingQuizzes" class="text-center py-8">
+        <div v-if="loading || loadingQuizzes" class="text-center py-8 min-h-screen">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
             <p class="text-gray-600 mt-4">{{ loading ? 'Loading categories...' : 'Loading quizzes...' }}</p>
+        </div>
+
+        <div v-else-if="filteredCategories.length === 0" class="text-center text-gray-500 my-20">
+          No Categories found.
         </div>
 
         <!-- Categories View -->
@@ -140,7 +144,7 @@ export default {
         <div v-else class=" flex flex-col  container mx-auto p-4">
             <div>
                 <button @click="showCategories = true"
-                    class="m-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-teal-900 transition">
+                    class="m-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-teal-900 transition cursor-pointer">
                     Back to Categories
                 </button>
             </div>
@@ -184,7 +188,10 @@ export default {
             return this.categories.filter(category =>
                 category.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
                 category.description.toLowerCase().includes(this.searchQuery.toLowerCase())
-            );
+            ).map(category => ({
+                ...category,
+                icon: category.icon
+            }));
         },
     },
     methods: {
@@ -198,14 +205,13 @@ export default {
                             icon: data[id].icon,
                             title: data[id].title,
                             description: data[id].description,
-                            quizzes: data[id].quizzes || [] // ✅ ضفنا quizzes هنا
+                            quizzes: data[id].quizzes || []
                         }))
                         : [];
                 })
                 .catch(error => console.error("Error loading categories:", error))
                 .finally(() => (this.loading = false));
         },
-
         viewCategoryQuizzes(categoryId) {
             this.loadingQuizzes = true;
             this.showCategories = false;

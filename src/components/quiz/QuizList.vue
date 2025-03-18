@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-        <div class="max-w-3xl w-full bg-white shadow-lg rounded-lg p-8" v-if="!showSubscriptionPopup">
+        <div class="max-w-3xl w-full bg-white shadow-lg rounded-lg p-8">
             <!-- Add Timer Box -->
             <div class="mb-6 text-center" v-if="!isLoading && questions.length > 0">
                 <div class="bg-teal-100 p-4 rounded-lg inline-block">
@@ -21,32 +21,36 @@
                     :isLastQuestion="index === questions.length - 1" @submit-quiz="submitQuiz" />
             </form>
         </div>
-
-        <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-teal-900 bg-opacity-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center w-4xl">
-                <h2 class="text-2xl font-bold text-gray-800">Quiz Results:</h2>
-                <p class="text-xl text-gray-700 mt-2">
-                    Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ questions.length }}
+        <div v-if="showTimeUpPopup"
+            class="fixed inset-0 bg-black/40 backdrop-blur-xs flex justify-center items-center z-50 px-4">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+                <h2 class="text-lg sm:text-xl font-semibold text-red-600">⏰ Time's Up!</h2>
+                <p class="text-gray-600 mt-2 text-sm sm:text-base">
+                    Your time has expired. Your quiz has been submitted automatically.
                 </p>
-                <button @click="goToHome"
-                    class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
-                    Go to Home
-                </button>
-            </div>
-        </div>
-
-        <div v-if="showSubscriptionPopup"
-            class="fixed inset-0 flex items-center justify-center bg-teal-700 bg-opacity-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                <h2 class="text-2xl font-bold text-red-600">❌ Access Denied!</h2>
-                <p class="text-lg text-gray-700 mt-2">To take another exam, you should subscribe.</p>
-                <button @click="goToPricing"
-                    class="mt-4 bg-teal-600 hover:bg-teal-800 text-white px-6 py-2 rounded-lg shadow-md transition">
-                    Go to Pricing Page
-                </button>
+                <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button @click="goToQuizzes"
+                        class="w-full sm:w-auto px-5 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition cursor-pointer">
+                        Back to Quizzes
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
+    <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-teal-900 bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-4xl">
+            <h2 class="text-2xl font-bold text-gray-800">Quiz Results:</h2>
+            <p class="text-xl text-gray-700 mt-2">
+                Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ questions.length }}
+            </p>
+            <button @click="goToHome"
+                class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                Go to Home
+            </button>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -58,6 +62,12 @@ export default {
     components: {
         QuestionItem,
     },
+    props: {
+        quizId: {
+            type: String,
+            default: ''
+        }
+    },
     data() {
         return {
             quizName: '',
@@ -66,14 +76,14 @@ export default {
             correctAnswers: [],
             isLoading: false,
             showPopup: false,
-            showSubscriptionPopup: false,
             score: 0,
             userId: this.$store.state.user?.uid,
             quizzesToTake: 0,
             // Add timer-related data properties
             timeRemaining: 0,
             timer: null,
-            quizDuration: 0
+            quizDuration: 0,
+            showTimeUpPopup: false,
         };
     },
     methods: {
@@ -82,10 +92,10 @@ export default {
             const quizId = this.$route.params.quizId;
 
             try {
-                // نجرب نجيب الكويز من adminQuizzes
+                // fetch admin quizzes
                 const adminQuizRes = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes/${quizId}.json`);
                 const adminData = await adminQuizRes.json();
-                console.log("Admin Data:", adminData);
+                // console.log("Admin Data:", adminData);
 
                 if (adminData && adminData.questions) {
                     this.quizName = adminData.title;
@@ -120,46 +130,11 @@ export default {
                     }
                 }
 
-                await this.checkSubscription();
-
             } catch (error) {
                 console.error("Error loading quiz:", error);
                 alert("Error loading quiz. Please try again.");
             } finally {
                 this.isLoading = false;
-            }
-        }
-        ,
-
-
-        async checkSubscription() {
-            if (!this.userId) return;
-
-            const userRef = dbRef(database, `users/${this.userId}`);
-            try {
-                const snapshot = await get(userRef);
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    this.quizzesToTake = userData.quizzesToTake || 0;
-
-                    const attemptedQuizzes = userData.attemptedQuizzes || [];
-                    const quizId = this.$route.params.quizId;
-                    const alreadyAttempted = attemptedQuizzes.some(q => q.quizId === quizId);
-
-                    if (alreadyAttempted) {
-                        alert("You have already taken this quiz!");
-                        this.$router.push("/");
-                        return;
-                    }
-
-                    if (this.quizzesToTake === 0) {
-                        this.showSubscriptionPopup = true;
-                    } else {
-                        await this.decreaseQuizzesToTake();
-                    }
-                }
-            } catch (error) {
-                console.error("Error checking subscription:", error);
             }
         },
 
@@ -221,7 +196,6 @@ export default {
                     const alreadyAttempted = prevAttempts.some(q => q.quizId === quizId);
                     if (alreadyAttempted) return; // prevent duplicate entry
 
-
                     const attempt = {
                         quizId,
                         quizScore,
@@ -268,29 +242,36 @@ export default {
 
         handleTimeUp() {
             clearInterval(this.timer);
-            alert("Time's up! Your quiz will be submitted automatically.");
-            this.submitQuiz();
+            this.showTimeUpPopup = true;
+
+            // Show the time's up popup for 2 seconds, then show results
+            setTimeout(async () => {
+                this.showTimeUpPopup = false;
+                await this.submitQuiz();
+            }, 2000);
         },
 
         async submitQuiz() {
             clearInterval(this.timer); // Clear timer when submitting
             this.score = this.calculateScore();
-            this.showPopup = true;
 
             const quizId = this.$route.params.quizId;
-
+            await this.decreaseQuizzesToTake();
             if (this.userId) {
                 await this.updateOverallScore(this.score);
                 await this.storeAttemptedQuiz(quizId, this.score);
             }
+            this.showPopup = true;
         },
         goToHome() {
             this.$router.push("/");
         },
 
-        goToPricing() {
-            this.$router.push("/pricing");
-        }
+        goToQuizzes() {
+            this.$router.push("/categories");
+            this.showTimeUpPopup = false;
+        },
+
     },
     mounted() {
         this.loadQuestions();

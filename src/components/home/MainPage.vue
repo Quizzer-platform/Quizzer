@@ -79,74 +79,76 @@
         </div>
     </section>
 
-    <section class="py-8 px-6 bg-white text-center mt-10 ">
-        <div class="max-w-4xl mx-auto">
-            <!-- Heading -->
-            <h2 class="text-3xl font-bold text-gray-800">
-                Frequently Asked Questions
-            </h2>
+    <section class="py-8 px-6 bg-white text-center mt-10">
+    <div class="max-w-4xl mx-auto">
+        <!-- Heading -->
+        <h2 class="text-3xl font-bold text-gray-800">
+            Frequently Asked Questions
+        </h2>
 
-            <!-- FAQ Grid -->
-            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                <!-- Left Column -->
-                <div class="space-y-4">
-                    <details class="bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50" open>
-                        <summary class="flex items-start gap-3 cursor-pointer list-none">
-                            <span class="text-xl text-teal-600">+</span>
-                            <h3 class="font-semibold text-gray-800">
-                                How does the quiz platform work?
-                            </h3>
-                        </summary>
-                        <p class="text-gray-600 mt-2 text-sm pl-9">
-                            Our platform allows organizations to create customized quizzes to assess skills. Job seekers
-                            take these quizzes, and their results are used to match them with relevant job
-                            opportunities.
-                        </p>
-                    </details>
+        <!-- FAQ Grid -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            <!-- Left Column -->
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <details class="faq-item bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50" open>
+                    <summary class="cursor-pointer list-none pl-7 relative">
+                        <h3 class="font-semibold text-gray-800">
+                            How does the quiz platform work?
+                        </h3>
+                    </summary>
+                    <p class="text-gray-600 mt-2 text-sm pl-9">
+                        Our platform allows organizations to create customized quizzes to assess skills. Job seekers
+                        take these quizzes, and their results are used to match them with relevant job
+                        opportunities.
+                    </p>
+                </details>
 
-                    <details class="bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50">
-                        <summary class="flex items-start gap-3 cursor-pointer list-none">
-                            <span class="text-xl text-teal-700">+</span>
-                            <h3 class="font-semibold text-gray-800">
-                                Can organizations see my quiz results?
-                            </h3>
-                        </summary>
-                        <p class="text-gray-600 mt-2 text-sm pl-9">
-                            Yes, organizations can view your quiz results if you’ve applied for their job openings. Your
-                            results help them assess your skills and suitability for the role. </p>
-                    </details>
-                </div>
-                <!-- Right Column -->
-                <div class="space-y-4">
-                    <details class="bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50">
-                        <summary class="flex items-start gap-3 cursor-pointer list-none">
-                            <span class="text-xl text-teal-700">+</span>
-                            <h3 class="font-semibold text-gray-800">
-                                Is the platform free for job seekers?
-                            </h3>
-                        </summary>
-                        <p class="text-gray-600 mt-2 text-sm pl-9">
-                            Yes, job seekers can use the platform for free. Organizations may have subscription plans
-                            for creating and managing quizzes.
-                        </p>
-                    </details>
+                <!-- FAQ Item 2 -->
+                <details class="faq-item bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50">
+                    <summary class="cursor-pointer list-none pl-7 relative">
+                        <h3 class="font-semibold text-gray-800">
+                            Can organizations see my quiz results?
+                        </h3>
+                    </summary>
+                    <p class="text-gray-600 mt-2 text-sm pl-9">
+                        Yes, organizations can view your quiz results if you’ve applied for their job openings. Your
+                        results help them assess your skills and suitability for the role.
+                    </p>
+                </details>
+            </div>
 
-                    <details class="bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50" open>
-                        <summary class="flex items-start gap-3 cursor-pointer list-none">
-                            <span class="text-xl text-teal-700">+</span>
-                            <h3 class="font-semibold text-gray-800">
-                                What types of quizzes are available?
-                            </h3>
-                        </summary>
-                        <p class="text-gray-600 mt-2 text-sm pl-9">
-                            We offer quizzes in various categories, including technical skills, soft skills, and
-                            industry-specific knowledge. Organizations can also create custom quizzes.
-                        </p>
-                    </details>
-                </div>
+            <!-- Right Column -->
+            <div class="space-y-4">
+                <!-- FAQ Item 3 -->
+                <details class="faq-item bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50">
+                    <summary class="cursor-pointer list-none pl-7 relative">
+                        <h3 class="font-semibold text-gray-800">
+                            Is the platform free for job seekers?
+                        </h3>
+                    </summary>
+                    <p class="text-gray-600 mt-2 text-sm pl-9">
+                        Yes, job seekers can use the platform for free. Organizations may have subscription plans
+                        for creating and managing quizzes.
+                    </p>
+                </details>
+
+                <!-- FAQ Item 4 -->
+                <details class="faq-item bg-white p-6 rounded-lg shadow-md text-left hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-teal-50">
+                    <summary class="cursor-pointer list-none pl-7 relative">
+                        <h3 class="font-semibold text-gray-800">
+                            What types of quizzes are available?
+                        </h3>
+                    </summary>
+                    <p class="text-gray-600 mt-2 text-sm pl-9">
+                        We offer quizzes in various categories, including technical skills, soft skills, and
+                        industry-specific knowledge. Organizations can also create custom quizzes.
+                    </p>
+                </details>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <section class="py-8 px-6 bg-white text-center my-10">
         <div class="max-w-4xl mx-auto">
@@ -275,3 +277,29 @@ export default {
 
 };
 </script>
+<style>
+.faq-item summary {
+    list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    color: #297764;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.faq-item[open] summary::before {
+    content: '−';
+}
+</style>

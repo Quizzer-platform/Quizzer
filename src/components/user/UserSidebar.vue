@@ -7,7 +7,7 @@
 
         <!-- Sidebar -->
         <aside
-            class="fixed left-0 top-0 h-screen w-64 bg-teal-900 text-white p-6 flex flex-col transition-transform duration-300 md:w-50 md:translate-x-0"
+            class="fixed left-0 top-0 h-screen w-64 bg-teal-900 text-white flex flex-col transition-transform duration-300 md:w-50 md:translate-x-0"
             :class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }">
 
             <button class="absolute top-4 right-4 md:hidden text-white text-2xl" @click="toggleSidebar">
@@ -24,27 +24,28 @@
                 <h3 class="mt-2 font-semibold">{{ userData?.name || 'User' }}</h3>
             </div>
 
-            <nav class="flex flex-col space-y-4">
-                <router-link to="/" class="block p-2 rounded transition-colors"
+            <nav class="flex flex-col space-y-1">
+                <router-link to="/" class="block w-full p-3 pl-8 transition-colors"
                     :class="$route.path === '/' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Home
                 </router-link>
-                <router-link to="/profile" class="block p-2 rounded transition-colors"
+                <router-link to="/profile" class="block w-full p-3 pl-8 transition-colors"
                     :class="$route.path === '/profile' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Profile
                 </router-link>
-                <router-link to="/profile/userQuizzes" class="block p-2 rounded transition-colors"
+                <router-link to="/profile/userQuizzes" class="block w-full p-3 pl-8 transition-colors"
                     :class="$route.path === '/profile/userQuizzes' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Quizzes and Rank
                 </router-link>
-                <router-link to="/profile/userOrg" class="block p-2 rounded transition-colors"
+                <router-link to="/profile/userOrg" class="block w-full p-3 pl-8 transition-colors"
                     :class="$route.path === '/profile/userOrg' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Your Organization
                 </router-link>
-                <router-link to="/profile/userSubscription" class="block p-2 rounded transition-colors"
+                <router-link to="/profile/userSubscription" class="block w-full p-3 pl-8 transition-colors"
                     :class="$route.path === '/profile/userSubscription' ? 'bg-teal-700 text-white' : 'text-gray-300 hover:bg-teal-700'">
                     Your Subscription
                 </router-link>
+
             </nav>
         </aside>
     </div>

@@ -66,7 +66,7 @@
             <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md text-center">
                 <h2 class="text-lg sm:text-xl font-semibold text-red-600">❌ Access Denied!</h2>
                 <p class="text-gray-600 mt-2 text-sm sm:text-base">
-                    To take another exam, you need to subscribe.
+                    To know your progress or to take another exam, you need to subscribe.
                 </p>
                 <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
                     <button @click="goToPricing"

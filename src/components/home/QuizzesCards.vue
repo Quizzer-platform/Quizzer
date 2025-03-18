@@ -1,8 +1,8 @@
 <template>
-    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-10">
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 justify-center mb-10">
         <div v-for="(card, index) in cards" :key="index" class="flex justify-center">
             <div
-                class="bg-white p-6 rounded-xl shadow-md m-2 text-center hover:bg-teal-50 hover:shadow-lg transition hover:scale-102 w-95 flex flex-col h-full">
+                class="bg-white p-6 rounded-xl shadow-md w-80 text-center flex flex-col hover:shadow-lg transition duration-300 hover:scale-102 hover:bg-teal-50 h-full">
                 
                 <h3 class="font-semibold text-lg text-gray-900 mt-4">{{ card.title }}</h3>
 

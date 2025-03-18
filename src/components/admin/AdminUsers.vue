@@ -9,10 +9,10 @@
             <!-- Main Content -->
             <main class="flex-1 p-4">
                 <!-- User Review Section -->
-                <div class="mt-4">
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-xl font-bold text-gray-800">User Review</h3>
-                        <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-170" @search="updateSearchQuery" />
+                <!-- <div class="mt-4"> -->
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
+                        <h2 class="text-xl font-semibold text-teal-900 sm:pl-5">Users Review</h2>
+                        <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateSearchQuery" />
                     </div>
 
                     <!-- Loading Spinner -->
@@ -40,7 +40,7 @@
                             No administrators found.
                         </div>
                     </div>
-                </div>
+                <!-- </div> -->
             </main>
         </div>
     </div>

@@ -192,11 +192,11 @@ export default {
                 return;
             }
 
-            const alreadyTaken = await this.quizAlreadyTaken();
-            if (alreadyTaken) return;
-
             const hasSubscription = await this.checkSubscription();
             if (!hasSubscription) return;
+            
+            const alreadyTaken = await this.quizAlreadyTaken();
+            if (alreadyTaken) return;
 
             this.$router.push(`/quizzes/${this.quiz.id}`);
         },

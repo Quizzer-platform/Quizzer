@@ -22,8 +22,8 @@
             </form>
         </div>
         <div v-if="showTimeUpPopup"
-            class="fixed inset-0 bg-black/40 backdrop-blur-xs flex justify-center items-center z-50 px-4">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+            class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4 gap-y-4">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl text-center">
                 <h2 class="text-lg sm:text-xl font-semibold text-red-600">⏰ Time's Up!</h2>
                 <p class="text-gray-600 mt-2 text-sm sm:text-base">
                     Your time has expired. Your quiz has been submitted automatically.
@@ -35,10 +35,25 @@
                     </button>
                 </div>
             </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center w-xl">
+                <h2 class="text-2xl font-bold text-gray-800">Quiz Results:</h2>
+                <p class="text-xl text-gray-700 mt-2">
+                    Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ questions.length }}
+                </p>
+                <button @click="goToHome"
+                    class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                    Go to Home
+                </button>
+                <button @click="goToQuizAnswers"
+                    class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                    Check Answers
+                </button>
+            </div>
         </div>
     </div>
 
-    <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-teal-900 bg-opacity-50">
+    <div v-if="showPopup"
+        class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center w-4xl">
             <h2 class="text-2xl font-bold text-gray-800">Quiz Results:</h2>
             <p class="text-xl text-gray-700 mt-2">
@@ -47,6 +62,10 @@
             <button @click="goToHome"
                 class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
                 Go to Home
+            </button>
+            <button @click="goToQuizAnswers"
+                class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                Check Answers
             </button>
         </div>
     </div>
@@ -243,15 +262,10 @@ export default {
         handleTimeUp() {
             clearInterval(this.timer);
             this.showTimeUpPopup = true;
-
-            // Show the time's up popup for 2 seconds, then show results
-            setTimeout(async () => {
-                this.showTimeUpPopup = false;
-                await this.submitQuiz();
-            }, 2000);
+            this.submitQuiz(true);
         },
 
-        async submitQuiz() {
+        async submitQuiz(isTimeUp = false) {
             clearInterval(this.timer); // Clear timer when submitting
             this.score = this.calculateScore();
 
@@ -261,17 +275,27 @@ export default {
                 await this.updateOverallScore(this.score);
                 await this.storeAttemptedQuiz(quizId, this.score);
             }
-            this.showPopup = true;
-        },
-        goToHome() {
-            this.$router.push("/");
+            if (!isTimeUp) {
+                this.showPopup = true;
+            }
+
         },
 
         goToQuizzes() {
-            this.$router.push("/categories");
+            this.$router.push("/quizzes");
             this.showTimeUpPopup = false;
+            this.showPopup = false;
         },
 
+        goToHome() {
+            this.$router.push("/");
+            this.showTimeUpPopup = false;
+            this.showPopup = false;
+        },
+        goToQuizAnswers() {
+            // Navigate to answers page after submission
+            this.$router.push(`/quiz/quizAnswers/${quizId}`);
+        },
     },
     mounted() {
         this.loadQuestions();

@@ -4,7 +4,7 @@
             <button 
                 @click="$router.push('/organization')" 
                 class="flex items-center gap-2 text-white bg-teal-600 hover:bg-teal-700 
-                       px-4 py-2 rounded-lg shadow-lg transition-all duration-300"
+                       px-4 py-2 rounded-lg shadow-lg transition-all duration-300 cursor-pointer"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -78,11 +78,11 @@
 
             <div class="flex justify-center gap-4">
                 <button type="button" @click="addQuestion"
-                    class="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-500 transition duration-300 shadow-md">
+                    class="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-500 transition duration-300 shadow-md cursor-pointer">
                     Add Question
                 </button>
                 <button type="submit"
-                    class="bg-teal-600 text-white px-5 py-3 rounded-lg hover:bg-teal-500 transition duration-300 shadow-md">
+                    class="bg-teal-600 text-white px-5 py-3 rounded-lg hover:bg-teal-500 transition duration-300 shadow-md cursor-pointer">
                     Submit Quiz
                 </button>
             </div>
@@ -94,7 +94,7 @@
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">🎉 Quiz Created Successfully!</h2>
                 <p class="text-gray-600 mb-4">Your quiz has been successfully saved.</p>
                 <button @click="redirectToDashboard"
-                    class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300">
+                    class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300 cursor-pointer">
                     OK
                 </button>
             </div>

@@ -4,7 +4,7 @@
             <button 
                 @click="$router.push('/organization')" 
                 class="flex items-center gap-2 text-white bg-teal-600 hover:bg-teal-700 
-                       px-4 py-2 rounded-lg shadow-lg transition-all duration-300"
+                       px-4 py-2 rounded-lg shadow-lg transition-all duration-300 cursor-pointer"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -56,7 +56,7 @@
             <div class="flex justify-center">
                 <button type="submit"
                     class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-500 
-                           transition-all duration-300 shadow-md">
+                           transition-all duration-300 shadow-md cursor-pointer">
                     Send Message
                 </button>
             </div>
@@ -68,7 +68,7 @@
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">✅ Message Sent!</h2>
                 <p class="text-gray-600 mb-4">Your message has been successfully sent to the user.</p>
                 <button @click="redirectToDashboard"
-                    class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300">
+                    class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300 cursor-pointer">
                     OK
                 </button>
             </div>

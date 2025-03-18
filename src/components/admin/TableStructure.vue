@@ -21,7 +21,7 @@
                             <button
                                 class="bg-teal-700 hover:bg-teal-900 text-white px-5 py-2 rounded-md shadow-md cursor-pointer"
                                 @click="$emit('view-details', row[0])">
-                                More Details
+                                Details
                             </button>
                         </td>
                     </tr>
@@ -40,7 +40,7 @@
                     <button
                         class="bg-teal-700 hover:bg-teal-900 text-white px-5 py-2 rounded-md shadow-md cursor-pointer"
                         @click="$emit('view-details', row[0])">
-                        More Details
+                        Details
                     </button>
                 </div>
             </div>

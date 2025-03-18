@@ -44,6 +44,10 @@
                     class="bg-teal-600 text-white px-6 py-2 mx-2 rounded-lg shadow-md hover:bg-teal-700 transition hover:cursor-pointer">
                     Back To Profile
                 </button>
+                <button @click="goToHome"
+                    class="bg-teal-600 text-white px-6 py-2 mx-2 rounded-lg shadow-md hover:bg-teal-700 transition hover:cursor-pointer">
+                    Back To Home
+                </button>
             </div>
         </div>
     </div>
@@ -118,12 +122,14 @@ export default {
                 this.isLoading = false;
             }
         },
-
+        goToHome() {
+            this.$router.push("/");
+        },
         goToQuizzes() {
             this.$router.push("/quizzes");
         },
         goToProfile() {
-            this.$router.push("/profile");
+            this.$router.push("/profile/userQuizzes");
         },
     },
     beforeMount() {

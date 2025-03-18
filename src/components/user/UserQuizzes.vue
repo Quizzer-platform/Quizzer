@@ -10,9 +10,9 @@
                             <h1 class="text-2xl font-bold text-teal-800">Your Quiz Performance</h1>
                             <div class="mt-4 md:mt-0">
                                 <p class="text-lg font-semibold">Overall Rank: <span class="text-teal-600">#{{ userRank
-                                        }}</span></p>
+                                }}</span></p>
                                 <p class="text-lg font-semibold">Total Score: <span class="text-teal-600">{{ totalScore
-                                        }}</span></p>
+                                }}</span></p>
                             </div>
                         </div>
 
@@ -24,7 +24,7 @@
                         <div v-else-if="userQuizzes.length > 0"
                             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             <div v-for="quiz in userQuizzes" :key="quiz.quizId"
-                                class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+                                class="bg-gray-50 p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
                                         {{ quiz.title }} </span>
@@ -43,6 +43,11 @@
                                         {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
                                     </span>
                                 </p>
+                                <!-- In the template, update the button -->
+                                <button @click="goToQuizAnswers(quiz.quizId)"
+                                    class="mt-4 bg-teal-700 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                                    Check Correct Answers
+                                </button>
                             </div>
                         </div>
 
@@ -177,9 +182,10 @@ export default {
         goToPricing() {
             this.$router.push("/pricing");
         },
-        goToProfile() {
-            this.$router.push("/profile");
-        }
+        goToQuizAnswers(quizId) {
+            if (!quizId) return;
+            this.$router.push(`/quiz/quizAnswers/${quizId}`);
+        },
     },
     mounted() {
         if (this.userId) {

@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-white shadow-md" id="navbar">
+    <nav class="bg-white shadow-md transition-colors duration-300" id="navbar">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center py-2">
                 <h1 class="text-xl font-extrabold text-teal-800 dark:text-teal-400">Quizzer</h1>
@@ -67,7 +67,7 @@
                         <slot name="canChange">
                             <template v-if="isAuthenticated">
                                 <span class="mx-2 text-teal-800 dark:text-teal-400">Welcome, {{ userName }}</span>
-                                <button @click="handleLogout" class="mx-2 hover:text-teal-600 dark:hover:text-teal-300">Logout</button>
+                                <button @click="handleLogout" class="mx-2 hover:text-teal-600 dark:hover:text-teal-300 cursor-pointer">Logout</button>
                             </template>
                         </slot>
                     </div>
@@ -77,14 +77,14 @@
                         <span class="hamburger-middle"></span>
                         <span class="hamburger-bottom"></span>
                     </button>
-                    <button @click="toggleDarkMode" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <button @click="toggleDarkMode" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 cursor-pointer">
                                     <span v-if="isDarkMode">🌙</span> <!-- Moon icon for dark mode -->
                                     <span v-else>☀️</span> <!-- Sun icon for light mode -->
                     </button>
                 </div>
             </div>
         </div>
-        <div v-if="mobileMenuOpen" class="md:hidden flex flex-col items-center space-y-4 pb-4 bg-white dark:bg-[#1a202c] dark:text-white">
+        <div v-if="mobileMenuOpen" class="md:hidden flex flex-col items-center space-y-4 pb-4 bg-white dark:bg-[#1a202c] transition-colors duration-300 dark:text-white">
     <ul class="space-x-6 flex flex-col gap-y-2">
         <li>
             <router-link to="/" 

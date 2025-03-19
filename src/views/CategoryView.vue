@@ -1,8 +1,10 @@
 <template>
     <Navbar />
-    <search v-if="showCategories" class="" @search="updateSearchQuery" />
-
-    <div class="flex justify-center items-center">
+<div class="flex justify-center py-2 bg-white dark:bg-[#1a202c]">
+        <search  v-if="showCategories"  @search="updateSearchQuery" />
+    </div>
+<div :class="showCategories ? 'min-h-screen' : 'min-h-0'"
+class="flex justify-center items-center bg-white text-gray-900 dark:bg-[#1a202c] dark:text-white">
         <!-- Loading State -->
         <div v-if="loading || loadingQuizzes" class="text-center py-8 min-h-screen">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
@@ -17,19 +19,36 @@
         <CategriesCards v-else-if="showCategories" :categories="filteredCategories" @view-quizzes="viewCategoryQuizzes" />
 
         <!-- Quizzes View -->
-    <div v-else class="container mx-auto px-4 lg:px-8">
-        <div class="flex justify-start">
-            <button @click="showCategories = true"
-                class="m-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-teal-900 transition cursor-pointer">
-                Back to Categories
-            </button>
-        </div>
+    <!-- Quizzes View -->
+<div v-else class="container mx-auto px-4 lg:px-4">
+    <!-- Back Button & Search Bar Container -->
+<div class="flex flex-wrap items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:px-8">
+
+    <!-- Back Button -->
+    <button @click="showCategories = true"
+        class="flex items-center cursor-pointer gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg shadow-md 
+               hover:bg-teal-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-500">
+        Back to Categories
+    </button>
+
+    <!-- Search Bar -->
+    <div class="relative w-full sm:w-80">
+        <search v-model="searchQuery" class="w-full" />
+    </div>
+
+</div>
+
+    <!-- Quizzes Section -->
+    <div class="flex flex-col justify-center items-center">
         <QuizesCards v-if="selectedCategoryQuizzes.length" :cards="selectedCategoryQuizzes"
             :categoryTitle="selectedCategoryTitle" />
         <div v-else-if="!loadingQuizzes" class="text-center py-8">
             <p class="text-gray-600">No quizzes found in this category.</p>
         </div>
     </div>
+</div>
+
+
     </div>
 
     <Footer />
@@ -56,8 +75,24 @@ export default {
         };
     },
     mounted() {
-        this.loadCategories();
+         this.loadCategories().then(() => {
+      // Auto-load category from URL parameter after categories are loaded
+      const categoryId = this.$route.query.category;
+      if (categoryId) {
+        this.viewCategoryQuizzes(categoryId);
+      }
+    });
     },
+    watch: {
+    '$route.query.category'(newId) {
+      if (newId) {
+        // Ensure categories are loaded before trying to view quizzes
+        this.loadCategories().then(() => {
+          this.viewCategoryQuizzes(newId);
+        });
+      }
+    }
+  },
     computed: {
         filteredCategories() {
             if (!this.searchQuery) return this.categories;
@@ -71,22 +106,22 @@ export default {
         },
     },
     methods: {
-        loadCategories() {
-            fetch("https://quizzer-platform-default-rtdb.firebaseio.com/categories.json")
-                .then(response => response.json())
-                .then(data => {
-                    this.categories = data
-                        ? Object.keys(data).map(id => ({
-                            id,
-                            icon: data[id].icon,
-                            title: data[id].title,
-                            description: data[id].description,
-                            quizzes: data[id].quizzes || []
-                        }))
-                        : [];
-                })
-                .catch(error => console.error("Error loading categories:", error))
-                .finally(() => (this.loading = false));
+        loadCategories() {return fetch("https://quizzer-platform-default-rtdb.firebaseio.com/categories.json")
+        .then(response => response.json())
+        .then(data => {
+          this.categories = data
+            ? Object.keys(data).map(id => ({
+                id,
+                icon: data[id].icon,
+                title: data[id].title,
+                description: data[id].description,
+                quizzes: data[id].quizzes || []
+              }))
+            : [];
+          return true; // Return a resolved promise
+        })
+        .catch(error => console.error("Error loading categories:", error))
+        .finally(() => (this.loading = false));
         },
         viewCategoryQuizzes(categoryId) {
             this.loadingQuizzes = true;

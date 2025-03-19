@@ -1,17 +1,28 @@
 <template>
-    <Navbar />
-    <search class="" @search="updateSearchQuery" />
-    <div class="flex flex-col justify-center items-center min-h-screen">
-        <div v-if="loading" class="text-center py-8">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
-            <p class="text-gray-600 mt-4">Loading quizzes...</p>
+    <div class="bg-gray-100  dark:bg-[#1a202c] min-h-screen text-gray-900 dark:text-gray-200">
+        <Navbar />
+        
+        <!-- Search Bar -->
+        <search class="mt-6" @search="updateSearchQuery" />
+        
+        <div class="flex flex-col justify-center items-center min-h-[80vh] px-6">
+            <!-- Loading State -->
+            <div v-if="loading" class="text-center py-8">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
+                <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quizzes...</p>
+            </div>
+
+            <!-- No Data State -->
+            <div v-else-if="filteredQuizzes.length === 0" 
+                class="text-center text-gray-500 dark:text-gray-400 my-20 text-lg">
+                No quizzes found.
+            </div>
+
+            <!-- Quizzes List -->
+            <Quizzes v-else :cards="filteredQuizzes" />
         </div>
-        <div v-else-if="filteredQuizzes.length === 0" class="text-center text-gray-500 my-20">
-          No quizzes found.
-        </div>
-        <Quizzes v-else :cards="filteredQuizzes" />
+            <Footer />
     </div>
-    <Footer />
 </template>
 
 <script>

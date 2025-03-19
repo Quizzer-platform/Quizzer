@@ -1,7 +1,8 @@
 <template>
-    <Navbar />
-<div class="flex justify-center py-2 bg-white dark:bg-[#1a202c]">
-        <search  v-if="showCategories"  @search="updateSearchQuery" />
+<Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
+<div class="flex justify-center py-2 pt-20 bg-white dark:bg-[#1a202c] flex-wrap items-center gap-4 px-4 sm:px-6 lg:px-8 w-full">
+     
+        <search class="w-full" v-if="showCategories"  @search="updateSearchQuery" />   
     </div>
 <div :class="showCategories ? 'min-h-screen' : 'min-h-0'"
 class="flex justify-center items-center bg-white text-gray-900 dark:bg-[#1a202c] dark:text-white">

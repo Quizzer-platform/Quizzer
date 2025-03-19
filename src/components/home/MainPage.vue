@@ -1,6 +1,6 @@
 <template>
-    <Navbar />
-    <section class="py-8 px-6 bg-white dark:bg-[#1a202c] transition-colors duration-300">
+<Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
+    <section class="py-8 px-6 pt-20 bg-white dark:bg-[#1a202c] transition-colors duration-300">
     <div class="container mx-auto px-4 sm:px-6 flex items-center justify-center mt-5">
         <div class="max-w-4xl mx-auto w-full text-center py-8 sm:py-12">
             <span
@@ -111,26 +111,32 @@
             <!-- Left Column -->
             <div class="space-y-4">
                 <!-- FAQ Item 1 -->
-                <details class="faq-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-left hover:shadow-lg dark:hover:shadow-xl transition duration-300 hover:scale-105 hover:bg-teal-50 dark:hover:bg-gray-700" open>
+                <details 
+                    class="faq-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-left transition-all duration-300 hover:shadow-lg dark:hover:shadow-xl hover:scale-105 hover:bg-teal-50 dark:hover:bg-gray-700 open:ring-2 open:ring-teal-400" open>
+                    
                     <summary class="cursor-pointer list-none pl-7 relative">
                         <h3 class="font-semibold text-gray-800 dark:text-white">
                             How does the quiz platform work?
                         </h3>
                     </summary>
-                    <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm pl-9">
+
+                    <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm pl-9 transition-all duration-300">
                         Our platform allows organizations to create customized quizzes to assess skills. Job seekers
                         take these quizzes, and their results are used to match them with relevant job opportunities.
                     </p>
                 </details>
 
                 <!-- FAQ Item 2 -->
-                <details class="faq-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-left hover:shadow-lg dark:hover:shadow-xl transition duration-300 hover:scale-105 hover:bg-teal-50 dark:hover:bg-gray-700">
+                <details 
+                    class="faq-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-left transition-all duration-300 hover:shadow-lg dark:hover:shadow-xl hover:scale-105 hover:bg-teal-50 dark:hover:bg-gray-700 open:ring-2 open:ring-teal-400">
+                    
                     <summary class="cursor-pointer list-none pl-7 relative">
                         <h3 class="font-semibold text-gray-800 dark:text-white">
                             Can organizations see my quiz results?
                         </h3>
                     </summary>
-                    <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm pl-9">
+
+                    <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm pl-9 transition-all duration-300">
                         Yes, organizations can view your quiz results if you’ve applied for their job openings. Your
                         results help them assess your skills and suitability for the role.
                     </p>
@@ -140,26 +146,32 @@
             <!-- Right Column -->
             <div class="space-y-4">
                 <!-- FAQ Item 3 -->
-                <details class="faq-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-left hover:shadow-lg dark:hover:shadow-xl transition duration-300 hover:scale-105 hover:bg-teal-50 dark:hover:bg-gray-700">
+                <details 
+                    class="faq-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-left transition-all duration-300 hover:shadow-lg dark:hover:shadow-xl hover:scale-105 hover:bg-teal-50 dark:hover:bg-gray-700 open:ring-2 open:ring-teal-400">
+                    
                     <summary class="cursor-pointer list-none pl-7 relative">
                         <h3 class="font-semibold text-gray-800 dark:text-white">
                             Is the platform free for job seekers?
                         </h3>
                     </summary>
-                    <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm pl-9">
+
+                    <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm pl-9 transition-all duration-300">
                         Yes, job seekers can use the platform for free. Organizations may have subscription plans
                         for creating and managing quizzes.
                     </p>
                 </details>
 
                 <!-- FAQ Item 4 -->
-                <details class="faq-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-left hover:shadow-lg dark:hover:shadow-xl transition duration-300 hover:scale-105 hover:bg-teal-50 dark:hover:bg-gray-700">
+                <details 
+                    class="faq-item bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-left transition-all duration-300 hover:shadow-lg dark:hover:shadow-xl hover:scale-105 hover:bg-teal-50 dark:hover:bg-gray-700 open:ring-2 open:ring-teal-400">
+                    
                     <summary class="cursor-pointer list-none pl-7 relative">
                         <h3 class="font-semibold text-gray-800 dark:text-white">
                             What types of quizzes are available?
                         </h3>
                     </summary>
-                    <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm pl-9">
+
+                    <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm pl-9 transition-all duration-300">
                         We offer quizzes in various categories, including technical skills, soft skills, and
                         industry-specific knowledge. Organizations can also create custom quizzes.
                     </p>
@@ -168,6 +180,7 @@
         </div>
     </div>
 </section>
+
 
     <section class="py-8 px-6 bg-white dark:bg-[#1a202c] text-center transition-colors duration-300 pt-15">
     <div class="max-w-4xl mx-auto">

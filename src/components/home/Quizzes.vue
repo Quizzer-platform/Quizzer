@@ -1,9 +1,10 @@
 <template>
+    
     <div class="bg-gray-100  dark:bg-[#1a202c] min-h-screen text-gray-900 dark:text-gray-200">
-        <Navbar />
+<Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
         
         <!-- Search Bar -->
-        <search class="mt-6" @search="updateSearchQuery" />
+        <search class="mt-6 pt-20" @search="updateSearchQuery" />
         
         <div class="flex flex-col justify-center items-center min-h-[80vh] px-6">
             <!-- Loading State -->

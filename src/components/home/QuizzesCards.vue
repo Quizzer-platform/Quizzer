@@ -1,17 +1,27 @@
 <template>
-    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 justify-center mb-10">
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center mb-10">
         <div v-for="(card, index) in cards" :key="index" class="flex justify-center">
             <div
-                class="bg-white p-6 rounded-xl shadow-md w-80 text-center flex flex-col hover:shadow-lg transition duration-300 hover:scale-102 hover:bg-teal-50 h-full">
+                class="p-6 rounded-xl shadow-lg w-80 text-center flex flex-col transition duration-300 transform hover:scale-105 h-full 
+                bg-gradient-to-br from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 
+                hover:bg-opacity-90 dark:hover:from-gray-700 dark:hover:to-gray-800 border border-gray-200 dark:border-gray-700">
                 
-                <h3 class="font-semibold text-lg text-gray-900 mt-4">{{ card.title }}</h3>
+                <!-- Title -->
+                <h3 class="font-semibold text-xl text-gray-900 dark:text-teal-300 mt-4 tracking-wide">
+                    {{ card.title }}
+                </h3>
 
-                <p class="text-gray-600 mt-2 text-sm flex-grow">
+                <!-- Description -->
+                <p class="text-gray-700 dark:text-gray-400 mt-3 text-sm leading-relaxed flex-grow px-2">
                     {{ card.description }}
                 </p>
 
-                <button @click="$router.push({ name: 'quizDetails', params: { quizId: card.id } })"
-                    class="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg shadow-md w-full hover:bg-teal-900 cursor-pointer transition">
+                <!-- Button -->
+                <button 
+                    @click="$router.push({ name: 'quizDetails', params: { quizId: card.id } })"
+                    class="mt-4 px-5 py-2 cursor-pointer rounded-lg shadow-md w-full transition-all duration-300
+                    bg-teal-600 text-white hover:bg-teal-500 dark:bg-teal-700 dark:hover:bg-teal-500 
+                    hover:shadow-lg hover:shadow-teal-500/50">
                     See More
                 </button>
 
@@ -22,6 +32,11 @@
 
 <script>
 export default {
-    props: ["cards", "categoryTitle"],
+    props: {
+        cards: {
+            type: Array,
+            required: true
+        }
+    }
 };
 </script>

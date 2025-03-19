@@ -98,7 +98,7 @@
                                 class="mt-1 block w-full px-4 py-2 border border-teal-500 dark:border-gray-600 rounded-md shadow-sm focus:ring-teal-900 dark:focus:ring-teal-400 focus:border-teal-900 dark:focus:border-teal-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
                             </div>
                             <button type="submit" 
-                            class="w-full bg-teal-800 dark:bg-teal-600 text-white font-semibold py-2 rounded-md hover:bg-teal-600 dark:hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-700 dark:focus:ring-teal-400">
+                            class="w-full bg-teal-800 dark:bg-teal-600 text-white font-semibold py-2 rounded-md hover:bg-teal-600 dark:hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-700 dark:focus:ring-teal-400 cursor-pointer">
                                 Send Message
                             </button>
                         </form>

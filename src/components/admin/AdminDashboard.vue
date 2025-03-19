@@ -23,22 +23,22 @@
             </p>
             <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer"
                 @click="createQuiz">
                 CREATE QUIZ
               </button>
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer"
                 @click="viewQuiz">
                 VIEW / EDIT QUIZ
               </button>
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer"
                 @click="createCategory">
                 CREATE CATEGORY
               </button>
               <button
-                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md"
+                class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer"
                 @click="editCategory">
                 VIEW / EDIT CATEGORY
               </button>

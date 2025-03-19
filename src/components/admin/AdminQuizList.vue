@@ -16,12 +16,16 @@
         <p v-else-if="quizzes.length === 0" class="text-center text-gray-500">No quizzes available</p>
 
         <!-- Quizzes Table -->
-        <TableStructure v-else :headers="['QUIZ ID', 'Name of Quiz', 'No. of Questions', 'Org. Name']" :rows="filteredQuizzes.map(quiz => [
-            quiz.id,
-            quiz.name,
-            quiz.questions,
-            quiz.organization
-        ])" :showActions="false" @view-details="editQuiz" />
+        <TableStructure v-else :headers="['QUIZ ID', 'Name of Quiz', 'No. of Questions', 'Org. Name']" 
+            :rows="filteredQuizzes.map(quiz => [
+                quiz.id,
+                quiz.name,
+                quiz.questions,
+                quiz.organization
+            ])" 
+            :showActions="true" 
+            @view-details="previewQuiz"
+            :userRole="'admin'" />
     </div>
 </template>
 
@@ -146,6 +150,9 @@ export default {
             } finally {
                 this.loading = false;
             }
+        },
+        previewQuiz(quizId) {
+            this.$router.push(`/quiz/quizPreview/${quizId}`);
         },
     },
     async mounted() {

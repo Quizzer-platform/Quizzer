@@ -36,7 +36,7 @@
     <button
       @click="handlePayment"
       :disabled="loading"
-      class="w-full mt-6 py-3 px-6 font-semibold rounded-xl transition-all duration-300 
+      class="w-full mt-6 py-3 px-6 font-semibold rounded-xl transition-all duration-300 cursor-pointer
              text-white bg-teal-700 hover:bg-teal-800 
              disabled:bg-gray-400 disabled:cursor-not-allowed 
              dark:bg-teal-600 dark:hover:bg-teal-700 dark:disabled:bg-gray-600"

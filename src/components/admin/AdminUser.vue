@@ -44,7 +44,7 @@
                 <div class="mt-8">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-3">
                         <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">User's Quiz History</h3>
-                        <SearchBar class="w-full md:w-auto mt-2 md:mt-0" v-model="searchQuery" />
+                        <SearchBar class="w-full md:w-auto mt-2 md:mt-0" @search="updateSearchQuery" />
                     </div>
 
                     <!-- Loading Indicator -->
@@ -113,12 +113,17 @@ export default {
     },
     computed: {
         filteredQuizzes() {
+            if (!this.searchQuery) return this.quizzes;
+            const query = this.searchQuery.toLowerCase();
             return this.quizzes.filter(quiz =>
-                quiz.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                quiz.name.toLowerCase().includes(query)
             );
         },
     },
     methods: {
+        updateSearchQuery(query) {
+            this.searchQuery = query;
+        },
         toggleSidebar() {
             this.isSidebarOpen = !this.isSidebarOpen;
         },

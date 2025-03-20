@@ -1,0 +1,133 @@
+{
+    "mainPage": {
+        "hero": {
+            "tagline": "🚀 Measure Skills, Not Just Words",
+            "title": {
+                "part1": "The",
+                "highlight": "Ultimate",
+                "part2": "Quiz Platform for Smarter Hiring"
+            },
+            "description": {
+                "line1": "Quizzer is more than a quiz platform—it's a gateway to skills, a tool for evaluation,",
+                "line2": "and a community that values knowledge."
+            },
+            "callToAction": {
+                "line1": "Join thousands of organizations and candidates who rely on Quizzer",
+                "line2": "to measure skills and make smarter hiring decisions."
+            },
+            "buttons": {
+                "employers": "For Employers and Recruiters",
+                "jobSeekers": "For Job Seekers →"
+            }
+        },
+        "features": {
+            "sectionTitle": "What Sets Our Quizzes Apart",
+            "description": "Our platform connects job seekers to jobs based on their quiz results, helping employers find the right talent and candidates prove their skills.",
+            "cards": {
+                "skillEvaluation": {
+                    "title": "Skill Evaluation",
+                    "description": "Our platform provides in-depth skill assessments across multiple domains, helping organizations make data-driven hiring decisions."
+                },
+                "performance": {
+                    "title": "Performance Analytics",
+                    "description": "Track quiz performance with detailed analytics, including scores, time spent, and comparative benchmarking for smarter evaluations."
+                },
+                "customization": {
+                    "title": "Customizable Quizzes",
+                    "description": "Create quizzes with various question types, difficulty levels, and scoring methods to match your assessment criteria."
+                }
+            }
+        },
+        "categories": {
+            "title": "Explore Our Quiz Categories",
+            "viewAll": "View All → ",
+            "cards": {
+                "cat1": {
+                    "title": "Programming & Development",
+                    "description": "This category covers fundamental and advanced topics related to programming and software development. It includes quizzes on JavaScript, Vue.js, and other essential technologies used by developers. Each quiz aims to test and enhance your knowledge of programming concepts, best practices, and frameworks."
+                },
+                "cat2": {
+                    "title": "Web Development & UI/UX",
+                    "description": "This category focuses on the essential aspects of front-end web development and user interface/user experience (UI/UX) design. It includes quizzes on HTML, CSS, and best practices for designing intuitive, user-friendly interfaces. These quizzes help developers and designers enhance their skills in creating responsive, visually appealing, and functional websites."
+                },
+                "cat3": {
+                    "title": "Data Science & Analytics",
+                    "description": "This category tests knowledge of data analysis, SQL, and Python, which are fundamental for data scientists and analysts. The quizzes cover database querying, data manipulation, and key data science concepts using Python. These skills are crucial for deriving insights from data, optimizing decision-making, and building predictive models."
+                },
+                "seeMore": "See More"
+            }
+        },
+        "faq": {
+            "title": "Frequently Asked Questions",
+            "questions": {
+                "howItWorks": {
+                    "question": "How does the quiz platform work?",
+                    "answer": "Our platform allows organizations to create customized quizzes to assess skills. Job seekers take these quizzes, and their results are used to match them with relevant job opportunities."
+                },
+                "seeResults": {
+                    "question": "Can organizations see my quiz results?",
+                    "answer": "Yes, organizations can view your quiz results if you've applied for their job openings. Your results help them assess your skills and suitability for the role."
+                },
+                "isFree": {
+                    "question": "Is the platform free for job seekers?",
+                    "answer": "Yes, job seekers can use the platform for free. Organizations may have subscription plans for creating and managing quizzes."
+                },
+                "quizTypes": {
+                    "question": "What types of quizzes are available?",
+                    "answer": "We offer quizzes in various categories, including technical skills, soft skills, and industry-specific knowledge. Organizations can also create custom quizzes."
+                }
+            }
+        },
+        "testimonials": {
+            "title": {
+                "highlight": "Testimonials",
+                "main": "Hear From Happy Customers"
+            },
+            "cards": {
+                "sarah": {
+                    "name": "Sarah Johnson",
+                    "role": "Software Engineer",
+                    "testimony": "'Quizzer made the hiring process seamless! The platform is intuitive and easy to use.'"
+                },
+                "michael": {
+                    "name": "Michael Brown",
+                    "role": "Hr Manager",
+                    "testimony": "'As an HR manager, I love how Quizzer simplifies hiring. The skill-based assessments are spot-on!'"
+                },
+                "emily": {
+                    "name": "Emily Davis",
+                    "role": "Data Analyst",
+                    "testimony": "'The quizzes on Quizzer are top-notch! They helped me land a job that matches my skills.'"
+                }
+            }
+        }
+    },
+    "navBar": {
+        "welcome": "Welcome",
+        "home": "Home",
+        "categories": "Categories",
+        "quizzes": "Quizzes",
+        "leaderboard": "Leaderboard",
+        "contact": "Contact Us",
+        "pricing": "Pricing",
+        "dashboard": "Dashboard",
+        "profile": "Profile",
+        "login": "Login",
+        "signup": "Sign Up",
+        "logout": "Logout"
+    },
+    "footer": {
+        "moto": "Your trusted platform for online quizzes and assessments.",
+        "quickLinks" : "Quick Links",
+        "home":"Home",
+        "categories" :"Categories",
+        "quizzes" : "Quizzes",
+        "leaderboard" :"Leaderboard",
+        "resources": "Resources",
+        "pricing":"Pricing",
+        "contact" :"Contact Us",
+        "login":"Login",
+        "signup":"Sign Up",
+        "rights":"2025 Quizzer. All rights reserved."
+    }
+}

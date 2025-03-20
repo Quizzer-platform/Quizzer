@@ -1,5 +1,5 @@
 <template>
-    <div class="flex min-h-screen  bg-gray-100">
+    <div class="flex min-h-screen bg-gray-100 dark:bg-[#1a202c]">
         <!-- Sidebar -->
         <AdminSidebar :isOpen="isSidebarOpen" @toggleSidebar="toggleSidebar" class="fixed md:fixed z-50" />
 
@@ -10,27 +10,31 @@
 
             <!-- Admin Details Content -->
             <main class="flex-1 p-6">
-                <div v-if="selectedUser" class="bg-white p-6 rounded-lg shadow-md mt-4">
+                <div v-if="selectedUser" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-4">
                     <div class="flex flex-col space-y-4">
                         <!-- User Info -->
                         <div class="text-center md:text-left">
-                            <h2 class="text-2xl font-bold text-teal-700">{{ selectedUser.name }}</h2>
-                            <p class="mt-1 text-gray-600">Joined: {{ formatDate(selectedUser.createdAt) }}</p>
-                            <div class="mt-3 text-gray-700">
+                            <h2 class="text-2xl font-bold text-teal-700 dark:text-teal-400">{{ selectedUser.name }}</h2>
+                            <p class="mt-1 text-gray-600 dark:text-gray-300">Joined: {{ formatDate(selectedUser.createdAt) }}</p>
+                            <div class="mt-3 text-gray-700 dark:text-gray-300">
                                 <p><span class="font-semibold my-1">Email:</span> {{ selectedUser.email }}</p>
                                 <p><span class="font-semibold my-1 ">Phone:</span> {{ selectedUser.phone }}</p>
                             </div>
                         </div>
 
                         <!-- User Stats -->
-                        <div class="flex justify-between items-center bg-teal-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center bg-teal-50 dark:bg-gray-700 p-4 rounded-lg">
                             <div class="text-center">
-                                <p class="text-xl font-semibold text-teal-700">{{ selectedUser.quizzesToTake || 0 }}</p>
-                                <p class="text-gray-600">Quizzes To Take</p>
+                                <p class="text-xl font-semibold text-teal-700 dark:text-teal-300">
+                                    {{ selectedUser.quizzesToTake || 0 }}
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">Quizzes To Take</p>
                             </div>
                             <div class="text-center">
-                                <p class="text-xl font-semibold text-teal-700">{{ selectedUser.overallScore || 0 }}</p>
-                                <p class="text-gray-600">Overall Score</p>
+                                <p class="text-xl font-semibold text-teal-700 dark:text-teal-300">
+                                    {{ selectedUser.overallScore || 0 }}
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">Overall Score</p>
                             </div>
                         </div>
                     </div>
@@ -39,41 +43,40 @@
                 <!-- Quiz History Section -->
                 <div class="mt-8">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-3">
-                        <h3 class="text-xl font-bold text-gray-800">User's Quiz History</h3>
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">User's Quiz History</h3>
                         <SearchBar class="w-full md:w-auto mt-2 md:mt-0" v-model="searchQuery" />
                     </div>
 
                     <!-- Loading Indicator -->
                     <div v-if="isLoading" class="flex justify-center my-6">
-                        <svg class="animate-spin h-10 w-10 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        <svg class="animate-spin h-10 w-10 text-teal-600 dark:text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                            </circle>
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                         </svg>
                     </div>
 
                     <!-- No Quiz History Message -->
-                    <div v-else-if="quizzes.length === 0" class="text-center text-gray-500 mt-6">
+                    <div v-else-if="quizzes.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6">
                         This user has not taken any quizzes yet.
                     </div>
 
                     <!-- Display Quizzes -->
                     <div v-else class="overflow-x-auto">
-                        <table class="min-w-full bg-white rounded-lg overflow-hidden shadow-md mt-5">
-                            <thead class="bg-teal-600 text-white">
+                        <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md mt-5">
+                            <thead class="bg-teal-600 text-white dark:bg-teal-700">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-sm font-semibold">Quiz Name</th>
                                     <th class="px-6 py-3 text-left text-sm font-semibold">Score</th>
                                     <th class="px-6 py-3 text-left text-sm font-semibold">Date Taken</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                                 <tr v-for="quiz in filteredQuizzes" :key="quiz.name" 
-                                    class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 text-sm text-gray-900">{{ quiz.name }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-900">{{ quiz.score }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-900">{{ formatDate(quiz.date) }}</td>
+                                    class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{{ quiz.name }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{{ quiz.score }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{{ formatDate(quiz.date) }}</td>
                                 </tr>
                             </tbody>
                         </table>

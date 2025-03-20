@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100">
+    <div class="flex min-h-screen transition-colors duration-300 bg-gray-100 dark:bg-[#1a202c]">
     <!-- Sidebar -->
     <AdminSidebar :isOpen="isSidebarOpen" @toggleSidebar="toggleSidebar" class="fixed md:fixed z-50" />
 
@@ -10,60 +10,63 @@
       <div class="flex-1 p-4">
         <!-- Page Header -->
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
-          <h2 class="text-xl font-semibold text-teal-900">Edit Quizzes</h2>
+          <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-400">Edit Quizzes</h2>
           <SearchBar class="w-full sm:w-auto" @search="updateSearchQuery" />
-          <button class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 w-1/2 sm:w-auto cursor-pointer" @click="createQuiz">
+          <button class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 dark:bg-teal-600 dark:hover:bg-teal-800 w-1/2 sm:w-auto cursor-pointer" @click="createQuiz">
             ➕ Create Quiz
           </button>
         </div>
 
         <!-- 🔹 Loading Spinner -->
         <div v-if="loading" class="flex justify-center my-10">
-          <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900"></div>
+          <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900 dark:border-teal-400"></div>
         </div>
 
         <!-- Admin Quizzes Section -->
-        <h3 v-if="filteredAdminQuizzes.length" class="text-lg font-semibold text-gray-800 mt-6">Admin Created Quizzes</h3>
-        <hr v-if="filteredAdminQuizzes.length" class="my-2 border-gray-300" />
+        <h3 v-if="filteredAdminQuizzes.length" class="text-lg font-semibold text-gray-800 dark:text-gray-300 mt-6">Admin Created Quizzes</h3>
+        <hr v-if="filteredAdminQuizzes.length" class="my-2 border-gray-300 dark:border-gray-700" />
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-<QuizCard 
-  v-for="quiz in filteredAdminQuizzes" 
-  :key="quiz.id" 
-  :quiz="{
-    ...quiz,
-    icon: quiz.icon ||'@/assets/icon.png'
-  }" 
-  @edit="editQuiz(quiz)" 
-  @delete="confirmDelete(quiz.id, 'admin')" 
-/>
+          <QuizCard 
+            v-for="quiz in filteredAdminQuizzes" 
+            :key="quiz.id" 
+            :quiz="{
+              ...quiz,
+              icon: quiz.icon || '@/assets/icon.png'
+            }" 
+            @edit="editQuiz(quiz)" 
+            @delete="confirmDelete(quiz.id, 'admin')" 
+          />
         </div>
 
         <!-- Organization Quizzes Section -->
-        <h3 v-if="filteredOrgQuizzes.length" class="text-lg font-semibold text-gray-800 mt-6">Organization Created Quizzes</h3>
-        <hr v-if="filteredOrgQuizzes.length" class="my-2 border-gray-300" />
+        <h3 v-if="filteredOrgQuizzes.length" class="text-lg font-semibold text-gray-800 dark:text-gray-300 mt-6">Organization Created Quizzes</h3>
+        <hr v-if="filteredOrgQuizzes.length" class="my-2 border-gray-300 dark:border-gray-700" />
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
           <QuizCard v-for="quiz in filteredOrgQuizzes" :key="quiz.id" :quiz="quiz" @edit="editQuiz(quiz)" @delete="confirmDelete(quiz.id, 'organization')" />
         </div>
 
         <!-- No Quizzes Message -->
-        <div v-if="!loading && filteredAdminQuizzes.length === 0 && filteredOrgQuizzes.length === 0" class="text-center text-gray-500 mt-6">
+        <div v-if="!loading && filteredAdminQuizzes.length === 0 && filteredOrgQuizzes.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6">
           No quizzes available.
         </div>
       </div>
     </div>
-    <div v-if="showDeletePopup" class="fixed inset-0 z-[100] flex items-center justify-center bg-gray-600/75">
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <p class="text-lg font-semibold mb-4">Are you sure you want to delete this quiz?</p>
-      <div class="flex justify-center space-x-4">
-        <button @click="deleteQuiz" class="bg-red-500 text-white px-4 py-2 rounded-lg">Yes, Delete</button>
-        <button @click="showDeletePopup = false" class="bg-gray-300 px-4 py-2 text-teal-800 rounded-lg">Cancel</button>
+
+    <!-- Delete Confirmation Popup -->
+    <div v-if="showDeletePopup" class="fixed inset-0 z-[100] flex items-center justify-center bg-gray-600/75 dark:bg-gray-800/90">
+      <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
+        <p class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">Are you sure you want to delete this quiz?</p>
+        <div class="flex justify-center space-x-4">
+          <button @click="deleteQuiz" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800">
+            Yes, Delete
+          </button>
+          <button @click="showDeletePopup = false" class="bg-gray-300 text-teal-800 px-4 py-2 rounded-lg dark:bg-gray-600 dark:text-teal-300 dark:hover:bg-gray-500">
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  </div>
-
-  <!-- Delete Confirmation Popup -->
-
 </template>
 
 <script>

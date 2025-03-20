@@ -1,153 +1,172 @@
 <template>
-    <nav class="bg-white shadow-md transition-colors duration-300" id="navbar">
+    <nav class="bg-white shadow-md transition-colors duration-300 pt-3" id="navbar">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center py-2">
+                <!-- Logo & Welcome Message -->
                 <h1 class="text-xl font-extrabold text-teal-800 dark:text-teal-400">Quizzer</h1>
-                <ul class="hidden md:flex space-x-4">
+                
+                <!-- Small Screen Welcome Message -->
+                <span v-if="isAuthenticated" class="md:hidden text-sm text-teal-800 dark:text-teal-400 font-semibold">
+                    Welcome, {{ user.name || "User" }}!
+                </span>
+
+                <!-- Desktop Navigation -->
+                <ul class="hidden md:flex space-x-4 items-center">
                     <li>
                         <router-link to="/" 
-                            class="hover:text-teal-700 dark:hover:text-teal-400" 
+                            class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
                             Home
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/categories" 
-                            class="hover:text-teal-700 dark:hover:text-teal-400" 
+                            class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
                             Categories
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/quizzes" 
-                            class="hover:text-teal-700 dark:hover:text-teal-400" 
+                            class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
                             Quizzes
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/leaderboard" 
-                            class="hover:text-teal-700 dark:hover:text-teal-400" 
+                            class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
                             Leaderboard
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/contactus" 
-                            class="hover:text-teal-700 dark:hover:text-teal-400" 
+                            class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
                             Contact Us
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/pricing" 
-                            class="hover:text-teal-700 dark:hover:text-teal-400" 
+                            class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
                             Pricing
                         </router-link>
                     </li>
-                    <li v-if="!isAuthenticated" class="ms-20">
-                        <button class="mx-2 hover:text-teal-700 dark:hover:text-teal-400">
-                            <router-link to="/login">Login</router-link>
-                        </button>
-                        <button class="mx-2 hover:text-teal-700 dark:hover:text-teal-400">
-                            <router-link to="/usersignup">Signup</router-link>
-                        </button>
-                    </li>
                     <li v-if="isAuthenticated">
                         <router-link :to="dashboardLink" 
-                            class="hover:text-teal-700 dark:hover:text-teal-400" 
+                            class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
                             {{ this.user.role === "user" ? "Profile" : "Dashboard" }}
                         </router-link>
                     </li>
                 </ul>
-                <div class="flex items-center space-x-4">
-                    <div class="flex items-center space-x-2 m-5">
-                        <slot name="canChange">
-                            <template v-if="isAuthenticated">
-                                <span class="mx-2 text-teal-800 dark:text-teal-400">Welcome, {{ userName }}</span>
-                                <button @click="handleLogout" class="mx-2 hover:text-teal-600 dark:hover:text-teal-300 cursor-pointer">Logout</button>
-                            </template>
-                        </slot>
-                    </div>
 
-                    <button  @click="toggleMenu" class="block hamburger md:hidden" id="menuBtn">
+                <!-- Right Side: Login/Signup or Welcome Message + Dark Mode + Menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Welcome Message -->
+                    <span v-if="isAuthenticated" class="hidden md:block text-sm text-teal-800 dark:text-teal-400 font-semibold">
+                        Welcome, {{ user.name || "User" }}!
+                    </span>
+
+                    <!-- Login & Signup Buttons (Only If Not Logged In) -->
+                    <template v-if="!isAuthenticated">
+                        <router-link to="/login" class="hover:text-teal-700 dark:hover:text-teal-400">
+                            Login
+                        </router-link>
+                        <router-link to="/usersignup" class="hover:text-teal-700 dark:hover:text-teal-400">
+                            Signup
+                        </router-link>
+                    </template>
+
+                    <!-- Dark Mode Button -->
+                    <button @click="toggleDarkMode" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 cursor-pointer">
+                        <span v-if="isDarkMode">🌙</span>
+                        <span v-else>☀️</span>
+                    </button>
+                    <button v-if="isAuthenticated" @click="logout" class="hidden md:block hover:text-red-600 dark:hover:text-red-400 cursor-pointer">
+                    Logout
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button @click="toggleMenu" class="block hamburger md:hidden" id="menuBtn">
                         <span class="hamburger-top"></span>
                         <span class="hamburger-middle"></span>
                         <span class="hamburger-bottom"></span>
                     </button>
-                    <button @click="toggleDarkMode" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 cursor-pointer">
-                                    <span v-if="isDarkMode">🌙</span> <!-- Moon icon for dark mode -->
-                                    <span v-else>☀️</span> <!-- Sun icon for light mode -->
-                    </button>
                 </div>
             </div>
         </div>
+        <!-- Mobile Menu -->
         <div v-if="mobileMenuOpen" class="md:hidden flex flex-col items-center space-y-4 pb-4 bg-white dark:bg-[#1a202c] transition-colors duration-300 dark:text-white">
-    <ul class="space-x-6 flex flex-col gap-y-2">
-        <li>
-            <router-link to="/" 
-                class="hover:text-teal-600 dark:hover:text-teal-400" 
-                active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                Home
-            </router-link>
-        </li>
-        <li>
-            <router-link to="/categories" 
-                class="hover:text-teal-600 dark:hover:text-teal-400" 
-                active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                Categories
-            </router-link>
-        </li>
-        <li>
-            <router-link to="/quizzes" 
-                class="hover:text-teal-600 dark:hover:text-teal-400" 
-                active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                Quizzes
-            </router-link>
-        </li>
-        <li>
-            <router-link to="/leaderboard" 
-                class="hover:text-teal-600 dark:hover:text-teal-400" 
-                active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                Leaderboard
-            </router-link>
-        </li>
-        <li>
-            <router-link to="/contactus" 
-                class="hover:text-teal-600 dark:hover:text-teal-400" 
-                active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                Contact Us
-            </router-link>
-        </li>
-        <li>
-            <router-link to="/pricing" 
-                class="hover:text-teal-600 dark:hover:text-teal-400" 
-                active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                Pricing
-            </router-link>
-        </li>
-        <li v-if="isAuthenticated">
-            <router-link :to="dashboardLink" 
-                class="hover:text-teal-600 dark:hover:text-teal-400" 
-                active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                {{ this.user.role === "user" ? "Profile" : "Dashboard" }}
-            </router-link>
-        </li>
-        <li v-if="!isAuthenticated">
-            <router-link to="/login" 
-                class="hover:text-teal-600 dark:hover:text-teal-400">
-                Login
-            </router-link>
-        </li>
-        <li v-if="!isAuthenticated">
-            <router-link to="/usersignup" 
-                class="hover:text-teal-600 dark:hover:text-teal-400">
-                Signup
-            </router-link>
-        </li>
-    </ul>
+            <ul class="flex flex-col gap-y-2">
+                <li>
+                    <router-link to="/" 
+                        class="hover:text-teal-600 dark:hover:text-teal-400"
+                        active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
+                        Home
+                    </router-link>
+                </li>
+                <li>
+                    <router-link to="/categories" 
+                        class="hover:text-teal-600 dark:hover:text-teal-400"
+                        active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
+                        Categories
+                    </router-link>
+                </li>
+                <li>
+                    <router-link to="/quizzes" 
+                        class="hover:text-teal-600 dark:hover:text-teal-400"
+                        active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
+                        Quizzes
+                    </router-link>
+                </li>
+                <li>
+                    <router-link to="/leaderboard" 
+                        class="hover:text-teal-600 dark:hover:text-teal-400"
+                        active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
+                        Leaderboard
+                    </router-link>
+                </li>
+                <li>
+                    <router-link to="/contactus" 
+                        class="hover:text-teal-600 dark:hover:text-teal-400"
+                        active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
+                        Contact Us
+                    </router-link>
+                </li>
+                <li>
+                    <router-link to="/pricing" 
+                        class="hover:text-teal-600 dark:hover:text-teal-400"
+                        active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
+                        Pricing
+                    </router-link>
+                </li>
+                <li v-if="isAuthenticated">
+                    <router-link :to="dashboardLink" 
+                        class="hover:text-teal-600 dark:hover:text-teal-400"
+                        active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
+                        {{ this.user.role === "user" ? "Profile" : "Dashboard" }}
+                    </router-link>
+                </li>
+                <li v-if="!isAuthenticated">
+                    <router-link to="/login" class="hover:text-teal-600 dark:hover:text-teal-400">
+                        Login
+                    </router-link>
+                </li>
+                <li v-if="!isAuthenticated">
+                    <router-link to="/usersignup" class="hover:text-teal-600 dark:hover:text-teal-400">
+                        Signup
+                    </router-link>
+                </li>
+                <li v-if="isAuthenticated">
+    <button @click="logout" class="hover:text-red-600 dark:hover:text-red-400 cursor-pointer">
+        Logout
+    </button>
+</li>
+
+            </ul>
         </div>
     </nav>
 </template>

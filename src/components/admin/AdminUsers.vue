@@ -1,5 +1,5 @@
 <template>
-    <div class="flex min-h-screen bg-gray-100">
+    <div class="flex min-h-screen bg-gray-100 dark:bg-[#1a202c]">
         <!-- Sidebar -->
         <AdminSidebar :isOpen="isSidebarOpen" @toggleSidebar="toggleSidebar" class="fixed md:fixed z-50" />
         <!-- Main Content -->
@@ -11,7 +11,7 @@
                 <!-- User Review Section -->
                 <!-- <div class="mt-4"> -->
                     <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
-                        <h2 class="text-xl font-semibold text-teal-900 sm:pl-5">Users Review</h2>
+                        <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Users Review</h2>
                         <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateSearchQuery" />
                     </div>
 
@@ -26,7 +26,7 @@
                         @view-details="goToUserDetails" class="w-full max-w-5xl mx-auto" />
 
                     <div class="mt-8">
-                        <h3 class="text-xl font-bold text-gray-800 mb-3">System Administrators</h3>
+                        <h2 class="text-xl font-bold text-gray-800 dark:text-teal-300 mb-3">System Administrators</h2>
                         <!-- Admin Table -->
                         <TableStructure v-if="!loading && filteredAdmins.length > 0"
                             :headers="['Admin Id', 'Name', 'Email']" :rows="filteredAdmins.map(admin => [

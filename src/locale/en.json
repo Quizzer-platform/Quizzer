@@ -87,19 +87,47 @@
                 "sarah": {
                     "name": "Sarah Johnson",
                     "role": "Software Engineer",
-                    "testimony" :"'Quizzer made the hiring process seamless! The platform is intuitive and easy to use.'"
+                    "testimony": "'Quizzer made the hiring process seamless! The platform is intuitive and easy to use.'"
                 },
                 "michael": {
                     "name": "Michael Brown",
                     "role": "Hr Manager",
-                    "testimony" :"'As an HR manager, I love how Quizzer simplifies hiring. The skill-based assessments are spot-on!'"
+                    "testimony": "'As an HR manager, I love how Quizzer simplifies hiring. The skill-based assessments are spot-on!'"
                 },
                 "emily": {
                     "name": "Emily Davis",
                     "role": "Data Analyst",
-                    "testimony" :"'The quizzes on Quizzer are top-notch! They helped me land a job that matches my skills.'"
+                    "testimony": "'The quizzes on Quizzer are top-notch! They helped me land a job that matches my skills.'"
                 }
             }
         }
+    },
+    "navBar": {
+        "welcome": "Welcome",
+        "home": "Home",
+        "categories": "Categories",
+        "quizzes": "Quizzes",
+        "leaderboard": "Leaderboard",
+        "contact": "Contact Us",
+        "pricing": "Pricing",
+        "dashboard": "Dashboard",
+        "profile": "Profile",
+        "login": "Login",
+        "signup": "Sign Up",
+        "logout": "Logout"
+    },
+    "footer": {
+        "moto": "Your trusted platform for online quizzes and assessments.",
+        "quickLinks" : "Quick Links",
+        "home":"Home",
+        "categories" :"Categories",
+        "quizzes" : "Quizzes",
+        "leaderboard" :"Leaderboard",
+        "resources": "Resources",
+        "pricing":"Pricing",
+        "contact" :"Contact Us",
+        "login":"Login",
+        "signup":"Sign Up",
+        "rights":"2025 Quizzer. All rights reserved."
     }
 }

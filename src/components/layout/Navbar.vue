@@ -7,7 +7,7 @@
 
                 <!-- Small Screen Welcome Message -->
                 <span v-if="isAuthenticated" class="md:hidden text-sm text-teal-800 dark:text-teal-400 font-semibold">
-                    Welcome, {{ user.name || "User" }}!
+                    {{ $t('navBar.welcome') }}, {{ user.name || "User" }}!
                 </span>
 
                 <!-- Desktop Navigation -->
@@ -15,43 +15,43 @@
                     <li>
                         <router-link to="/" class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                            Home
+                            {{ $t('navBar.home') }}
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/categories" class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                            Categories
+                            {{ $t('navBar.categories') }}
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/quizzes" class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                            Quizzes
+                            {{ $t('navBar.quizzes') }}
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/leaderboard" class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                            Leaderboard
+                            {{ $t('navBar.leaderboard') }}
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/contactus" class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                            Contact Us
+                            {{ $t('navBar.contact') }}
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/pricing" class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                            Pricing
+                            {{ $t('navBar.pricing') }}
                         </router-link>
                     </li>
                     <li v-if="isAuthenticated">
                         <router-link :to="dashboardLink" class="hover:text-teal-700 dark:hover:text-teal-400"
                             active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                            {{ this.user.role === "user" ? "Profile" : "Dashboard" }}
+                            {{ this.user.role === "user" ? currentLocale === 'en' ? "Profile" : "ملف شخصي" : currentLocale === 'en' ? "Dashboard" : "لوحة التحكم" }}
                         </router-link>
                     </li>
                 </ul>
@@ -61,16 +61,16 @@
                     <!-- Welcome Message -->
                     <span v-if="isAuthenticated"
                         class="hidden md:block text-sm text-teal-800 dark:text-teal-400 font-semibold">
-                        Welcome, {{ user.name || "User" }}!
+                        {{ $t('navBar.welcome') }}, {{ user.name || "User" }}!
                     </span>
 
                     <!-- Login & Signup Buttons (Only If Not Logged In) -->
                     <template v-if="!isAuthenticated">
                         <router-link to="/login" class="hover:text-teal-700 dark:hover:text-teal-400">
-                            Login
+                            {{ $t('navBar.login') }}
                         </router-link>
                         <router-link to="/usersignup" class="hover:text-teal-700 dark:hover:text-teal-400">
-                            Signup
+                            {{ $t('navBar.signup') }}
                         </router-link>
                     </template>
 
@@ -98,7 +98,7 @@
 
                     <button v-if="isAuthenticated" @click="logout"
                         class="hidden md:block hover:text-red-600 dark:hover:text-red-400 cursor-pointer">
-                        Logout
+                        {{ $t('navBar.logout') }}
                     </button>
 
                     <!-- Mobile Menu Button -->
@@ -117,58 +117,58 @@
                 <li>
                     <router-link to="/" class="hover:text-teal-600 dark:hover:text-teal-400"
                         active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                        Home
+                        {{ $t('navBar.home') }}
                     </router-link>
                 </li>
                 <li>
                     <router-link to="/categories" class="hover:text-teal-600 dark:hover:text-teal-400"
                         active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                        Categories
+                        {{ $t('navBar.categories') }}
                     </router-link>
                 </li>
                 <li>
                     <router-link to="/quizzes" class="hover:text-teal-600 dark:hover:text-teal-400"
                         active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                        Quizzes
+                        {{ $t('navBar.quizzes') }}
                     </router-link>
                 </li>
                 <li>
                     <router-link to="/leaderboard" class="hover:text-teal-600 dark:hover:text-teal-400"
                         active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                        Leaderboard
+                        {{ $t('navBar.leaderboard') }}
                     </router-link>
                 </li>
                 <li>
                     <router-link to="/contactus" class="hover:text-teal-600 dark:hover:text-teal-400"
                         active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                        Contact Us
+                        {{ $t('navBar.contact') }}
                     </router-link>
                 </li>
                 <li>
                     <router-link to="/pricing" class="hover:text-teal-600 dark:hover:text-teal-400"
                         active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                        Pricing
+                        {{ $t('navBar.pricing') }}
                     </router-link>
                 </li>
                 <li v-if="isAuthenticated">
                     <router-link :to="dashboardLink" class="hover:text-teal-600 dark:hover:text-teal-400"
                         active-class="border-b-2 border-teal-600 pb-1 text-teal-600 dark:border-teal-400 dark:text-teal-400">
-                        {{ this.user.role === "user" ? "Profile" : "Dashboard" }}
+                        {{ this.user.role === "user" ? currentLocale === 'en' ? "Profile" : "ملف شخصي" : currentLocale === 'en' ? "Dashboard" : "لوحة التحكم" }}
                     </router-link>
                 </li>
                 <li v-if="!isAuthenticated">
                     <router-link to="/login" class="hover:text-teal-600 dark:hover:text-teal-400">
-                        Login
+                        {{ $t('navBar.login') }}
                     </router-link>
                 </li>
                 <li v-if="!isAuthenticated">
                     <router-link to="/usersignup" class="hover:text-teal-600 dark:hover:text-teal-400">
-                        Signup
+                        {{ $t('navBar.signup') }}
                     </router-link>
                 </li>
                 <li v-if="isAuthenticated">
                     <button @click="logout" class="hover:text-red-600 dark:hover:text-red-400 cursor-pointer">
-                        Logout
+                        {{ $t('navBar.logout') }}
                     </button>
                 </li>
 

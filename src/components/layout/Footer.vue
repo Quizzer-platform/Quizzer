@@ -3,7 +3,7 @@
         <div class="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
                 <h1 class="text-2xl font-bold text-teal-600 dark:text-teal-400">Quizzer</h1>
-                <p class="mt-2 text-sm">Your trusted platform for online quizzes and assessments.</p>
+                <p class="mt-2 text-sm">{{ $t('footer.moto') }}</p>
                 <div class="flex space-x-4 mt-4">
                     <a href="#" target="_blank" class="text-teal-100 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -27,29 +27,28 @@
             </div>
 
             <div>
-                <h3 class="text-lg font-semibold text-teal-600 dark:text-teal-400 mb-4">Quick Links</h3>
+                <h3 class="text-lg font-semibold text-teal-600 dark:text-teal-400 mb-4">{{ $t('footer.quickLinks') }}</h3>
                 <ul class="space-y-2">
-                    <li><router-link to="/" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">Home</router-link></li>
-                    <li><router-link to="/categories" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">Categories</router-link></li>
-                    <li><router-link to="/quizzes" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">Quizzes</router-link></li>
-                    <li><router-link to="/leaderboard" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">Leaderboard</router-link></li>
+                    <li><router-link to="/" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">{{ $t('footer.home') }}</router-link></li>
+                    <li><router-link to="/categories" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">{{ $t('footer.categories') }}</router-link></li>
+                    <li><router-link to="/quizzes" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">{{ $t('footer.quizzes') }}</router-link></li>
+                    <li><router-link to="/leaderboard" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">{{ $t('footer.leaderboard') }}</router-link></li>
                 </ul>
             </div>
 
             <div>
-                <h3 class="text-lg font-semibold text-teal-600 dark:text-teal-400 mb-4">Resources</h3>
+                <h3 class="text-lg font-semibold text-teal-600 dark:text-teal-400 mb-4">{{ $t('footer.resources') }}</h3>
                 <ul class="space-y-2">
-                    <li><router-link to="/pricing" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">Pricing</router-link></li>
-                    <li><router-link to="/contactus" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">Contact Us</router-link></li>
-                    <li v-if="!isAuthenticated"><router-link to="/login" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">Login</router-link>
+                    <li><router-link to="/pricing" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">{{ $t('footer.pricing') }}</router-link></li>
+                    <li><router-link to="/contactus" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">{{ $t('footer.contact') }}</router-link></li>
+                    <li v-if="!isAuthenticated"><router-link to="/login" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">{{ $t('footer.login') }}</router-link>
                     </li>
-                    <li v-if="!isAuthenticated"><router-link to="/usersignup" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">Sign
-                            Up</router-link></li>
+                    <li v-if="!isAuthenticated"><router-link to="/usersignup" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">{{ $t('footer.signup') }}</router-link></li>
                 </ul>
             </div>
 
             <div>
-                <h3 class="text-lg font-semibold text-teal-600 dark:text-teal-400 mb-4">Contact Us</h3>
+                <h3 class="text-lg font-semibold text-teal-600 dark:text-teal-400 mb-4">{{ $t('footer.contact') }}</h3>
                 <div class="space-y-3">
                     <p class="flex items-center space-x-3 hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

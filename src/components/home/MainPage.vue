@@ -10,7 +10,7 @@
 
                 <h1 class="md:text-4xl text-2xl font-bold text-gray-900 dark:text-white mt-6 sm:mt-8">
                     {{ $t('mainPage.hero.title.part1') }}<span
-                        class="bg-teal-200 dark:bg-teal-700 dark:text-white px-3 py-2 rounded-lg">{{
+                        class="bg-teal-200 dark:bg-teal-700 dark:text-white px-3 py-2 rounded-lg ms-2">{{
                             $t('mainPage.hero.title.highlight') }}</span> Quiz Platform
                     <span class="block mt-4">{{ $t('mainPage.hero.title.part2') }}</span>
                 </h1>
@@ -101,7 +101,7 @@
 
             <div class="flex flex-col justify-center items-center md:flex-row md:gap-8  mt-6">
                 <CategriesCards :categories="filteredCategories" @view-quizzes="viewCategoryQuizzes" />
-                
+
                 <!-- <div class="mt-8 justify-center mb-10 ">
                     <div class="flex justify-center">
                         <div
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                 </div> -->
-                
+
             </div>
 
 
@@ -207,7 +207,7 @@
 
                         <summary class="cursor-pointer list-none pl-7 relative">
                             <h3 class="font-semibold text-gray-800 dark:text-white">
-                            {{ $t(`mainPage.faq.questions.quizTypes.question`) }}
+                                {{ $t(`mainPage.faq.questions.quizTypes.question`) }}
                             </h3>
                         </summary>
 
@@ -223,16 +223,20 @@
 
     <section class="py-8 px-6 bg-white dark:bg-[#1a202c] text-center transition-colors duration-300 pt-15">
         <div class="max-w-4xl mx-auto">
-            <p class="text-2xl text-teal-800 dark:text-teal-400 font-bold my-2">{{ $t('mainPage.testimonials.title.highlight') }}</p>
-            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">{{ $t('mainPage.testimonials.title.main') }}</h2>
+            <p class="text-2xl text-teal-800 dark:text-teal-400 font-bold my-2">{{
+                $t('mainPage.testimonials.title.highlight') }}</p>
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">{{ $t('mainPage.testimonials.title.main') }}
+            </h2>
 
             <!-- Testimonials Grid -->
             <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Testimonial Card -->
                 <div
                     class="relative bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-lg dark:shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-lg dark:hover:shadow-[0_8px_20px_rgba(0,255,255,0.3)]">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">{{ $t('mainPage.testimonials.cards.sarah.name') }}</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $t('mainPage.testimonials.cards.sarah.role') }}</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">{{
+                        $t('mainPage.testimonials.cards.sarah.name') }}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $t('mainPage.testimonials.cards.sarah.role')
+                        }}</p>
                     <p class="mt-4 text-gray-700 dark:text-gray-300 italic">
                         "{{ $t('mainPage.testimonials.cards.sarah.testimony') }}"
                     </p>
@@ -243,8 +247,10 @@
 
                 <div
                     class="relative bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-lg dark:shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-lg dark:hover:shadow-[0_8px_20px_rgba(0,255,255,0.3)]">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">{{ $t('mainPage.testimonials.cards.michael.name') }}</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $t('mainPage.testimonials.cards.michael.role') }}</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">{{
+                        $t('mainPage.testimonials.cards.michael.name') }}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{
+                        $t('mainPage.testimonials.cards.michael.role') }}</p>
                     <p class="mt-4 text-gray-700 dark:text-gray-300 italic">
                         "{{ $t('mainPage.testimonials.cards.michael.testimony') }}"
                     </p>
@@ -255,8 +261,10 @@
 
                 <div
                     class="relative bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-lg dark:shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-lg dark:hover:shadow-[0_8px_20px_rgba(0,255,255,0.3)]">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">{{ $t('mainPage.testimonials.cards.emily.name') }}</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $t('mainPage.testimonials.cards.emily.role') }}</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">{{
+                        $t('mainPage.testimonials.cards.emily.name') }}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $t('mainPage.testimonials.cards.emily.role')
+                        }}</p>
                     <p class="mt-4 text-gray-700 dark:text-gray-300 italic">
                         "{{ $t('mainPage.testimonials.cards.emily.testimony') }}"
                     </p>

@@ -1,6 +1,6 @@
 <template>
-    <div class="relative isolate overflow-hidden bg-white dark:bg-[#1a202c] pb-16">
-        <Navbar />
+    <Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
+    <div class="relative isolate overflow-hidden bg-white dark:bg-[#1a202c] pb-16 pt-20">
 
         <div class="flex flex-col items-center justify-center m-7">
             <h2 class="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-gray-100 text-center m-7">

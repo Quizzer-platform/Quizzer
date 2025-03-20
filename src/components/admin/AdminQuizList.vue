@@ -3,7 +3,7 @@
         <hr class="border-gray-400 mb-4 w-40 sm:w-60 md:w-80 lg:w-96 xl:w-170 mx-auto" />
 
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
-            <h2 class="text-xl font-semibold text-teal-900 sm:pl-5">Quizzes Review</h2>
+            <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Quizzes Review</h2>
             <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-150" @search="updateSearchQuery" />
         </div>
 

@@ -69,7 +69,7 @@
         </div>
 
         <div class="border-t border-teal-800 dark:border-gray-800 mt-12 pt-8 text-center">
-            <p>&copy; 2025 Quizzer. All rights reserved.</p>
+            <p>&copy; {{ $t('footer.rights') }}</p>
         </div>
     </footer>
 </template>

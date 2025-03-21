@@ -4,19 +4,17 @@
             dark:bg-[#151a24] min-h-screen dark:text-gray-200"
     :class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }"
   >
-    <button class="absolute top-4 right-4 md:hidden text-white text-2xl" @click="toggleSidebar">
-      ✖
-    </button>
-
-    <!-- Updated QUIZZER Text Color -->
-    <h2 class="text-2xl font-bold p-6 text-teal-300 dark:text-teal-400">QUIZZER
-      <span>
-        <button @click="toggleDarkMode" class="p-1 rounded-full text-sm ml-8 bg-teal-700 dark:bg-gray-700 cursor-pointer">
-                        <span v-if="isDarkMode">🌙</span>
-                        <span v-else>☀️</span>
+    <div class="flex items-center justify-evenly md:justify-between p-4">
+        <button class="md:hidden text-white text-xl" @click="toggleSidebar">
+          ✖
         </button>
-    </span>
-    </h2>
+        <!-- Updated QUIZZER Text Color -->
+        <h2 class="text-2xl font-bold p-6 text-teal-300 dark:text-teal-400">QUIZZER</h2>
+        <button @click="toggleDarkMode" class="p-1 rounded-full text-sm bg-teal-700 dark:bg-gray-700 cursor-pointer flex items-center justify-center w-8 h-8">
+                    <span v-if="isDarkMode">🌙</span>
+                    <span v-else>☀️</span>
+        </button>
+    </div>
     
     <nav class="mt-6">
       <ul class="space-y-2">

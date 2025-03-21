@@ -253,6 +253,14 @@ export default {
         if (this.isDarkMode) {
             document.documentElement.classList.add("dark");
         }
+        if(this.$i18n.locale === 'en') {
+            document.documentElement.dir = "ltr";
+            document.documentElement.lang = "en";
+        }
+        if(this.$i18n.locale === 'ar') {
+            document.documentElement.dir = "rtl";
+            document.documentElement.lang = "ar";
+        }
     }
 };
 </script>

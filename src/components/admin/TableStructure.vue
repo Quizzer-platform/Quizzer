@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="bg-white p-6 rounded-lg shadow-lg mx-auto max-w-5xl 
+        class="bg-white p-4 rounded-lg shadow-lg mx-auto max-w-5xl 
                dark:bg-gray-800 dark:text-gray-200"
     >
         <div class="hidden md:block">

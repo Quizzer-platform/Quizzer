@@ -1,7 +1,7 @@
 <template>
     <section class="relative z-10 overflow-hidden bg-white dark:bg-[#1a202c] py-10 lg:py-[60px]">
         <Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
-        <div class="container mx-auto px-4 lg:px-8">
+        <div class="container mx-auto px-4 lg:px-8 pt-20">
             <div class="flex flex-wrap lg:justify-between">
                 <div class="w-full px-4 lg:w-1/2 xl:w-6/12">
                     <div class="mb-12 max-w-[570px] lg:mb-0">

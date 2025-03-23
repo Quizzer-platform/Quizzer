@@ -96,7 +96,7 @@
                         <span v-else>☀️</span>
                     </button>
 
-                    <button v-if="isAuthenticated" @click="logout"
+                    <button v-if="isAuthenticated" @click="handleLogout"
                         class="hidden md:block hover:text-red-600 dark:hover:text-red-400 cursor-pointer">
                         {{ $t('navBar.logout') }}
                     </button>
@@ -167,7 +167,7 @@
                     </router-link>
                 </li>
                 <li v-if="isAuthenticated">
-                    <button @click="logout" class="hover:text-red-600 dark:hover:text-red-400 cursor-pointer">
+                    <button @click="handleLogout" class="hover:text-red-600 dark:hover:text-red-400 cursor-pointer">
                         {{ $t('navBar.logout') }}
                     </button>
                 </li>

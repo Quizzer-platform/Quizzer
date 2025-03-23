@@ -1,11 +1,12 @@
 <template>
-    <section class="relative z-10 overflow-hidden bg-white dark:bg-[#1a202c] py-10 lg:py-[60px]">
-        <Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
+    <Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
+    <section class="relative z-10 overflow-hidden bg-white dark:bg-[#1a202c] py-10 lg:py-[10rem]">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex flex-wrap lg:justify-between">
                 <div class="w-full px-4 lg:w-1/2 xl:w-6/12">
                     <div class="mb-12 max-w-[570px] lg:mb-0">
-                        <span class="block mb-4 text-3xl font-semibold text-teal-700 dark:text-teal-400">Contact Us</span>
+                        <span class="block mb-4 text-3xl font-semibold text-teal-700 dark:text-teal-400">Contact
+                            Us</span>
                         <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white uppercase">
                             GET IN TOUCH WITH US
                         </h2>
@@ -17,12 +18,13 @@
                         <div class="flex w-full max-w-[370px] mb-8">
                             <div
                                 class="bg-teal-50 dark:bg-teal-900 text-teal-700 dark:text-teal-300 mr-6 flex h-[60px] w-full max-w-[60px] items-center justify-center overflow-hidden rounded sm:h-[70px] sm:max-w-[70px]">
-                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M30.6 11.8002L17.7 3.5002C16.65 2.8502 15.3 2.8502 14.3 3.5002L1.39998 11.8002C0.899983 12.1502 0.749983 12.8502 1.04998 13.3502C1.39998 13.8502 2.09998 14.0002 2.59998 13.7002L3.44998 13.1502V25.8002C3.44998 27.5502 4.84998 28.9502 6.59998 28.9502H25.4C27.15 28.9502 28.55 27.5502 28.55 25.8002V13.1502L29.4 13.7002C29.6 13.8002 29.8 13.9002 30 13.9002C30.35 13.9002 30.75 13.7002 30.95 13.4002C31.3 12.8502 31.15 12.1502 30.6 11.8002ZM13.35 26.7502V18.5002C13.35 18.0002 13.75 17.6002 14.25 17.6002H17.75C18.25 17.6002 18.65 18.0002 18.65 18.5002V26.7502H13.35ZM26.3 25.8002C26.3 26.3002 25.9 26.7002 25.4 26.7002H20.9V18.5002C20.9 16.8002 19.5 15.4002 17.8 15.4002H14.3C12.6 15.4002 11.2 16.8002 11.2 18.5002V26.7502H6.69998C6.19998 26.7502 5.79998 26.3502 5.79998 25.8502V11.7002L15.5 5.4002C15.8 5.2002 16.2 5.2002 16.5 5.4002L26.3 11.7002V25.8002Z"
                                         fill="currentColor" />
-                                    </svg>                            </div>
+                                </svg>
+                            </div>
                             <div class="w-full">
                                 <h4 class="mb-1 text-xl font-bold text-gray-900 dark:text-white">Our Location</h4>
                                 <p class="text-base text-gray-600 dark:text-gray-300">
@@ -79,27 +81,31 @@
                     <div class="relative p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg sm:p-12">
                         <form @submit.prevent="submitForm" class="space-y-4">
                             <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Name</label>
-                            <input v-model="name" id="name" type="text" required placeholder="Your Name" 
-                                class="mt-1 block w-full px-4 py-2 border border-teal-500 dark:border-gray-600 rounded-md shadow-sm focus:ring-teal-900 dark:focus:ring-teal-400 focus:border-teal-900 dark:focus:border-teal-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                <label for="name"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-200">Name</label>
+                                <input v-model="name" id="name" type="text" required placeholder="Your Name"
+                                    class="mt-1 block w-full px-4 py-2 border border-teal-500 dark:border-gray-600 rounded-md shadow-sm focus:ring-teal-900 dark:focus:ring-teal-400 focus:border-teal-900 dark:focus:border-teal-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
                             </div>
                             <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
-                            <input v-model="email" id="email" type="email" required placeholder="Your Email" 
-                                class="mt-1 block w-full px-4 py-2 border border-teal-500 dark:border-gray-600 rounded-md shadow-sm focus:ring-teal-900 dark:focus:ring-teal-400 focus:border-teal-900 dark:focus:border-teal-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                <label for="email"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+                                <input v-model="email" id="email" type="email" required placeholder="Your Email"
+                                    class="mt-1 block w-full px-4 py-2 border border-teal-500 dark:border-gray-600 rounded-md shadow-sm focus:ring-teal-900 dark:focus:ring-teal-400 focus:border-teal-900 dark:focus:border-teal-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
                             </div>
                             <div>
-                            <label for="number" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Phone</label>
-                            <input v-model="phone" id="phone" type="tel" required placeholder="Your Phone" 
-                                class="mt-1 block w-full px-4 py-2 border border-teal-500 dark:border-gray-600 rounded-md shadow-sm focus:ring-teal-900 dark:focus:ring-teal-400 focus:border-teal-900 dark:focus:border-teal-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                                <label for="number"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-200">Phone</label>
+                                <input v-model="phone" id="phone" type="tel" required placeholder="Your Phone"
+                                    class="mt-1 block w-full px-4 py-2 border border-teal-500 dark:border-gray-600 rounded-md shadow-sm focus:ring-teal-900 dark:focus:ring-teal-400 focus:border-teal-900 dark:focus:border-teal-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
                             </div>
                             <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Message</label>
-                            <textarea v-model="message" id="message" rows="4" required placeholder="Your Message" 
-                                class="mt-1 block w-full px-4 py-2 border border-teal-500 dark:border-gray-600 rounded-md shadow-sm focus:ring-teal-900 dark:focus:ring-teal-400 focus:border-teal-900 dark:focus:border-teal-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+                                <label for="message"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-200">Message</label>
+                                <textarea v-model="message" id="message" rows="4" required placeholder="Your Message"
+                                    class="mt-1 block w-full px-4 py-2 border border-teal-500 dark:border-gray-600 rounded-md shadow-sm focus:ring-teal-900 dark:focus:ring-teal-400 focus:border-teal-900 dark:focus:border-teal-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
                             </div>
-                            <button type="submit" 
-                            class="w-full bg-teal-800 dark:bg-teal-600 text-white font-semibold py-2 rounded-md hover:bg-teal-600 dark:hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-700 dark:focus:ring-teal-400 cursor-pointer">
+                            <button type="submit"
+                                class="w-full bg-teal-800 dark:bg-teal-600 text-white font-semibold py-2 rounded-md hover:bg-teal-600 dark:hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-700 dark:focus:ring-teal-400 cursor-pointer">
                                 Send Message
                             </button>
                         </form>

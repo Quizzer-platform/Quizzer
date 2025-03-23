@@ -60,11 +60,11 @@
                 Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ questions.length }}
             </p>
             <button @click="goToHome"
-                class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition mx-2">
                 Go to Home
             </button>
-            <button @click="goToQuizAnswers"
-                class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+            <button @click="goToQuizAnswers(quizId)"
+                class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition mx-2">
                 Check Answers
             </button>
         </div>
@@ -292,7 +292,7 @@ export default {
             this.showTimeUpPopup = false;
             this.showPopup = false;
         },
-        goToQuizAnswers() {
+        goToQuizAnswers(quizId) {
             // Navigate to answers page after submission
             this.$router.push(`/quiz/quizAnswers/${quizId}`);
         },

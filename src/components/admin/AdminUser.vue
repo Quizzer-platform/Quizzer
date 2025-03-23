@@ -113,14 +113,17 @@ export default {
     },
     computed: {
         filteredQuizzes() {
-            if (!this.searchQuery) return this.quizzes;
+            if (!this.searchQuery) return this.quizzes.slice(1,);
             const query = this.searchQuery.toLowerCase();
-            return this.quizzes.filter(quiz =>
+            return this.quizzes.slice(1,).filter(quiz =>
                 quiz.name.toLowerCase().includes(query)
             );
         },
     },
-    methods: {
+    methods: { 
+        removeFirstQuiz() {
+            this.quizzes.splice(0,1);
+        },
         updateSearchQuery(query) {
             this.searchQuery = query;
         },

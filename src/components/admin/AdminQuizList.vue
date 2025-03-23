@@ -16,16 +16,28 @@
         <p v-else-if="quizzes.length === 0" class="text-center text-gray-500">No quizzes available</p>
 
         <!-- Quizzes Table -->
-        <TableStructure v-else :headers="['QUIZ ID', 'Name of Quiz', 'No. of Questions', 'Org. Name']" 
-            :rows="filteredQuizzes.map(quiz => [
-                quiz.id,
-                quiz.name,
-                quiz.questions,
-                quiz.organization
-            ])" 
-            :showActions="true" 
-            @view-details="previewQuiz"
-            :userRole="'admin'" />
+        <TableStructure v-else :headers="['QUIZ ID', 'Name of Quiz', 'No. of Questions', 'Org. Name']" :rows="paginatedData.map(quiz => [
+            quiz.id,
+            quiz.name,
+            quiz.questions,
+            quiz.organization
+        ])" :showActions="true" @view-details="previewQuiz" :userRole="'admin'" />
+
+        <!-- Pagination controls -->
+        <div v-if="quizzes.length > 0" class="flex justify-center gap-2 p-4">
+            <button @click="prevPage" :disabled="currentPage === 1"
+                class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                Previous
+            </button>
+            <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                Page {{ currentPage }} of {{ totalPages }}
+            </span>
+            <button @click="nextPage" :disabled="currentPage === totalPages || totalPages === 0"
+                class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                Next
+            </button>
+        </div>
+
     </div>
 </template>
 
@@ -42,6 +54,8 @@ export default {
             searchQuery: "",
             adminId: null,
             loading: true,
+            currentPage: 1,
+            perPage: 8
         };
     },
     components: {
@@ -57,8 +71,43 @@ export default {
                 quiz.name.toLowerCase().includes(searchLower)
             );
         },
+        paginatedData() {
+            const start = (this.currentPage - 1) * this.perPage;
+            const end = start + this.perPage;
+            return this.filteredQuizzes.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.filteredQuizzes.length / this.perPage);
+        }
     },
     methods: {
+        visiblePages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const startPage = Math.max(
+                1,
+                Math.min(this.currentPage - 2, this.totalPages - 4)
+            );
+            const endPage = Math.min(startPage + 4, this.totalPages);
+
+            return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+            );
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        resetPagination() {
+            this.currentPage = 1;
+        },
         updateSearchQuery(query) {
             this.searchQuery = query;
         },

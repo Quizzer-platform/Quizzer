@@ -27,7 +27,7 @@
         <hr v-if="filteredAdminQuizzes.length" class="my-2 border-gray-300 dark:border-gray-700" />
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
           <QuizCard 
-            v-for="quiz in filteredAdminQuizzes" 
+            v-for="quiz in paginatedAdminData" 
             :key="quiz.id" 
             :quiz="{
               ...quiz,
@@ -38,12 +38,42 @@
           />
         </div>
 
+        <!-- Pagination controls for admin quizzes -->
+        <div v-if="adminQuizzes.length > 0" class="flex justify-center gap-2 p-4 mt-2">
+              <button @click="prevAdminPage" :disabled="currentAdminPage === 1"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Previous
+              </button>
+              <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                  Page {{ currentAdminPage }} of {{ totalAdminPages }}
+              </span>
+              <button @click="nextAdminPage" :disabled="currentAdminPage === totalAdminPages || totalAdminPages === 0"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Next
+              </button>
+          </div>
+
         <!-- Organization Quizzes Section -->
         <h3 v-if="filteredOrgQuizzes.length" class="text-lg font-semibold text-gray-800 dark:text-gray-300 mt-6">Organization Created Quizzes</h3>
         <hr v-if="filteredOrgQuizzes.length" class="my-2 border-gray-300 dark:border-gray-700" />
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          <QuizCard v-for="quiz in filteredOrgQuizzes" :key="quiz.id" :quiz="quiz" @edit="editQuiz(quiz)" @delete="confirmDelete(quiz.id, 'organization')" />
+          <QuizCard v-for="quiz in paginatedOrgData" :key="quiz.id" :quiz="quiz" @edit="editQuiz(quiz)" @delete="confirmDelete(quiz.id, 'organization')" />
         </div>
+
+        <!-- Pagination controls for org quizzes -->
+        <div v-if="orgQuizzes.length > 0" class="flex justify-center gap-2 p-4 mt-2">
+              <button @click="prevOrgPage" :disabled="currentOrgPage === 1"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Previous
+              </button>
+              <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                  Page {{ currentOrgPage }} of {{ totalOrgPages }}
+              </span>
+              <button @click="nextOrgPage" :disabled="currentOrgPage === totalOrgPages || totalOrgPages === 0"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Next
+              </button>
+          </div>
 
         <!-- No Quizzes Message -->
         <div v-if="!loading && filteredAdminQuizzes.length === 0 && filteredOrgQuizzes.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6">
@@ -90,6 +120,9 @@ export default {
       showDeletePopup: false,
       quizToDeleteId: null,
       deleteSource: null, // 'admin' or 'organization'
+      currentAdminPage: 1,
+      currentOrgPage: 1,
+      perPage: 6
     };
   },
 
@@ -112,9 +145,73 @@ computed: {
       return quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
   },
+  paginatedAdminData() {
+      const start = (this.currentAdminPage - 1) * this.perPage;
+      const end = start + this.perPage;
+      return this.filteredAdminQuizzes.slice(start, end);
+    },
+    totalAdminPages() {
+        return Math.ceil(this.filteredAdminQuizzes.length / this.perPage);
+    },
+    paginatedOrgData() {
+          const start = (this.currentOrgPage - 1) * this.perPage;
+          const end = start + this.perPage;
+          return this.filteredOrgQuizzes.slice(start, end);
+      },
+    totalOrgPages() {
+        return Math.ceil(this.filteredOrgQuizzes.length / this.perPage);
+    }
 },
 
   methods: {
+    visibleAdminPages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const startPage = Math.max(
+                1,
+                Math.min(this.currentAdminPage - 2, this.totalAdminPages - 4)
+            );
+            const endPage = Math.min(startPage + 4, this.totalAdminPages);
+
+            return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+            );
+        },
+        nextAdminPage() {
+            if (this.currentAdminPage < this.totalAdminPages) {
+                this.currentAdminPage++;
+            }
+        },
+        prevAdminPage() {
+            if (this.currentAdminPage > 1) {
+                this.currentAdminPage--;
+            }
+        },
+    visibleOrgPages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const startPage = Math.max(
+                1,
+                Math.min(this.currentOrgPage - 2, this.totalOrgPages - 4)
+            );
+            const endPage = Math.min(startPage + 4, this.totalOrgPages);
+
+            return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+            );
+        },
+        nextOrgPage() {
+            if (this.currentOrgPage < this.totalOrgPages) {
+                this.currentOrgPage++;
+            }
+        },
+        prevOrgPage() {
+            if (this.currentOrgPage > 1) {
+                this.currentOrgPage--;
+            }
+        },
     async fetchQuizzes() {
       try {
         this.loading = true;

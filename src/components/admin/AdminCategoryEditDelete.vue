@@ -21,12 +21,27 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                    <QuizCard v-for="category in filteredCategories" :key="category.id" :quiz="{
+                    <QuizCard v-for="category in paginatedData" :key="category.id" :quiz="{
                         id: category.id,
                         title: category.title,
                         description: category.description,
                         quizType: 'category' // This triggers category icon
                     }" @edit="editCategory(category)" @delete="confirmDelete(category.id)" />
+                </div>
+
+                <!-- Pagination controls -->
+                <div v-if="categories.length > 0" class="flex justify-center gap-2 p-4 mt-2">
+                    <button @click="prevPage" :disabled="currentPage === 1"
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                        Previous
+                    </button>
+                    <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                        Page {{ currentPage }} of {{ totalPages }}
+                    </span>
+                    <button @click="nextPage" :disabled="currentPage === totalPages || totalPages === 0"
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                        Next
+                    </button>
                 </div>
 
                 <div v-if="!loading && filteredCategories.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6">
@@ -71,6 +86,8 @@ export default {
             loading: true,
             showDeletePopup: false,
             categoryToDeleteId: null,
+            currentPage: 1,
+            perPage: 6
         };
     },
 
@@ -85,9 +102,41 @@ export default {
                     category.description.toLowerCase().includes(this.searchQuery.toLowerCase());
             });
         },
+        paginatedData() {
+            const start = (this.currentPage - 1) * this.perPage;
+            const end = start + this.perPage;
+            return this.filteredCategories.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.filteredCategories.length / this.perPage);
+        }
     },
 
     methods: {
+        visiblePages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const startPage = Math.max(
+                1,
+                Math.min(this.currentPage - 2, this.totalPages - 4)
+            );
+            const endPage = Math.min(startPage + 4, this.totalPages);
+
+            return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+            );
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
         async fetchCategories() {
             try {
                 this.loading = true;

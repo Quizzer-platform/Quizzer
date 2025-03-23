@@ -14,22 +14,36 @@
 
                 <!-- Show Loading Spinner -->
                 <div v-if="loading" class="flex justify-center my-10">
-                    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900 dark:border-teal-300"></div>
+                    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900 dark:border-teal-300">
+                    </div>
                 </div>
 
                 <!-- Show No Data Message -->
-                <div v-else-if="filteredOrganizations.length === 0" class="text-center text-gray-500 dark:text-gray-400">
+                <div v-else-if="filteredOrganizations.length === 0"
+                    class="text-center text-gray-500 dark:text-gray-400">
                     No organizations found.
                 </div>
 
                 <!-- Organizations Table -->
-                <DynamicTable 
-                    v-else 
-                    :headers="['Org. ID', 'Name', 'Admin Email']"
-                    :rows="filteredOrganizations.map(org => [org.id, org.name, org.adminEmail])"
-                    @view-details="goToDetails"
-                    class="w-full max-w-5xl mx-auto bg-white dark:bg-gray-800 dark:text-gray-200 rounded-md shadow-md"
-                />
+                <DynamicTable v-else :headers="['Org. ID', 'Name', 'Admin Email']"
+                    :rows="paginatedData.map(org => [org.id, org.name, org.adminEmail])" @view-details="goToDetails"
+                    class="w-full max-w-5xl mx-auto bg-white dark:bg-gray-800 dark:text-gray-200 rounded-md shadow-md" />
+
+                <!-- Pagination controls -->
+                <div v-if="organizations.length > 0" class="flex justify-center gap-2 p-4">
+                    <button @click="prevPage" :disabled="currentPage === 1"
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                        Previous
+                    </button>
+                    <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                        Page {{ currentPage }} of {{ totalPages }}
+                    </span>
+                    <button @click="nextPage" :disabled="currentPage === totalPages || totalPages === 0"
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                        Next
+                    </button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -55,6 +69,8 @@ export default {
             organizations: [],
             searchQuery: "",
             loading: true,
+            currentPage: 1,
+            perPage: 8
         };
     },
     computed: {
@@ -64,8 +80,43 @@ export default {
                 org.name.toLowerCase().includes(this.searchQuery.toLowerCase())
             );
         },
+        paginatedData() {
+            const start = (this.currentPage - 1) * this.perPage;
+            const end = start + this.perPage;
+            return this.filteredOrganizations.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.filteredOrganizations.length / this.perPage);
+        }
     },
     methods: {
+        visiblePages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const startPage = Math.max(
+                1,
+                Math.min(this.currentPage - 2, this.totalPages - 4)
+            );
+            const endPage = Math.min(startPage + 4, this.totalPages);
+
+            return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+            );
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        resetPagination() {
+            this.currentPage = 1;
+        },
         toggleSidebar() {
             this.isSidebarOpen = !this.isSidebarOpen;
         },
@@ -94,7 +145,7 @@ export default {
 
                     this.organizations = Object.entries(orgData).map(([id, org]) => {
                         // Count quizzes for this organization
-                        const orgQuizzes = Object.values(quizzesData).filter(quiz => 
+                        const orgQuizzes = Object.values(quizzesData).filter(quiz =>
                             quiz.organizationId === id || // Match by organization ID
                             quiz.organizationUId === org.adminUid // Fallback to admin UID
                         );

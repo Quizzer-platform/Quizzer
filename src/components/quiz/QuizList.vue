@@ -1,19 +1,20 @@
 <template>
-    <div class="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-        <div class="max-w-3xl w-full bg-white shadow-lg rounded-lg p-8">
-            <!-- Add Timer Box -->
+    <div class="min-h-screen bg-gray-100 dark:bg-[#1a202c] flex items-center justify-center p-6">
+        <div class="max-w-3xl w-full bg-white dark:bg-[#23283b] shadow-lg rounded-lg p-8 border border-gray-200 dark:border-gray-700">
+            <!-- Timer Box -->
             <div class="mb-6 text-center" v-if="!isLoading && questions.length > 0">
-                <div class="bg-teal-100 p-4 rounded-lg inline-block">
-                    <span class="text-2xl font-bold text-teal-800">
+                <div class="bg-teal-100 dark:bg-teal-900 p-4 rounded-lg inline-block">
+                    <span class="text-2xl font-bold text-teal-800 dark:text-teal-300">
                         {{ formatTime(timeRemaining) }}
                     </span>
                 </div>
             </div>
 
-            <h1 class="text-center text-2xl font-extrabold text-gray-800 mb-6">📜 {{ quizName }}</h1>
-            <p class="text-xl font-extrabold text-black bg-red-400 p-2 rounded-xl" v-if="isLoading">
+            <h1 class="text-center text-2xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">📜 {{ quizName }}</h1>
+            <p class="text-xl font-extrabold text-black dark:text-white bg-red-400 dark:bg-red-700 p-2 rounded-xl" v-if="isLoading">
                 Loading please wait....
             </p>
+
             <form @submit.prevent="submitQuiz" v-if="!isLoading && questions.length > 0">
                 <QuestionItem v-for="(question, index) in questions" :key="index" :question="question" :index="index"
                     :modelValue="selectedAnswers[index]"
@@ -21,55 +22,60 @@
                     :isLastQuestion="index === questions.length - 1" @submit-quiz="submitQuiz" />
             </form>
         </div>
+
+        <!-- Time's Up Popup -->
         <div v-if="showTimeUpPopup"
-            class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4 gap-y-4">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl text-center">
-                <h2 class="text-lg sm:text-xl font-semibold text-red-600">⏰ Time's Up!</h2>
-                <p class="text-gray-600 mt-2 text-sm sm:text-base">
-                    Your time has expired. Your quiz has been submitted automatically.
-                </p>
-                <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
-                    <button @click="goToQuizzes"
-                        class="w-full sm:w-auto px-5 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition cursor-pointer">
-                        Back to Quizzes
-                    </button>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center w-xl">
-                <h2 class="text-2xl font-bold text-gray-800">Quiz Results:</h2>
-                <p class="text-xl text-gray-700 mt-2">
-                    Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ questions.length }}
+    class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4 gap-y-4">
+    
+    <!-- Time's Up Message -->
+    <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg w-full max-w-xl text-center">
+        <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">⏰ Time's Up!</h2>
+        <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
+            Your time has expired. Your quiz has been submitted automatically.
+        </p>
+        <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
+            <button @click="goToQuizzes"
+                class="w-full sm:w-auto px-5 py-2 bg-teal-600 dark:bg-teal-700 text-white rounded-md hover:bg-teal-700 dark:hover:bg-teal-800 transition cursor-pointer">
+                Back to Quizzes
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Results -->
+    <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg text-center w-xl">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Quiz Results:</h2>
+        <p class="text-xl text-gray-700 dark:text-gray-300 mt-2">
+            Your Score: <span class="font-bold text-green-600 dark:text-green-400">{{ score }}</span> / {{ questions.length }}
+        </p>
+        <button @click="goToHome"
+            class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+            Go to Home
+        </button>
+        <button @click="goToQuizAnswers"
+            class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+            Check Answers
+        </button>
+    </div>
+</div>
+        <!-- Quiz Results -->
+        <div v-if="showPopup"
+            class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4">
+            <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg text-center w-4xl">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Quiz Results:</h2>
+                <p class="text-xl text-gray-700 dark:text-gray-300 mt-2">
+                    Your Score: <span class="font-bold text-green-600 dark:text-green-400">{{ score }}</span> / {{ questions.length }}
                 </p>
                 <button @click="goToHome"
-                    class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                    class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
                     Go to Home
                 </button>
                 <button @click="goToQuizAnswers"
-                    class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                    class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
                     Check Answers
                 </button>
             </div>
         </div>
     </div>
-
-    <div v-if="showPopup"
-        class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4">
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-4xl">
-            <h2 class="text-2xl font-bold text-gray-800">Quiz Results:</h2>
-            <p class="text-xl text-gray-700 mt-2">
-                Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ questions.length }}
-            </p>
-            <button @click="goToHome"
-                class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
-                Go to Home
-            </button>
-            <button @click="goToQuizAnswers"
-                class="mt-4 bg-teal-800 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
-                Check Answers
-            </button>
-        </div>
-    </div>
-
 </template>
 
 <script>

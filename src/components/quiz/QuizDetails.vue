@@ -1,13 +1,15 @@
 <template>
-    <div v-if="loading" class="flex justify-center items-center min-h-[50vh]">
-        <div class="text-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
-            <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quiz details...</p>
-        </div>
+     <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+        <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quiz details...</p>
     </div>
 
     <div v-else class="flex flex-col items-center md:w-full md:flex-row md:items-start md:gap-4 max-w-6xl mx-auto p-6">
-        <div class="flex flex-col my-4 p-4 rounded-xl shadow-md bg-gray-100 dark:bg-gray-800 dark:text-white md:w-[50%]">
+        <div class="flex flex-col my-4 p-4 rounded-xl shadow-md bg-gray-100 dark:bg-gray-900 dark:text-white md:w-[50%]">
             <div class="flex flex-col items-start bg-gray-100 dark:bg-gray-800 p-4 rounded-xl shadow-md md:flex-row md:items-center md:justify-between">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 m-2">{{ QuizName }}</h2>
@@ -33,10 +35,10 @@
         </div>
 
         <div class="md:w-[50%]">
-            <div class="p-4 rounded-xl shadow-md md:w-full">
+            <div class="p-4 my-8 rounded-xl shadow-md md:w-full bg-gray-100 dark:bg-gray-900">
                 <div class="p-4 bg-gray-100 dark:bg-gray-800 dark:text-white rounded-lg shadow">
-                    <h3 class="text-lg font-semibold">Summary of the {{ QuizName }} test</h3>
-                    <p class="mt-2">{{ QuizDescribtion }}</p>
+                    <h3 class="text-lg font-semibold text-teal-700 dark:text-teal-300">Summary of the {{ QuizName }} test</h3>
+                    <p class="mt-2 text-gray-800 dark:text-gray-100">{{ QuizDescribtion }}</p>
                 </div>
             </div>
         </div>

@@ -230,7 +230,7 @@ export default {
             this.mobileMenuOpen = !this.mobileMenuOpen;
             menuBtn.classList.toggle("open");
         },
-        async handleLogout() {
+        async logout() {
             try {
                 await store.dispatch('logout');
                 this.mobileMenuOpen = false; // Close mobile menu after logout

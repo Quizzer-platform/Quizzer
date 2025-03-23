@@ -10,7 +10,7 @@
 
             <!-- Pricing Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
-                <div v-for="plan in plans" :key="plan.name"
+                <div v-for="plan in (orgId ? plans : userPlans)" :key="plan.name"
                     class="relative border rounded-xl p-8 shadow-lg bg-white dark:bg-gray-800 hover:shadow-2xl hover:scale-105 hover:bg-teal-50 dark:hover:bg-gray-700 transition-all duration-300"
                     :class="{
                         'border-teal-700 dark:border-teal-500': plan.name === 'Pro Plan',
@@ -56,7 +56,21 @@
                     </button>
                 </div>
             </div>
-
+            <!-- Admin Restriction Popup -->
+<div v-if="showAdminModal" class="fixed inset-0 bg-black/40 dark:bg-black/50 flex justify-center items-center z-50 px-4">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+        <h3 class="text-lg sm:text-xl font-semibold text-red-600">
+            Admins Cannot Subscribe to a Plan
+        </h3>
+        <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
+            As an admin, you do not need to subscribe to any plan. Please manage organizations and quizzes from your dashboard.
+        </p>
+        <button @click="showAdminModal = false"
+            class="mt-4 w-full sm:w-auto px-5 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400 transition cursor-pointer">
+            OK
+        </button>
+    </div>
+</div>
             <!-- Features Comparison Table -->
             <div class="max-w-5xl w-full mt-12">
                 <h3 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 text-center mb-6">Feature Comparison</h3>
@@ -106,6 +120,13 @@ export default {
         return {
             orgId: null, // Will store organization ID if the user is an organization
             showModal: false, // Controls popup display
+            isAdmin: false, // Default false until we fetch user data
+            showAdminModal: false, // New modal for admin restriction
+             userPlans: [
+            { name: "Free", description: "Access 5 quizzes", price: "EGP 0", noOfQuizzes: "5", maxQuestionsPerQuiz: "10" },
+            { name: "Starter Plan", description: "Access 15 quizzes", price: "EGP 500", noOfQuizzes: "15", maxQuestionsPerQuiz: "20" },
+            { name: "Pro Plan", description: "Access 50 quizzes", price: "EGP 1500", noOfQuizzes: "40", maxQuestionsPerQuiz: "Unlimited" },
+        ],
             plans: [
                 { name: "Free", description: "Basic access", price: "EGP 0", noOfQuizzes: "5", maxQuestionsPerQuiz: "10" },
                 { name: "Starter Plan", description: "For small teams", price: "EGP 1000", noOfQuizzes: "20", maxQuestionsPerQuiz: "30" },
@@ -125,11 +146,14 @@ export default {
         const auth = getAuth();
         onAuthStateChanged(auth, async (user) => {
             if (user) {
+                // const userData = snapshot.val(); // ✅ Store user data in a variable
                 const userRef = dbRef(database, `users/${user.uid}`);
                 const snapshot = await get(userRef);
                 if (snapshot.exists()) {
                     this.orgId = snapshot.val().organizationId || null;
                     console.log("User's organization ID:", this.orgId); // ✅ Debugging Log
+                    this.isAdmin = snapshot.val().role === "admin"; // Assuming 'role' exists in your database
+                console.log("User Role:", snapshot.val().role);
                 } else {
                     console.log("User record not found in database.");
                 }
@@ -142,7 +166,11 @@ export default {
         selectPlan(plan) {
             console.log("Selected Plan:", plan.name); // ✅ Debugging Log
             console.log("orgId:", this.orgId); // ✅ Debugging Log
-
+            if (this.isAdmin) {
+            console.log("Admin cannot subscribe to plans."); // Debugging Log
+            this.showAdminModal = true;
+            return;
+            }
             if (plan.name === "Free") {
                 if (this.orgId) {
                     console.log("Organization trying to get Free plan. Showing modal."); // ✅ Debugging Log

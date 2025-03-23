@@ -23,7 +23,7 @@
 <script>
 import OrganizationSidebar from "@/components/organization/OrganizationSidebar.vue";
 import OrganizationNavbar from "@/components/organization/OrganizationNavbar.vue";
-import DashboardOverview from "@/components/organization/OrganizationOverView.vue";
+import DashboardOverview from "@/components/organization/OrganizationOverview.vue";
 import QuizzesTable from "@/components/organization/OrganizationQuizList.vue";
 import SubscriptionTable from "@/components/organization/OrganizationSubscription.vue";
 

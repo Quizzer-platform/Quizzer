@@ -168,6 +168,9 @@ export default {
                     }
                 }
 
+                // Store user data in database
+                await set(ref(database, `users/${userData.uid}`), userData);
+                
                 if (this.user.organization !== 'guest') {
                     router.push('/entercode');
                 } else {

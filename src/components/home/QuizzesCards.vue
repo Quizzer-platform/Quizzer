@@ -13,7 +13,7 @@
 
                 <!-- Description -->
                 <p class="text-gray-700 dark:text-gray-400 mt-3 text-sm leading-relaxed flex-grow px-2">
-                    {{ card.description }}
+                    {{ reduceWordCount(card.description , 100) }}
                 </p>
 
                 <!-- Button -->
@@ -36,6 +36,14 @@ export default {
         cards: {
             type: Array,
             required: true
+        }
+    },
+    methods: {
+        reduceWordCount(str, idx) {
+            if (idx > str.length) {
+                return str;
+            }
+            return str.substring(0, idx) + " . . . ";
         }
     }
 };

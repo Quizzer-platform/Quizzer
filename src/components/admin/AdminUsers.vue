@@ -29,14 +29,14 @@
                 <!-- Pagination controls for users -->
                 <div v-if="users.length > 0" class="flex justify-center gap-2 p-4">
                     <button @click="prevUserPage" :disabled="currentUserPage === 1"
-                        class="px-4 py-2 text-sm font-medium text-white bg-[#364365] rounded-md hover:bg-[#4a5b8a] disabled:opacity-50 cursor-pointer">
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
                         Previous
                     </button>
                     <span class="px-4 py-2 text-sm font-medium text-teal-700">
                         Page {{ currentUserPage }} of {{ totalUserPages }}
                     </span>
                     <button @click="nextUserPage" :disabled="currentUserPage === totalUserPages || totalUserPages === 0"
-                        class="px-4 py-2 text-sm font-medium text-white bg-[#364365] rounded-md hover:bg-[#4a5b8a] disabled:opacity-50 cursor-pointer">
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
                         Next
                     </button>
                 </div>
@@ -62,14 +62,14 @@
                     <!-- Pagination controls for admins -->
                     <div v-if="admins.length > 0" class="flex justify-center gap-2 p-4">
                         <button @click="prevAdminPage" :disabled="currentAdminPage === 1"
-                            class="px-4 py-2 text-sm font-medium text-white bg-[#364365] rounded-md hover:bg-[#4a5b8a] disabled:opacity-50 cursor-pointer">
+                            class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
                             Previous
                         </button>
                         <span class="px-4 py-2 text-sm font-medium text-teal-700">
                             Page {{ currentAdminPage }} of {{ totalAdminPages }}
                         </span>
                         <button @click="nextAdminPage" :disabled="currentAdminPage === totalAdminPages || totalAdminPages === 0"
-                            class="px-4 py-2 text-sm font-medium text-white bg-[#364365] rounded-md hover:bg-[#4a5b8a] disabled:opacity-50 cursor-pointer">
+                            class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
                             Next
                         </button>
                     </div>

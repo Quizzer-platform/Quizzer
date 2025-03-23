@@ -38,17 +38,17 @@
           />
         </div>
 
-        <!-- Pagination controls -->
-        <div v-if="adminQuizzes.length > 0" class="flex justify-center gap-2 p-4">
-              <button @click="prevPage" :disabled="currentAdminPage === 1"
-                  class="px-4 py-2 text-sm font-medium text-white bg-[#364365] rounded-md hover:bg-[#4a5b8a] disabled:opacity-50 cursor-pointer">
+        <!-- Pagination controls for admin quizzes -->
+        <div v-if="adminQuizzes.length > 0" class="flex justify-center gap-2 p-4 mt-2">
+              <button @click="prevAdminPage" :disabled="currentAdminPage === 1"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
                   Previous
               </button>
               <span class="px-4 py-2 text-sm font-medium text-teal-700">
                   Page {{ currentAdminPage }} of {{ totalAdminPages }}
               </span>
-              <button @click="nextPage" :disabled="currentAdminPage === totalAdminPages || totalAdminPages === 0"
-                  class="px-4 py-2 text-sm font-medium text-white bg-[#364365] rounded-md hover:bg-[#4a5b8a] disabled:opacity-50 cursor-pointer">
+              <button @click="nextAdminPage" :disabled="currentAdminPage === totalAdminPages || totalAdminPages === 0"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
                   Next
               </button>
           </div>
@@ -57,8 +57,23 @@
         <h3 v-if="filteredOrgQuizzes.length" class="text-lg font-semibold text-gray-800 dark:text-gray-300 mt-6">Organization Created Quizzes</h3>
         <hr v-if="filteredOrgQuizzes.length" class="my-2 border-gray-300 dark:border-gray-700" />
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          <QuizCard v-for="quiz in filteredOrgQuizzes" :key="quiz.id" :quiz="quiz" @edit="editQuiz(quiz)" @delete="confirmDelete(quiz.id, 'organization')" />
+          <QuizCard v-for="quiz in paginatedOrgData" :key="quiz.id" :quiz="quiz" @edit="editQuiz(quiz)" @delete="confirmDelete(quiz.id, 'organization')" />
         </div>
+
+        <!-- Pagination controls for org quizzes -->
+        <div v-if="orgQuizzes.length > 0" class="flex justify-center gap-2 p-4 mt-2">
+              <button @click="prevOrgPage" :disabled="currentOrgPage === 1"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Previous
+              </button>
+              <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                  Page {{ currentOrgPage }} of {{ totalOrgPages }}
+              </span>
+              <button @click="nextOrgPage" :disabled="currentOrgPage === totalOrgPages || totalOrgPages === 0"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Next
+              </button>
+          </div>
 
         <!-- No Quizzes Message -->
         <div v-if="!loading && filteredAdminQuizzes.length === 0 && filteredOrgQuizzes.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6">
@@ -106,6 +121,7 @@ export default {
       quizToDeleteId: null,
       deleteSource: null, // 'admin' or 'organization'
       currentAdminPage: 1,
+      currentOrgPage: 1,
       perPage: 6
     };
   },
@@ -138,7 +154,7 @@ computed: {
         return Math.ceil(this.filteredAdminQuizzes.length / this.perPage);
     },
     paginatedOrgData() {
-          const start = (this.currentPage - 1) * this.perPage;
+          const start = (this.currentOrgPage - 1) * this.perPage;
           const end = start + this.perPage;
           return this.filteredOrgQuizzes.slice(start, end);
       },
@@ -148,7 +164,7 @@ computed: {
 },
 
   methods: {
-    visiblePages() {
+    visibleAdminPages() {
             // Create an array of page numbers to display, similar to front-end implementation
             // This shows a maximum of 5 pages at a time
             const startPage = Math.max(
@@ -162,14 +178,38 @@ computed: {
                 (_, i) => startPage + i
             );
         },
-        nextPage() {
+        nextAdminPage() {
             if (this.currentAdminPage < this.totalAdminPages) {
                 this.currentAdminPage++;
             }
         },
-        prevPage() {
+        prevAdminPage() {
             if (this.currentAdminPage > 1) {
                 this.currentAdminPage--;
+            }
+        },
+    visibleOrgPages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const startPage = Math.max(
+                1,
+                Math.min(this.currentOrgPage - 2, this.totalOrgPages - 4)
+            );
+            const endPage = Math.min(startPage + 4, this.totalOrgPages);
+
+            return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+            );
+        },
+        nextOrgPage() {
+            if (this.currentOrgPage < this.totalOrgPages) {
+                this.currentOrgPage++;
+            }
+        },
+        prevOrgPage() {
+            if (this.currentOrgPage > 1) {
+                this.currentOrgPage--;
             }
         },
     async fetchQuizzes() {

@@ -32,14 +32,14 @@
                 <!-- Pagination controls -->
                 <div v-if="organizations.length > 0" class="flex justify-center gap-2 p-4">
                     <button @click="prevPage" :disabled="currentPage === 1"
-                        class="px-4 py-2 text-sm font-medium text-white bg-[#364365] rounded-md hover:bg-[#4a5b8a] disabled:opacity-50 cursor-pointer">
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
                         Previous
                     </button>
                     <span class="px-4 py-2 text-sm font-medium text-teal-700">
                         Page {{ currentPage }} of {{ totalPages }}
                     </span>
                     <button @click="nextPage" :disabled="currentPage === totalPages || totalPages === 0"
-                        class="px-4 py-2 text-sm font-medium text-white bg-[#364365] rounded-md hover:bg-[#4a5b8a] disabled:opacity-50 cursor-pointer">
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
                         Next
                     </button>
                 </div>

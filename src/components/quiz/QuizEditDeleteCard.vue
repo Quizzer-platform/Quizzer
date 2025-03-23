@@ -25,7 +25,7 @@
 
         <!-- Quiz Description -->
         <p class="text-gray-600 dark:text-gray-400 text-sm text-left mt-2">
-            {{ quiz.description }}
+            {{ reduceWordCount(quiz.description , 100) }}
         </p>
     </div>
 </template>
@@ -41,6 +41,14 @@ export default {
     computed: {
         quizIcon() {
             return this.quiz.quizType === 'category' ? categoryIcon : defaultIcon;
+        }
+    },
+    methods: {
+        reduceWordCount(str, idx) {
+            if (idx > str.length) {
+                return str;
+            }
+            return str.substring(0, idx) + " . . . ";
         }
     }
 };

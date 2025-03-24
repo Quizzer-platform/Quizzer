@@ -49,15 +49,15 @@
             <!-- Buttons -->
             <div class="mt-6 text-center">
                 <button @click="goToQuizzes"
-                    class="bg-teal-600 dark:bg-teal-700 text-white px-6 py-2 mx-2 rounded-lg shadow-md hover:bg-teal-700 dark:hover:bg-teal-800 transition hover:cursor-pointer">
+                    class="bg-teal-600 dark:bg-teal-700 text-white px-6 py-2 m-3 rounded-lg shadow-md hover:bg-teal-700 dark:hover:bg-teal-800 transition hover:cursor-pointer">
                     Check Other Quizzes
                 </button>
                 <button @click="goToProfile"
-                    class="bg-teal-600 dark:bg-teal-700 text-white px-6 py-2 mx-2 rounded-lg shadow-md hover:bg-teal-700 dark:hover:bg-teal-800 transition hover:cursor-pointer">
+                    class="bg-teal-600 dark:bg-teal-700 text-white px-6 py-2 m-3 rounded-lg shadow-md hover:bg-teal-700 dark:hover:bg-teal-800 transition hover:cursor-pointer">
                     Back To Profile
                 </button>
                 <button @click="goToHome"
-                    class="bg-teal-600 dark:bg-teal-700 text-white px-6 py-2 mx-2 rounded-lg shadow-md hover:bg-teal-700 dark:hover:bg-teal-800 transition hover:cursor-pointer">
+                    class="bg-teal-600 dark:bg-teal-700 text-white px-6 py-2 m-3 rounded-lg shadow-md hover:bg-teal-700 dark:hover:bg-teal-800 transition hover:cursor-pointer">
                     Back To Home
                 </button>
             </div>

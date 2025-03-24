@@ -1,52 +1,58 @@
 <template>
-    <div class="flex flex-col min-h-screen bg-gray-100">
+    <div class="flex flex-col min-h-screen bg-gray-100 text-gray-900 dark:bg-[#1a202c] dark:text-gray-100">
         <div class="flex flex-1 flex-col md:flex-row">
             <UserSidebar :isOpen="isMenuOpen" @toggleSidebar="isMenuOpen = !isMenuOpen" />
-
-            <div class="flex-1 min-h-screen bg-gray-100 md:ml-54">
+            <div class="flex-1 min-h-screen bg-gray-100 dark:bg-[#1a202c] md:ml-50">
                 <div class="container mx-auto px-4 py-8">
-                    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <div class="bg-white dark:bg-gray-900/60 dark:text-gray-200 rounded-lg shadow-lg p-6 mb-6">
                         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                            <h1 class="text-2xl font-bold text-teal-800">Your Quiz Performance</h1>
+                            <h1 class="text-2xl font-bold text-teal-800 dark:text-teal-400">Your Quiz Performance</h1>
                             <div class="mt-4 md:mt-0">
-                                <p class="text-lg font-semibold">Overall Rank: <span class="text-teal-600">#{{ userRank
-                                }}</span></p>
-                                <p class="text-lg font-semibold">Total Score: <span class="text-teal-600">{{ totalScore
-                                }}</span></p>
+                                <p class="text-lg font-semibold">
+                                    Overall Rank: <span class="text-teal-600 dark:text-teal-300">#{{ userRank }}</span>
+                                </p>
+                                <p class="text-lg font-semibold">
+                                    Total Score: <span class="text-teal-600 dark:text-teal-300">{{ totalScore }}</span>
+                                </p>
                             </div>
                         </div>
 
-                        <div v-if="loading" class="text-center py-8">
-                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
-                            <p class="text-gray-600 mt-4">Loading your quizzes...</p>
+                        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                            <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                            </svg>
+                            <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Quizzes...</p>
                         </div>
 
                         <div v-else-if="userQuizzes.length > 0"
                             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             <div v-for="quiz in userQuizzes" :key="quiz.quizId"
-                                class="bg-gray-50 p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+                                class="bg-gray-50 dark:bg-gray-900/85 text-gray-900 dark:text-gray-300 p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 my-2 rounded-full">
-                                        {{ quiz.title }} </span>
-                                    <span class="text-sm font-semibold text-gray-700">
+                                    <span
+                                        class="text-sm font-semibold px-3 py-1 my-2 rounded-full bg-teal-600 text-white dark:bg-teal-700 dark:text-gray-200">
+                                        {{ quiz.title }}
+                                    </span>
+                                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-400">
                                         {{ new Date(quiz.timestamp).toLocaleDateString() }}
                                     </span>
                                 </div>
-                                <h3 class="font-bold text-sm text-gray-800 truncate">Describtion: {{ quiz.category ||
-                                    'General' }}</h3>
-                                <p class="text-sm text-gray-600 mt-1">
-                                    Questions: {{ quiz.totalQuestions }}
-                                </p>
+                                <h3 class="font-bold text-sm truncate">Description: {{ quiz.category || 'General' }}
+                                </h3>
+                                <p class="text-sm mt-1">Questions: {{ quiz.totalQuestions }}</p>
                                 <p class="mt-2 text-sm font-medium">
                                     Score:
-                                    <span :class="quiz.quizScore >= quiz.totalQuestions / 2 ? 'text-green-600' : 'text-red-600'"
+                                    <span
+                                        :class="quiz.quizScore >= quiz.totalQuestions / 2 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
                                         class="font-bold">
                                         {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
                                     </span>
                                 </p>
-                                <!-- In the template, update the button -->
                                 <button @click="goToQuizAnswers(quiz.quizId)"
-                                    class="mt-6 bg-teal-700 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                                    class="my-6 bg-teal-700 hover:bg-teal-900 dark:bg-teal-700 dark:hover:bg-teal-700 text-white px-6 py-2 rounded-lg shadow-md transition cursor-pointer">
                                     Check Correct Answers
                                 </button>
                             </div>
@@ -54,10 +60,14 @@
 
                         <div v-else class="text-center py-12">
                             <div class="text-6xl mb-4">📝</div>
-                            <h3 class="text-xl font-semibold text-gray-800 mb-4">No Quizzes Completed Yet</h3>
-                            <p class="text-gray-600 mb-8">Start your learning journey by taking your first quiz!</p>
+                            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-300 mb-4">
+                                No Quizzes Completed Yet
+                            </h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-8">
+                                Start your learning journey by taking your first quiz!
+                            </p>
                             <router-link to="/quizzes"
-                                class="inline-block bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors  cursor-pointer">
+                                class="inline-block bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600 text-white px-6 py-3 rounded-lg transition-colors cursor-pointer">
                                 Browse Available Quizzes
                             </router-link>
                         </div>
@@ -66,29 +76,30 @@
             </div>
         </div>
 
-        <!-- Popup إذا كان quizzesToTake = 0 -->
+        <!-- Popup if quizzesToTake = 0 -->
         <div v-if="quizzesToTake === 0"
             class="fixed inset-0 bg-black/40 backdrop-blur-xs flex justify-center items-center z-50 px-4">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md text-center">
-                <h2 class="text-lg sm:text-xl font-semibold text-red-600">❌ Access Denied!</h2>
-                <p class="text-gray-600 mt-2 text-sm sm:text-base">
+            <div
+                class="bg-white dark:bg-gray-800 dark:text-gray-200 p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+                <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">❌ Access Denied!</h2>
+                <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm sm:text-base">
                     To know your progress or to take another exam, you need to subscribe.
                 </p>
                 <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
                     <button @click="goToPricing"
-                        class="w-full sm:w-auto px-5 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition cursor-pointer">
-                        Go to pricing
+                        class="w-full sm:w-auto px-5 py-2 bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-md transition cursor-pointer">
+                        Go to Pricing
                     </button>
                     <button @click="goToProfile"
-                        class="w-full sm:w-auto px-5 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition cursor-pointer">
+                        class="w-full sm:w-auto px-5 py-2 bg-gray-400 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700 text-white rounded-md transition cursor-pointer">
                         Go back to Profile
                     </button>
                 </div>
             </div>
         </div>
-
     </div>
 </template>
+
 <script>
 import { ref as dbRef, get, onValue, off, update } from 'firebase/database';
 import { database } from '@/firebase';

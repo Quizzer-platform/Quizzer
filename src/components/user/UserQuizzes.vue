@@ -26,7 +26,7 @@
                             <div v-for="quiz in userQuizzes" :key="quiz.quizId"
                                 class="bg-gray-50 p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 rounded-full">
+                                    <span class="text-sm font-semibold text-white bg-teal-600 px-3 py-1 my-2 rounded-full">
                                         {{ quiz.title }} </span>
                                     <span class="text-sm font-semibold text-gray-700">
                                         {{ new Date(quiz.timestamp).toLocaleDateString() }}
@@ -39,13 +39,14 @@
                                 </p>
                                 <p class="mt-2 text-sm font-medium">
                                     Score:
-                                    <span class="text-green-600 font-bold">
+                                    <span :class="quiz.quizScore >= quiz.totalQuestions / 2 ? 'text-green-600' : 'text-red-600'"
+                                        class="font-bold">
                                         {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
                                     </span>
                                 </p>
                                 <!-- In the template, update the button -->
                                 <button @click="goToQuizAnswers(quiz.quizId)"
-                                    class="mt-4 bg-teal-700 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
+                                    class="mt-6 bg-teal-700 hover:bg-teal-900 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition">
                                     Check Correct Answers
                                 </button>
                             </div>

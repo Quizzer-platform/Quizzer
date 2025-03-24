@@ -14,7 +14,7 @@
                 ✖
             </button>
 
-            <div class="text-center mb-8">
+            <div class="text-center mb-8 mt-10">
                 <div
                     class="w-16 h-16 mx-auto bg-gray-400 rounded-full flex items-center justify-center text-3xl overflow-hidden">
                     <img v-if="userData?.photoURL" :src="userData.photoURL" :alt="userData?.name"

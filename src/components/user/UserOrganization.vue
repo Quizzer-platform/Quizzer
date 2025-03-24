@@ -20,31 +20,45 @@
                                     <div>
                                         <h3 v-if="org.name" class="font-semibold text-lg">{{ org.name }}</h3>
                                         <h3 v-else class="font-semibold text-lg text-gray-400">Unnamed Organization</h3>
-                                        <p class="text-gray-600">{{ org.role || 'Member' }}</p>
+                                        <p class="text-gray-600">{{ org.role === 'user' ? 'Member' : org.role }}</p>
                                     </div>
                                     <router-link to="/quizzes"
                                         class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors cursor-pointer">
-                                        View Quizzes
+                                        View Quizzer Quizzes
                                     </router-link>
                                 </div>
                                 <p v-if="org.description" class="text-gray-700 mb-4">{{ org.description }}</p>
                                 <p v-else class="text-gray-400 mb-4">No description available</p>
                                 <div class="flex items-center">
                                     <span class="text-sm text-gray-500">
-                                        Members: {{ org.membersCount || 0 }}
+                                        Members: {{ org.membersCount == 0 ? 'N/A' : org.membersCount }}
                                     </span>
                                 </div>
                             </div>
+                            <div class="flex flex-col items-start">
+                                <p class="text-xs text-red-500 max-w-sm">
+                                    * note : if you want to take another quiz *
+                                </p>
+                                <p class="text-xs text-red-500 max-w-sm">
+                                    * note : to take quiz you must have the quiz code from your org *
+                                </p>
+                                <p class="mt-5">
+                                    <router-link to="/entercode"
+                                        class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors cursor-pointer">
+                                        take quiz
+                                    </router-link>
+                                </p>
+                            </div>
                         </div>
 
-                        <div v-else-if="!loading" class="text-center py-8">
+                        <div v-else-if="!loading" class="text-center py-8 mt-10">
                             <div class="text-4xl mb-4">🏢</div>
-                            <h3 class="text-lg font-semibold mb-2">No Organizations Yet</h3>
+                            <h3 class="text-lg font-semibold mb-2">No Organizations</h3>
                             <p class="text-gray-600 mb-4">Join an organization or create your own!</p>
                             <p class="text-gray-600 mt-10 mb-4">See our free to take quizzes!</p>
                             <router-link to="/quizzes"
                                 class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors cursor-pointer">
-                                Browse Quizzes
+                                Browse Quizzer Quizzes
                             </router-link>
                         </div>
 
@@ -111,7 +125,16 @@ export default {
                                 const orgsData = orgsSnapshot.val();
                                 // Find the organization where name matches user's organization
                                 const orgEntry = Object.entries(orgsData).find(([key, org]) =>
-                                    org.name.toLowerCase() === this.userData.organization.toLowerCase()
+                                    {
+                                        if(org.name.toLowerCase() === "guest"){
+                                            console.warn('No organization assigned to user');
+                                            this.error = "You are not registered with any organization";
+                                            return false;
+                                        }
+                                        if(org.name.toLowerCase() === this.userData.organization.toLowerCase()){
+                                            return true;
+                                        }
+                                    }
                                 );
 
                                 if (orgEntry) {
@@ -128,16 +151,21 @@ export default {
                                     }];
                                 } else {
                                     console.warn('Organization not found:', this.userData.organization);
+                                    this.error = `Organization "${this.userData.organization}" not found in the system`;
                                     this.userOrgs = [];
                                 }
+                            } else {
+                                this.error = "No organizations available in the system";
+                                this.userOrgs = [];
                             }
                         } else {
                             console.warn('No organization assigned to user');
+                            this.error = "You are not registered with any organization";
                             this.userOrgs = [];
                         }
                     } catch (err) {
-                        console.error("Error fetching organization details:", err);
-                        this.error = "Error loading organization details";
+                        // console.error("Error fetching organization details:", err);
+                        this.error = "You are not registered with any organization";
                         this.userOrgs = [];
                     } finally {
                         this.loading = false;

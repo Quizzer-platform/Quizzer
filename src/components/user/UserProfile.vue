@@ -187,15 +187,22 @@ export default {
                             title: q.title || "Quiz",
                             category: q.category || "General"
                         }))
-                        .sort((a, b) => a.timestamp - b.timestamp)
+                        .sort((a, b) => this.compareTimestamps(b.timestamp, a.timestamp))
                         .slice(1, 4)
                     : [];
             });
 
             this.listeners.push([quizzesRef, listener]);
-        }
-
-        ,
+        },
+        
+        compareTimestamps(timestamp1, timestamp2) {
+            // Convert timestamps to Date objects if they're not already
+            const date1 = typeof timestamp1 === 'number' ? new Date(timestamp1) : new Date(timestamp1);
+            const date2 = typeof timestamp2 === 'number' ? new Date(timestamp2) : new Date(timestamp2);
+            
+            // Compare dates and return the difference
+            return date1.getTime() - date2.getTime();
+        },
         async fetchUserBadges() {
             if (!this.userId) return;
 
@@ -211,7 +218,7 @@ export default {
                     badges.push({
                         id: 'junior-quizzer',
                         name: 'Junior Quizzer',
-                        description: 'Completed 3 quizzes',
+                        description: 'Completed +3 quizzes',
                         imageUrl: '../src/assets/bagde1.PNG',
                         borderColor: 'border-teal-400'
                     });
@@ -222,7 +229,7 @@ export default {
                     badges.push({
                         id: 'expert-quizzer',
                         name: 'Expert Quizzer',
-                        description: 'Completed 7 quizzes',
+                        description: 'Completed +7 quizzes',
                         imageUrl: '../src/assets/badge2.PNG',
                         borderColor: 'border-teal-600'
                     });
@@ -268,7 +275,13 @@ export default {
 
                     if (snapshot.exists()) {
                         const allQuizzes = snapshot.val();
-                        this.recommendedQuizzes = Object.entries(allQuizzes)
+                        
+                        // Get IDs of attempted quizzes
+                        const attemptedQuizIds = attemptedQuizzes.map(quiz => quiz.quizId);
+                        
+                        // Filter out quizzes that have already been attempted
+                        const availableQuizzes = Object.entries(allQuizzes)
+                            .filter(([id, _]) => !attemptedQuizIds.includes(id))
                             .map(([id, quiz]) => ({
                                 id,
                                 title: quiz.title,
@@ -276,9 +289,10 @@ export default {
                                 questionsCount: quiz.questions?.length || 0,
                                 imageUrl: quiz.imageUrl || '../src/assets/icon.png',
                                 createdAt: quiz.createdAt || Date.now()
-                            }))
-                            .sort((a, b) => b.createdAt - a.createdAt) // Sort by newest first
-                            .slice(0, 3); // Get last 3 quizzes
+                            }));
+                        
+                        // Randomly select up to 3 quizzes
+                        this.recommendedQuizzes = this.getRandomItems(availableQuizzes, 3);
                     }
                 } else {
                     this.recommendedQuizzes = []; // Show no recommendations
@@ -287,6 +301,12 @@ export default {
                 console.error('Error fetching recommended quizzes:', error);
                 this.recommendedQuizzes = [];
             }
+        },
+        
+        // Helper method to get random items from an array
+        getRandomItems(array, count) {
+            const shuffled = [...array].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
         },
         async fetchAllData() {
             this.loading = true;

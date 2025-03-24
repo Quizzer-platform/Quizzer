@@ -16,10 +16,15 @@
                     </button>
                 </div>
 
-                <div v-if="loading" class="flex justify-center my-10">
-                    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900 dark:border-teal-400"></div>
-                </div>
-
+                   <!-- Loading Spinner -->
+                    <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                        <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Categories...</p>
+                    </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                     <QuizCard v-for="category in paginatedData" :key="category.id" :quiz="{
                         id: category.id,

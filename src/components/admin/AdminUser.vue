@@ -47,13 +47,14 @@
                         <SearchBar class="w-full md:w-auto mt-2 md:mt-0" @search="updateSearchQuery" />
                     </div>
 
-                    <!-- Loading Indicator -->
-                    <div v-if="isLoading" class="flex justify-center my-6">
-                        <svg class="animate-spin h-10 w-10 text-teal-600 dark:text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                       <!-- Loading Spinner -->
+                    <div v-if="isLoading" class="flex flex-col justify-center items-center h-60">
+                        <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                         </svg>
+                        <p class="text-gray-600 dark:text-gray-300 mt-4">Loading User details...</p>
                     </div>
 
                     <!-- No Quiz History Message -->

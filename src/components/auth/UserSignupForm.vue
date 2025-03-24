@@ -1,63 +1,68 @@
 <template>
     <Navbar />
-    <div class="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-        <div class="flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-[#151a24] p-4">
+        <div class="flex flex-col md:flex-row w-full max-w-5xl bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
             <div class="w-full md:w-1/2 p-6 md:p-10">
-                <h2 class="text-2xl font-semibold text-teal-600 mb-6">Get Started Now</h2>
+                <h2 class="text-2xl font-semibold text-teal-600 dark:text-teal-400 mb-6">Get Started Now</h2>
                 <form @submit.prevent="handleSignup">
                     <div class="mb-4">
-                        <label for="name" class="block text-gray-700">Name</label>
-                        <input id="name" v-model="user.name" type="text" placeholder="Enter your name"
-                            class="w-full p-2 border rounded-lg mt-1">
-                        <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label for="address" class="block text-gray-700">Email address</label>
-                        <input id="address" v-model="user.email" type="email" placeholder="Enter your email"
-                            class="w-full p-2 border rounded-lg mt-1">
-                        <p v-if="errors.email" class="text-red-500 text-sm">{{ errors.email }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label for="password" class="block text-gray-700">Password</label>
-                        <input id="password" v-model="user.password" type="password" placeholder="Enter your password"
-                            class="w-full p-2 border rounded-lg mt-1">
-                        <p v-if="errors.password" class="text-red-500 text-sm">{{ errors.password }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label for="phone" class="block text-gray-700">Phone</label>
-                        <input id="phone" v-model="user.phone" type="text" placeholder="Enter your phone number"
-                            class="w-full p-2 border rounded-lg mt-1">
-                        <p v-if="errors.phone" class="text-red-500 text-sm">{{ errors.phone }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label for="" class="block text-gray-700">Organization (Optional)</label>
-                        <select v-model="user.organization" class="w-full p-2 border rounded-lg mt-1">
-                            <option value="guest">Guest User</option>
-                            <option v-for="org in organizations" :key="org.id" :value="org.name">
-                                {{ org.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <button class="w-full bg-teal-600 text-white py-2 rounded-lg cursor-pointer hover:bg-teal-800"
+        <label for="name" class="block text-gray-700 dark:text-gray-300">Name</label>
+        <input id="name" v-model="user.name" type="text" placeholder="Enter your name"
+            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg mt-1 bg-white dark:bg-gray-700 dark:text-white 
+            outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-300 dark:focus:border-teal-400 dark:focus:ring-teal-600">
+        <p v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</p>
+    </div>
+    <div class="mb-4">
+        <label for="address" class="block text-gray-700 dark:text-gray-300">Email address</label>
+        <input id="address" v-model="user.email" type="email" placeholder="Enter your email"
+            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg mt-1 bg-white dark:bg-gray-700 dark:text-white 
+            outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-300 dark:focus:border-teal-400 dark:focus:ring-teal-600">
+        <p v-if="errors.email" class="text-red-500 text-sm">{{ errors.email }}</p>
+    </div>
+    <div class="mb-4">
+        <label for="password" class="block text-gray-700 dark:text-gray-300">Password</label>
+        <input id="password" v-model="user.password" type="password" placeholder="Enter your password"
+            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg mt-1 bg-white dark:bg-gray-700 dark:text-white 
+            outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-300 dark:focus:border-teal-400 dark:focus:ring-teal-600">
+        <p v-if="errors.password" class="text-red-500 text-sm">{{ errors.password }}</p>
+    </div>
+    <div class="mb-4">
+        <label for="phone" class="block text-gray-700 dark:text-gray-300">Phone</label>
+        <input id="phone" v-model="user.phone" type="text" placeholder="Enter your phone number"
+            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg mt-1 bg-white dark:bg-gray-700 dark:text-white 
+            outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-300 dark:focus:border-teal-400 dark:focus:ring-teal-600">
+        <p v-if="errors.phone" class="text-red-500 text-sm">{{ errors.phone }}</p>
+    </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 dark:text-gray-300">Organization (Optional)</label>
+        <select v-model="user.organization"
+            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg mt-1 bg-white dark:bg-gray-700 dark:text-white 
+            outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-300 dark:focus:border-teal-400 dark:focus:ring-teal-600">
+            <option value="guest">Guest User</option>
+            <option v-for="org in organizations" :key="org.id" :value="org.name">
+                {{ org.name }}
+            </option>
+        </select>
+    </div>
+                    <button class="w-full bg-teal-600 text-white py-2 rounded-lg cursor-pointer hover:bg-teal-800 dark:bg-teal-700 dark:hover:bg-teal-600"
                         :disabled="loading">
                         {{ loading ? 'Creating Account...' : 'Sign Up' }}
                     </button>
-                    <p class="text-center mt-4 text-gray-600">
+                    <p class="text-center mt-4 text-gray-600 dark:text-gray-400">
                         Have an account? <router-link to="/login"
-                            class="font-semibold text-teal-600  hover:text-teal-800">Sign In</router-link>
+                            class="font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300">Sign In</router-link>
                     </p>
-                    <!-- Add this button after the existing form -->
                     <div class="text-center mt-4">
                         <button @click="handleGoogleSignIn"
-                            class="flex items-center justify-center w-full bg-white border-2 border-gray-300 p-2 rounded-lg hover:bg-gray-50 hover:cursor-pointer">
+                            class="flex items-center justify-center w-full bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-200 border-2 border-gray-300 dark:border-gray-600 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:cursor-pointer">
                             <img src="https://www.google.com/favicon.ico" alt="Google" class="w-6 h-6 mr-2">
                             Sign up with Google
                         </button>
-                        <p class="text-[10px] text-red-500">note that if you signed in with google you will have guest account for now</p>
+                        <p class="text-[10px] text-red-500">Note that if you signed in with Google, you will have a guest account for now.</p>
                     </div>
-                    <p class="text-center mt-4 text-gray-600">
+                    <p class="text-center mt-4 text-gray-600 dark:text-gray-400">
                         <router-link to="/organizationsignup"
-                            class="font-semibold text-teal-600  hover:text-teal-800">Sign up Your Organization
+                            class="font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300">Sign up Your Organization
                         </router-link>
                     </p>
                 </form>
@@ -68,6 +73,7 @@
         </div>
     </div>
 </template>
+
 
 <script>
 import imageUrl from "@/assets/img1.PNG";
@@ -229,3 +235,19 @@ export default {
     }
 };
 </script>
+<style scoped>
+/* Autofill styles for light mode */
+input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+/* Autofill styles for dark mode */
+.dark input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0px 1000px #374151 inset !important; /* dark:bg-gray-700 */
+  -webkit-text-fill-color: white !important; /* Ensures white text in dark mode */
+}
+
+</style>

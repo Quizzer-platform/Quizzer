@@ -11,15 +11,15 @@
 
             <!-- Organization Details Content -->
             <main class="flex-1 p-6 w-full">
-                <!-- Show Loading Spinner -->
-                <div v-if="loading" class="flex justify-center items-center h-60">
-                    <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                    </svg>
-                </div>
+                   <!-- Loading Spinner -->
+                    <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                        <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Organization details...</p>
+                    </div>
 
                 <!-- Show No Data Message -->
                 <div v-else-if="!selectedOrg" class="text-center text-gray-500 text-lg mt-10">

@@ -92,7 +92,7 @@
                     <!-- Dark Mode Button -->
                     <!-- Dark Mode Button -->
 <button @click="toggleDarkMode"
-    class="relative w-12 h-6 flex items-center bg-gray-300 dark:bg-gray-700 rounded-full p-1 transition-all duration-300">
+    class="relative w-12 h-6 flex items-center bg-gray-300 dark:bg-gray-700 rounded-full p-1 transition-all duration-300 cursor-pointer">
     
     <!-- Toggle Knob -->
     <div class="absolute w-5 h-5 bg-white dark:bg-gray-200 rounded-full shadow-md transition-transform duration-300 transform"

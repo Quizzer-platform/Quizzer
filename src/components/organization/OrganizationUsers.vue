@@ -1,12 +1,12 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100">
+  <div class="flex min-h-screen bg-gray-100 dark:bg-[#1a202c]">
     <!-- Sidebar -->
     <OrganizationSidebar 
   :isOpen="isSidebarOpen" 
   @toggleSidebar="toggleSidebar"
   class="fixed z-50 md:fixed transition-transform duration-300"
-  :class="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen}" />
-
+  :class="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen}" 
+  />
     <!-- Main Content -->
     <div class="flex-1 flex flex-col md:ml-64">
       <!-- Navbar -->
@@ -15,22 +15,27 @@
       <!-- Main Content -->
       <main class="flex-1 p-4">
         <!-- <DashboardOverview />-->
-        
 
         <!-- User Review Section -->
 <div class="mt-8">
-  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mb-3">
-  <h3 class="text-xl font-bold text-gray-800 sm:mb-0 mb-2">User Review</h3>
-  <SearchBar class="w-full sm:w-auto sm:ml-4" @search="updateSearchQuery" />
+  <div class="flex flex-col sm:flex-row sm:justify-start sm:items-center gap-2 sm:gap-4 mb-3">
+  <h3 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Users Review</h3>
+  <SearchBar class="w-full sm:w-auto" @search="updateSearchQuery" />
 </div>
+
   <!-- Loading Spinner -->
-  <div v-if="loading" class="flex justify-center my-10">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900"></div>
-  </div>
+  <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <p class="text-gray-600 dark:text-gray-300 mt-4">Loading users...</p>
+            </div>
 
   <!-- No Users Message -->
   <div v-else-if="users.length === 0" class="text-center text-gray-600 mt-10">
-    <p class="text-lg font-semibold">Your organization has no users yet.</p>
+    <p class="text-lg font-semibold text-teal-800 dark:text-teal-500">Your organization has no users yet.</p>
   </div>
 
   <!-- Table (Hidden While Loading or No Users) -->
@@ -47,6 +52,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get } from "firebase/database";

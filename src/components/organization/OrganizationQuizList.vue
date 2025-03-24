@@ -3,20 +3,25 @@
         <hr class="border-gray-400 mb-4 w-40 sm:w-60 md:w-80 lg:w-96 xl:w-170 mx-auto" />
 
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
-            <h2 class="text-xl font-semibold text-teal-900 sm:pl-5">Quizzes Review</h2>
+            <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Quizzes Review</h2>
             <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-150" @search="updateSearchQuery" />
         </div>
 
         <!-- 🔹 Loading Spinner -->
-        <div v-if="loading" class="flex justify-center my-10">
-            <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900"></div>
-        </div>
+        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quiz details...</p>
+            </div>
 
         <!-- 🔹 No Quizzes Message -->
-        <div v-else-if="quizzes.length === 0" class="text-center bg-gray-100 text-gray-700 p-4 rounded-lg shadow-md">
+        <div v-else-if="quizzes.length === 0" class="text-center bg-gray-100 dark:bg-gray-800 dark:text-gray-300 text-gray-700 p-4 rounded-lg shadow-md">
             <p class="text-lg font-semibold">You haven't created any quizzes yet.</p>
             <button @click="handleCreateQuiz"
-                class="text-teal-600 font-semibold hover:underline focus:outline-none cursor-pointer">
+                class="text-teal-900 dark:text-teal-300 sm:pl-5 font-semibold hover:underline focus:outline-none cursor-pointer">
                 Create your first quiz
             </button>
         </div>
@@ -31,16 +36,17 @@
         
         <!-- Subscription Modal -->
         <div v-if="showSubscriptionModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4">
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4 dark:bg-gray-900 dark:text-white w-full">
                 <h2 class="text-xl font-bold text-red-600 mb-4">Subscription Required</h2>
-                <p class="text-gray-700 mb-4">{{ subscriptionMessage }}</p>
+                <p class="text-gray-600 mb-4 dark:text-gray-300 mt-2 text-sm sm:text-base">{{ subscriptionMessage }}</p>
                 <div class="flex justify-center gap-4">
                     <button @click="showSubscriptionModal = false"
-                        class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors">
+                        class="bg-gray-200 text-gray-700 px-4 py-2 hover:bg-gray-300 transition-colors
+                        w-full sm:w-auto rounded-md cursor-pointer">
                         Close
                     </button>
                     <router-link to="/pricing"
-                        class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors">
+                        class="bg-teal-600 text-white px-4 py-2 hover:bg-teal-700 transition-colorsw-full sm:w-auto rounded-md cursor-pointer">
                         View Plans
                     </router-link>
                 </div>

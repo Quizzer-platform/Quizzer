@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen min-w-screen bg-gray-100">
+  <div class="flex min-h-screen min-w-screen bg-gray-100 dark:bg-[#1a202c]">
     <!-- Sidebar -->
     <OrganizationSidebar 
       :isOpen="isSidebarOpen" 
@@ -14,14 +14,20 @@
 
       <!-- User Details Content -->
       <main class="flex-1 p-6">
-        <div v-if="selectedUser" class="bg-white p-6 rounded-lg shadow-md mt-4">
+        <div v-if="selectedUser" 
+             class="bg-white dark:bg-[#2d3748] p-6 rounded-lg shadow-md mt-4 transition-colors duration-300">
+          
           <div class="flex flex-col space-y-4">
             <!-- User Info -->
             <div class="text-center md:text-left">
-              <h2 class="text-2xl font-bold text-teal-700">{{ selectedUser.name }}</h2>
-              <p class="mt-1 text-gray-600">Joined: {{ formatDate(selectedUser.createdAt) }}</p>
+              <h2 class="text-2xl font-bold text-teal-700 dark:text-teal-300">
+                {{ selectedUser.name }}
+              </h2>
+              <p class="mt-1 text-gray-600 dark:text-gray-400">
+                Joined: {{ formatDate(selectedUser.createdAt) }}
+              </p>
 
-              <div class="mt-3 text-gray-700">
+              <div class="mt-3 text-gray-700 dark:text-gray-300">
                 <p><span class="font-semibold">Email:</span> {{ selectedUser.email }}</p>
                 <p><span class="font-semibold">Phone:</span> {{ selectedUser.phone }}</p>
                 <p><span class="font-semibold">Organization:</span> {{ selectedUser.organization }}</p>
@@ -29,14 +35,18 @@
             </div>
 
             <!-- User Stats -->
-            <div class="flex justify-between items-center bg-teal-50 p-4 rounded-lg">
+            <div class="flex justify-between items-center bg-teal-50 dark:bg-[#1e293b] p-4 rounded-lg">
               <div class="text-center">
-                <p class="text-xl font-semibold text-teal-700">{{ selectedUser.quizzesToTake }}</p>
-                <p class="text-gray-600">Quizzes To Take</p>
+                <p class="text-xl font-semibold text-teal-700 dark:text-teal-300">
+                  {{ selectedUser.quizzesToTake }}
+                </p>
+                <p class="text-gray-600 dark:text-gray-400">Quizzes To Take</p>
               </div>
               <div class="text-center">
-                <p class="text-xl font-semibold text-teal-700">{{ selectedUser.overallScore }}</p>
-                <p class="text-gray-600">Overall Score</p>
+                <p class="text-xl font-semibold text-teal-700 dark:text-teal-300">
+                  {{ selectedUser.overallScore }}
+                </p>
+                <p class="text-gray-600 dark:text-gray-400">Overall Score</p>
               </div>
             </div>
           </div>
@@ -45,20 +55,25 @@
         <!-- User Review Section -->
         <div class="mt-8">
           <div class="flex justify-between items-center mb-3">
-            <h3 class="text-xl font-bold text-gray-800">User's Quiz History</h3>
-            <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-170" v-model="searchQuery" />
+            <h3 class="text-xl font-bold text-gray-800 dark:text-teal-300">
+              User's Quiz History
+            </h3>
+            <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-160" v-model="searchQuery" />
           </div>
 
           <!-- 🔹 Loading Spinner -->
-          <div v-if="isLoading" class="flex justify-center my-6">
-            <svg class="animate-spin h-10 w-10 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-            </svg>
-          </div>
+          <div v-if="isLoading" class="flex flex-col justify-center items-center h-60">
+                <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <p class="text-gray-600 dark:text-gray-300 mt-4">Loading user details...</p>
+            </div>
 
           <!-- 🔹 No Quizzes Found Message -->
-          <div v-else-if="userReview.length === 0" class="text-center text-gray-500 mt-6">
+          <div v-else-if="userReview.length === 0" 
+               class="text-center text-gray-500 dark:text-gray-400 mt-6">
             This user has not taken any quizzes yet.
           </div>
 
@@ -67,6 +82,7 @@
             v-else
             :headers="['Quiz Code', 'Quiz Name', 'Degree', 'Date']" 
             :rows="filteredReviews.map(r => [r.code, r.quizName, r.degree, formatDate(r.date)])" 
+            class="bg-white dark:bg-[#2d3748] text-gray-800 dark:text-gray-200 shadow-md rounded-lg p-4"
           />
         </div>
       </main>

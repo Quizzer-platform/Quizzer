@@ -28,7 +28,7 @@
                                     </div>
                                     <router-link to="/quizzes"
                                         class="bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600 text-white px-4 py-2 rounded transition">
-                                        View Quizzes
+                                        View Quizzer Quizzes
                                     </router-link>
                                 </div>
                                 <p v-if="org.description" class="text-gray-700 dark:text-gray-400 mb-4">{{
@@ -42,7 +42,7 @@
                             </div>
                             <div class="flex flex-col items-start">
                                 <p class="text-xs text-red-500 max-w-sm">
-                                    * note : if you want to take another quiz *
+                                    * if you want to take another quiz click the button below*
                                 </p>
                                 <p class="text-xs text-red-500 max-w-sm">
                                     * note : to take quiz you must have the quiz code from your org *
@@ -50,7 +50,7 @@
                                 <p class="mt-5">
                                     <router-link to="/entercode"
                                         class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors cursor-pointer">
-                                        take quiz
+                                        Take Another Org Quiz
                                     </router-link>
                                 </p>
                             </div>

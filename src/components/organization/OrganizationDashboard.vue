@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100">
+  <div class="flex min-h-screen bg-gray-100 dark:bg-[#1a202c]">
     <!-- Sidebar (Always visible on large screens, Toggles on small screens) -->
     <OrganizationSidebar 
       :isOpen="isSidebarOpen" 
@@ -11,7 +11,7 @@
       <!-- Navbar (Always Visible) -->
       <OrganizationNavbar @toggleSidebar="toggleSidebar" />
       <!-- Main Dashboard Content -->
-      <main class="flex-1 p-4 sm:justify-center">
+      <main class="flex-1 p-4 sm:justify-center dark:bg-[#1a202c]">
         <DashboardOverview />
         <QuizzesTable />
         <SubscriptionTable />

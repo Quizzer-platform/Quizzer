@@ -1,5 +1,6 @@
 <template>
-    <div class="container mx-auto p-6 max-w-4xl">
+    <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#1a202c] p-6">
+        <div class="container mx-auto max-w-2xl">
         <div class="flex items-center mb-6">
             <button 
                 @click="$router.push('/organization')" 
@@ -13,43 +14,43 @@
             </button>
         </div>
 
-        <form @submit.prevent="sendEmail" class="space-y-6 bg-white p-8 rounded-xl shadow-lg">
-            <h2 class="text-3xl font-bold text-gray-800 text-center">Contact User</h2>
+        <form @submit.prevent="sendEmail" class="space-y-6 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-teal-500 text-center">Contact User</h2>
 
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Organization Name</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Organization Name</label>
                     <input v-model="OrganizationName" type="text" placeholder="Organization Name"
-                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
-                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                        class="mt-2 p-3 w-full bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600
+                               focus:ring-teal-500 focus:border-teal-500 outline-none text-gray-900 dark:text-white" required>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">User Name</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">User Name</label>
                     <input v-model="name" type="text" placeholder="User Name"
-                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
-                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                        class="mt-2 p-3 w-full bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600
+                               focus:ring-teal-500 focus:border-teal-500 outline-none text-gray-900 dark:text-white" required>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">User Email</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">User Email</label>
                     <input v-model="email" type="email" placeholder="User Email"
-                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
-                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                        class="mt-2 p-3 w-full bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600
+                               focus:ring-teal-500 focus:border-teal-500 outline-none text-gray-900 dark:text-white" required>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Quiz Code</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Quiz Code</label>
                     <input v-model="quizcode" type="text" placeholder="Quiz Code"
-                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
-                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                        class="mt-2 p-3 w-full bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600
+                               focus:ring-teal-500 focus:border-teal-500 outline-none text-gray-900 dark:text-white" required>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Website Link</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Website Link</label>
                     <input v-model="message" type="text" placeholder="Website Link"
-                        class="mt-2 p-3 w-full bg-gray-50 rounded-lg shadow-sm border border-gray-300 
-                               focus:ring-teal-500 focus:border-teal-500 outline-none" required>
+                        class="mt-2 p-3 w-full bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600
+                               focus:ring-teal-500 focus:border-teal-500 outline-none text-gray-900 dark:text-white" required>
                 </div>
             </div>
 
@@ -64,14 +65,15 @@
 
         <!-- Confirmation Popup -->
         <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
-            <div class="bg-white p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">✅ Message Sent!</h2>
-                <p class="text-gray-600 mb-4">Your message has been successfully sent to the user.</p>
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">✅ Message Sent!</h2>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">Your message has been successfully sent to the user.</p>
                 <button @click="redirectToDashboard"
                     class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300 cursor-pointer">
                     OK
                 </button>
             </div>
+        </div>
         </div>
     </div>
 </template>

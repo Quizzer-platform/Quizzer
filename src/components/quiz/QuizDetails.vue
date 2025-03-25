@@ -1,5 +1,5 @@
 <template>
-     <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+    <div v-if="loading" class="flex flex-col justify-center items-center min-h-screen">
         <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -9,8 +9,10 @@
     </div>
 
     <div v-else class="flex flex-col items-center md:w-full md:flex-row md:items-start md:gap-4 max-w-6xl mx-auto p-6">
-        <div class="flex flex-col my-4 p-4 rounded-xl shadow-md bg-gray-100 dark:bg-gray-900 dark:text-white md:w-[50%]">
-            <div class="flex flex-col items-start bg-gray-100 dark:bg-gray-800 p-4 rounded-xl shadow-md md:flex-row md:items-center md:justify-between">
+        <div
+            class="flex flex-col my-4 p-4 rounded-xl shadow-md bg-gray-100 dark:bg-gray-900 dark:text-white md:w-[50%]">
+            <div
+                class="flex flex-col items-start bg-gray-100 dark:bg-gray-800 p-4 rounded-xl shadow-md md:flex-row md:items-center md:justify-between">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 m-2">{{ QuizName }}</h2>
                 </div>
@@ -22,14 +24,17 @@
                 </div>
             </div>
             <div class="flex flex-col mt-4 font-semibold m-2 p-4 rounded-xl w-fit">
-                <div class="bg-teal-200 dark:bg-teal-700 dark:text-white m-2 p-4 rounded-xl shadow-md hover:bg-teal-100 dark:hover:bg-teal-600">
+                <div
+                    class="bg-teal-200 dark:bg-teal-700 dark:text-white m-2 p-4 rounded-xl shadow-md hover:bg-teal-100 dark:hover:bg-teal-600">
                     &#10004; {{ categoryTitle || 'Category not found' }}
                 </div>
-                <div class="bg-red-200 dark:bg-red-800 dark:text-white m-2 p-4 rounded-xl shadow-md hover:bg-red-100 dark:hover:bg-red-600">
+                <div
+                    class="bg-red-200 dark:bg-red-800 dark:text-white m-2 p-4 rounded-xl shadow-md hover:bg-red-100 dark:hover:bg-red-600">
                     &#10004; {{ QuizDuration }} min
                 </div>
-                <div class="bg-orange-200 dark:bg-orange-800 dark:text-white m-2 p-4 rounded-xl shadow-md hover:bg-orange-100 dark:hover:bg-orange-600">
-                    &#10004; low
+                <div
+                    class="bg-orange-200 dark:bg-orange-800 dark:text-white m-2 p-4 rounded-xl shadow-md hover:bg-orange-100 dark:hover:bg-orange-600">
+                    &#10004; Low
                 </div>
             </div>
         </div>
@@ -37,10 +42,25 @@
         <div class="md:w-[50%]">
             <div class="p-4 my-8 rounded-xl shadow-md md:w-full bg-gray-100 dark:bg-gray-900">
                 <div class="p-4 bg-gray-100 dark:bg-gray-800 dark:text-white rounded-lg shadow">
-                    <h3 class="text-lg font-semibold text-teal-700 dark:text-teal-300">Summary of the {{ QuizName }} test</h3>
+                    <h3 class="text-lg font-semibold text-teal-700 dark:text-teal-300">Summary of the {{ QuizName }}
+                        test</h3>
                     <p class="mt-2 text-gray-800 dark:text-gray-100">{{ QuizDescribtion }}</p>
                 </div>
             </div>
+            <details class="bg-gray-100 p-4 rounded-lg dark:bg-gray-900">
+                <summary class="font-semibold cursor-pointer text-teal-700 dark:text-teal-300">Who Created it</summary>
+                <p class="mt-2 text-gray-800 dark:text-gray-100">Industry experts and professionals created this test.
+                </p>
+            </details>
+            <details class="bg-gray-100 p-4 rounded-lg dark:bg-gray-900 my-2">
+                <summary class="font-semibold cursor-pointer text-teal-700 dark:text-teal-300 capitalize">more about the
+                    quiz</summary>
+                <p class="mt-2 text-gray-800 dark:text-gray-100 capitalize ">number of questions : <span
+                        class="font-bold text-teal-600 dark:text-teal-800"> {{ numberOfQuestions }} </span></p>
+                <p class="mt-2 text-gray-800 dark:text-gray-100 capitalize ">score per question : <span
+                        class="font-bold text-teal-600 dark:text-teal-800"> {{ scorePerQuestion }} </span></p>
+
+            </details>
         </div>
     </div>
 
@@ -108,6 +128,8 @@ export default {
             QuizDuration: "",
             category: "",
             categoryTitle: "",
+            numberOfQuestions: "",
+            scorePerQuestion: "",
             loading: true,
             showModal: false,
             userRole: "",
@@ -192,28 +214,28 @@ export default {
         },
 
         async handleStartQuiz() {
-    console.log("User Role:", this.userRole);
-    if (this.userRole === "admin" || this.userRole === "organization_admin") {
-        this.showModal = true;
-        return;
-    }
+            console.log("User Role:", this.userRole);
+            if (this.userRole === "admin" || this.userRole === "organization_admin") {
+                this.showModal = true;
+                return;
+            }
 
-    const hasSubscription = await this.checkSubscription();
-    console.log("Has Subscription:", hasSubscription);
-    if (!hasSubscription) return;
+            const hasSubscription = await this.checkSubscription();
+            console.log("Has Subscription:", hasSubscription);
+            if (!hasSubscription) return;
 
-    const alreadyTaken = await this.quizAlreadyTaken();
-    console.log("Already Taken:", alreadyTaken);
-    if (alreadyTaken) return;
+            const alreadyTaken = await this.quizAlreadyTaken();
+            console.log("Already Taken:", alreadyTaken);
+            if (alreadyTaken) return;
 
-    console.log("Quiz Data:", this.quiz);
-    if (!this.quiz.id) {
-        console.error("Quiz ID is missing");
-        return;
-    }
+            console.log("Quiz Data:", this.quiz);
+            if (!this.quiz.id) {
+                console.error("Quiz ID is missing");
+                return;
+            }
 
-    this.$router.push(`/quizzes/${this.quiz.id}`);
-},
+            this.$router.push(`/quizzes/${this.quiz.id}`);
+        },
 
         async loadQuizDetails() {
             const quizId = this.$route.params.quizId;
@@ -232,6 +254,8 @@ export default {
                     this.QuizDescribtion = quizData.description;
                     this.QuizDuration = quizData.duration;
                     this.category = quizData.category;
+                    this.numberOfQuestions = quizData.numberOfQuestions;
+                    this.scorePerQuestion = quizData.scorePerQuestion;
 
                     const categoriesResponse = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/categories.json`);
                     const categoriesData = await categoriesResponse.json();

@@ -28,6 +28,28 @@
             </form>
         </div>
 
+        <div v-if="quizNotFoundPopUp"
+    class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4 gap-y-4">
+    
+    <!-- Time's Up Message -->
+    <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg w-full max-w-xl text-center">
+        <h2 class="text-lg sm:text-xl font-semibold text-red-600 my-4">❌ Access Denied!</h2>
+        <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">Quiz Not Found</h2>
+        <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
+            Please enter the correct code to enter your quiz.
+        </p>
+        <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
+            <button @click="goToEnterCode"
+                class="w-full sm:w-auto px-5 py-2  bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 text-white rounded-md transition cursor-pointer">
+                Try again
+            </button>
+            <button @click="goToHome"
+                class="w-full sm:w-auto px-5 py-2  bg-gray-500 dark:bg-gray-600 hover:bg-gray-800 dark:hover:bg-gray-900 text-white rounded-md transition cursor-pointer">
+                Go To home
+            </button>
+        </div>
+    </div>
+</div>
         <!-- Time's Up Popup -->
         <div v-if="showTimeUpPopup"
     class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4 gap-y-4">
@@ -142,6 +164,7 @@ export default {
             timer: null,
             quizDuration: 0,
             showTimeUpPopup: false,
+            quizNotFoundPopUp: false,
         };
     },
     methods: {
@@ -183,7 +206,7 @@ export default {
                         this.startTimer();
                     } else {
                         console.error("Quiz not found in either source!");
-                        alert("Quiz not found.");
+                        this.quizNotFoundPopUp = true;
                         return;
                     }
                 }
@@ -335,6 +358,10 @@ export default {
             // Navigate to answers page after submission
             this.$router.push(`/quiz/quizAnswers/${quizId}`);
         },
+        goToEnterCode() {
+            this.$router.push("/enterCode");
+            this.showPopup = false;
+        }
     },
     mounted() {
         this.loadQuestions();

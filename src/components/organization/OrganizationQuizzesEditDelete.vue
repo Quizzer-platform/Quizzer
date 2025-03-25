@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100">
+  <div class="flex min-h-screen bg-gray-100 dark:bg-[#1a202c]">
     <!-- Fixed Sidebar -->
     <OrganizationSidebar 
       :isOpen="isSidebarOpen" 
@@ -16,33 +16,50 @@
       <div class="flex-1 p-4">
         <!-- Page Header -->
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2 text-center sm:text-left">
-          <h2 class="text-xl font-semibold text-teal-900">Edit Quizzes</h2>
+          <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-400">Edit Quizzes</h2>
 
           <!-- Search Bar -->
           <SearchBar class="w-full sm:w-64" @search="updateSearchQuery" />
 
           <!-- Create Quiz Button -->
-          <button class="bg-teal-700 text-white text-center px-2 sm:px-10 py-2 rounded-md hover:bg-teal-900 cursor-pointer transition-all"  @click="createQuiz">
+          <button class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 dark:bg-teal-600 dark:hover:bg-teal-800 w-1/2 sm:w-auto cursor-pointer"  @click="createQuiz">
             ➕ Create Quiz
           </button>
         </div>
 
         <!-- Loading Spinner -->
-        <div v-if="loading" class="flex justify-center mt-10">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
-        </div>
-
+        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quiz details...</p>
+            </div>
         <!-- Quiz Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 px-2 sm:px-4 w-full mx-auto justify-items-center overflow-x-hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
           <QuizCard 
-            v-for="quiz in filteredQuizzes" 
+            v-for="quiz in paginatedData" 
             :key="quiz.id" 
             :quiz="quiz" 
             @edit="editQuiz" 
             @delete="confirmDelete(quiz.id)"
-            class="w-full sm:w-80 max-w-full flex-grow-0"
           />
         </div>
+        <!-- Pagination controls for org quizzes -->
+        <div v-if="quizzes.length > 0" class="flex justify-center gap-2 p-4 mt-2">
+              <button @click="prevPage" :disabled="currentPage === 1"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Previous
+              </button>
+              <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                  Page {{ currentPage }} of {{ totalPages }}
+              </span>
+              <button @click="nextPage" :disabled="currentPage === totalPages || totalPages === 0"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Next
+              </button>
+          </div>
       </div>
     </div>
 
@@ -57,14 +74,14 @@
       </div>
     </div>
     <!-- Subscription Modal -->
-<div v-if="showSubscriptionModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
-  <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4">
-    <h2 class="text-xl font-bold text-red-600 mb-4">Subscription Required</h2>
-    <p class="text-gray-700 mb-4">{{ subscriptionMessage }}</p>
+<div v-if="showSubscriptionModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-[999]">
+  <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md text-center w-xl">
+    <h2 class="text-xl font-bold text-red-700 mb-4">Subscription Required</h2>
+    <p class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">{{ subscriptionMessage }}</p>
     <div class="flex justify-center gap-4">
       <button 
         @click="showSubscriptionModal = false"
-        class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors"
+        class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors cursor-pointer"
       >
         Close
       </button>
@@ -102,7 +119,9 @@ export default {
       quizToDeleteId: null,
       organizationId: null, // Store organization ID dynamically
       showSubscriptionModal: false,
-    subscriptionMessage: '',
+      subscriptionMessage: '',
+      currentPage: 1,
+      perPage: 3
     };
   },
 
@@ -112,9 +131,41 @@ export default {
         quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
+    paginatedData() {
+          const start = (this.currentPage - 1) * this.perPage;
+          const end = start + this.perPage;
+          return this.filteredQuizzes.slice(start, end);
+      },
+    totalPages() {
+        return Math.ceil(this.filteredQuizzes.length / this.perPage);
+    }
   },
 
   methods: {
+    visiblePages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const startPage = Math.max(
+                1,
+                Math.min(this.currentPage - 2, this.totalPages - 4)
+            );
+            const endPage = Math.min(startPage + 4, this.totalPages);
+
+            return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+            );
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
     async fetchOrganizationId() {
   const auth = getAuth();
   return new Promise((resolve) => {

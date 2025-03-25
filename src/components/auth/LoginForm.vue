@@ -1,41 +1,48 @@
 <template>
-    <Navbar />
-    <div class="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-        <div class="flex flex-col-reverse md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+    <Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10" />
+    <div class="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-[#151a24] p-4 py-10 lg:pt-[8rem]">
+        <div
+            class="flex flex-col-reverse md:flex-row w-full max-w-5xl bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
 
             <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
-                <h2 class="text-2xl font-semibold text-teal-600 mb-2">Welcome back!</h2>
-                <p class="text-gray-600 mb-6">Enter your credentials to access your account</p>
+                <h2 class="text-2xl font-semibold text-teal-600 dark:text-teal-400 mb-2">Welcome back!</h2>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">Enter your credentials to access your account</p>
                 <form @submit.prevent="handleLogin">
                     <div class="mb-4">
-                        <label for="email" class="block text-gray-700 mb-1">Email address</label>
+                        <label for="email" class="block text-gray-700 dark:text-gray-300 mb-1">Email address</label>
                         <input v-model="email" type="email" id="email" placeholder="Enter your email"
-                            class="w-full p-2 border rounded-lg">
+                            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg mt-1 bg-white dark:bg-gray-700 dark:text-white 
+                            outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-300 dark:focus:border-teal-400 dark:focus:ring-teal-600">
                         <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
                     </div>
+
                     <div class="mb-4">
-                        <label for="password" class="block text-gray-700 mb-1">Password</label>
-                        <div>
-                            <input v-model="password" type="password" id="password" placeholder="Enter your password"
-                                class="w-full p-2 border rounded-lg">
-                            <p v-if="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</p>
-                        </div>
+                        <label for="password" class="block text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                        <input v-model="password" type="password" id="password" placeholder="Enter your password"
+                            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg mt-1 bg-white dark:bg-gray-700 dark:text-white 
+                            outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-300 dark:focus:border-teal-400 dark:focus:ring-teal-600">
+                        <p v-if="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</p>
                     </div>
+
                     <p v-if="errors.general" class="text-red-500 text-sm mb-4">{{ errors.general }}</p>
-                    <button class="w-full bg-teal-600 text-white py-2 rounded-lg cursor-pointer hover:bg-teal-800"
+                    <button
+                        class="w-full bg-teal-600 text-white py-2 rounded-lg cursor-pointer hover:bg-teal-800 dark:bg-teal-700 dark:hover:bg-teal-600"
                         :disabled="loading">
                         {{ loading ? 'Logging in...' : 'Login' }}
                     </button>
                     <div class="text-center mt-4">
                         <button @click="handleGoogleSignIn"
-                            class="flex items-center justify-center w-full bg-white border-2 border-gray-300 p-2 rounded-lg hover:bg-gray-50 hover:cursor-pointer">
+                            class="flex items-center justify-center w-full bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:cursor-pointer">
                             <img src="https://www.google.com/favicon.ico" alt="Google" class="w-6 h-6 mr-2">
                             Sign in with Google
                         </button>
                     </div>
-                    <p class="text-center mt-4 text-gray-600">
-                        Don't have an account? <router-link to="/usersignup"
-                            class="font-semibold text-teal-600  hover:text-teal-800"> Sign Up</router-link>
+                    <p class="text-center mt-4 text-gray-600 dark:text-gray-400">
+                        Don't have an account?
+                        <router-link to="/usersignup"
+                            class="font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300">
+                            Sign Up
+                        </router-link>
                     </p>
                 </form>
             </div>
@@ -46,7 +53,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import imageUrl from "@/assets/img2PNG.PNG";
 import Navbar from "../layout/Navbar.vue";
@@ -248,3 +254,20 @@ export default {
     }
 };
 </script>
+
+
+<style scoped>
+/* Autofill Fix */
+input:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-text-fill-color: black !important;
+}
+
+.dark input:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0px 1000px #374151 inset !important;
+    /* Matches dark:bg-gray-700 */
+    -webkit-text-fill-color: white !important;
+}
+</style>

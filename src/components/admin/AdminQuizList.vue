@@ -7,16 +7,21 @@
             <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-150" @search="updateSearchQuery" />
         </div>
 
-        <!-- 🔹 Loading Spinner -->
-        <div v-if="loading" class="flex justify-center my-10">
-            <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-teal-900"></div>
+        <!-- Loading Spinner -->
+        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quizzes...</p>
         </div>
 
         <!-- Show No Data Message -->
         <p v-else-if="quizzes.length === 0" class="text-center text-gray-500">No quizzes available</p>
 
         <!-- Quizzes Table -->
-        <TableStructure v-else :headers="['QUIZ ID', 'Name of Quiz', 'No. of Questions', 'Org. Name']" :rows="paginatedData.map(quiz => [
+        <TableStructure v-else :headers="['QUIZ Code', 'Name of Quiz', 'No. of Questions', 'Org. Name']" :rows="paginatedData.map(quiz => [
             quiz.id,
             quiz.name,
             quiz.questions,

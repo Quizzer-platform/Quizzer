@@ -21,7 +21,7 @@
         <p v-else-if="quizzes.length === 0" class="text-center text-gray-500">No quizzes available</p>
 
         <!-- Quizzes Table -->
-        <TableStructure v-else :headers="['QUIZ ID', 'Name of Quiz', 'No. of Questions', 'Org. Name']" :rows="paginatedData.map(quiz => [
+        <TableStructure v-else :headers="['QUIZ Code', 'Name of Quiz', 'No. of Questions', 'Org. Name']" :rows="paginatedData.map(quiz => [
             quiz.id,
             quiz.name,
             quiz.questions,

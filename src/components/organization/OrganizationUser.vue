@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen min-w-screen bg-gray-100 dark:bg-[#1a202c]">
+  <div class="flex min-h-screen bg-gray-100 dark:bg-[#1a202c]">
     <!-- Sidebar -->
     <OrganizationSidebar 
       :isOpen="isSidebarOpen" 
@@ -71,19 +71,38 @@
                 <p class="text-gray-600 dark:text-gray-300 mt-4">Loading user details...</p>
             </div>
 
-          <!-- 🔹 No Quizzes Found Message -->
-          <div v-else-if="userReview.length === 0" 
-               class="text-center text-gray-500 dark:text-gray-400 mt-6">
-            This user has not taken any quizzes yet.
-          </div>
-
-          <!-- Table (Only Show When Data Exists) -->
-          <TableStructure 
-            v-else
-            :headers="['Quiz Code', 'Quiz Name', 'Degree', 'Date']" 
-            :rows="filteredReviews.map(r => [r.code, r.quizName, r.degree, formatDate(r.date)])" 
-            class="bg-white dark:bg-[#2d3748] text-gray-800 dark:text-gray-200 shadow-md rounded-lg p-4"
-          />
+          <!-- No Quiz History Message -->
+                    <div v-else-if="userReview.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6">
+                        This user has not taken any quizzes yet.
+                    </div>
+                    <!-- <TableStructure v-else 
+                    :headers="['Quiz Name', 'Score', 'Taken Date']" 
+                    :rows="filteredReviews.map(quiz => [
+                            quiz.name,
+                            quiz.score,
+                            formatDate(quiz.date)
+                        ])" class="w-full max-w-5xl mx-auto"></TableStructure> -->
+                    <!-- Display Quizzes -->
+                    
+                      <div v-else class="overflow-x-auto">
+                        <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md mt-5">
+            <thead class="bg-teal-600 text-white dark:bg-teal-700">
+                <tr>
+                    <th class="w-1/3 px-2 md:px-6 py-3 text-left text-sm font-semibold">Quiz Name</th>
+                    <th class="w-1/3 px-2 md:px-6 py-3 text-left text-sm font-semibold">Score</th>
+                    <th class="w-1/3 px-2 md:px-6 py-3 text-left text-sm font-semibold">Taken Date</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                <tr v-for="quiz in filteredReviews" :key="quiz.name" 
+                    class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <td class="w-1/3 px-2 md:px-6 py-4 text-sm text-gray-900 dark:text-gray-200 truncate">{{ quiz.name }}</td>
+                    <td class="w-1/3 px-2 md:px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{{ quiz.score }}</td>
+                    <td class="w-1/3 px-2 md:px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{{ formatDate(quiz.date) }}</td>
+                </tr>
+            </tbody>
+        </table>
+                      </div>
         </div>
       </main>
     </div>
@@ -116,7 +135,7 @@ export default {
   computed: {
     filteredReviews() {
       return this.userReview.filter(review =>
-        review.quizName.toLowerCase().includes(this.searchQuery.toLowerCase())
+        review.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
   },
@@ -136,46 +155,51 @@ export default {
       });
     },
     async loadUserDetails() {
-      const userId = this.$route.params.id;
-      if (!userId) return;
+            const userId = this.$route.params.id;
+            if (!userId) return;
 
-      this.isLoading = true; // 🔹 Start loading
+            this.isLoading = true;
+            try {
+                const db = getDatabase();
 
-      try {
-        const db = getDatabase();
+                // Fetch User Details
+                const userRef = ref(db, `users/${userId}`);
+                const userSnap = await get(userRef);
+                
+                if (userSnap.exists()) {
+                    const userData = userSnap.val();
+                    this.selectedUser = {
+                        ...userData,
+                        name: userData.name || 'Unknown User',
+                        email: userData.email || 'No email provided',
+                        phone: userData.phone || 'No phone provided',
+                        createdAt: userData.createdAt || new Date().toISOString(),
+                        quizzesToTake: userData.quizzesToTake || 0,
+                        overallScore: userData.overallScore || 0
+                    };
 
-        // 🔹 Fetch User Details
-        const userRef = ref(db, `users/${userId}`);
-        const userSnap = await get(userRef);
-        if (userSnap.exists()) {
-          this.selectedUser = userSnap.val();
-        } else {
-          console.error("User not found");
-          this.isLoading = false;
-          return;
-        }
-
-        // 🔹 Fetch User's Quizzes
-        const quizzesRef = ref(db, `user_quizzes/${userId}`);
-        const quizzesSnap = await get(quizzesRef);
-
-        if (quizzesSnap.exists()) {
-          const quizzesData = quizzesSnap.val();
-          this.userReview = Object.entries(quizzesData).map(([key, quiz]) => ({
-            code: key,
-            quizName: quiz.name || "Unknown Quiz",
-            degree: quiz.degree || "N/A",
-            date: quiz.date || "Unknown Date",
-          }));
-        } else {
-          this.userReview = []; // No quizzes found
-        }
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-
-      this.isLoading = false; // 🔹 Stop loading
-    },
+                    // Transform attempted quizzes into quiz history
+                    if (userData.attemptedQuizzes) {
+                        this.userReview = Object.values(userData.attemptedQuizzes).map(quiz => ({
+                            name: quiz.title || 'Untitled Quiz',
+                            score: quiz.quizScore || 0,
+                            date: quiz.timestamp || new Date().toISOString(),
+                            totalQuestions: quiz.totalQuestions || 0
+                        }));
+                    } else {
+                        this.userReview = [];
+                    }
+                } else {
+                    console.error("User not found");
+                    this.userReview = [];
+                }
+            } catch (error) {
+                console.error("Error fetching user details:", error);
+                this.userReview = [];
+            } finally {
+                this.isLoading = false;
+            }
+        },
   },
   watch: {
     "$route.params.id": "loadUserDetails",

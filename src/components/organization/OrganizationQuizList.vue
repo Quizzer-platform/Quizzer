@@ -27,13 +27,26 @@
         </div>
 
         <!-- Quizzes Table (Hidden While Loading) -->
-        <TableStructure v-else :headers="['QUIZ ID', 'Name of Quiz', 'No. of Questions', 'Duration (mins)']" :rows="filteredQuizzes.map(quiz => [
+        <TableStructure v-else :headers="['QUIZ CODE', 'Name of Quiz', 'No. of Questions', 'Duration (mins)']" :rows="paginatedData.map(quiz => [
             quiz.id,
             quiz.name,
             quiz.questions.length,
             quiz.duration
         ])" :showActions="true" @view-details="previewQuiz" />
-        
+        <!-- Pagination controls -->
+        <div v-if="quizzes.length > 0" class="flex justify-center gap-2 p-4">
+            <button @click="prevPage" :disabled="currentPage === 1"
+                class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                Previous
+            </button>
+            <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                Page {{ currentPage }} of {{ totalPages }}
+            </span>
+            <button @click="nextPage" :disabled="currentPage === totalPages || totalPages === 0"
+                class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                Next
+            </button>
+        </div>
         <!-- Subscription Modal -->
         <div v-if="showSubscriptionModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
             <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4 dark:bg-gray-900 dark:text-white w-full">
@@ -52,6 +65,7 @@
                 </div>
             </div>
         </div>
+        
     </div>
 </template>
 
@@ -70,6 +84,8 @@ export default {
             loading: true, // 🔹 Add loading state
             showSubscriptionModal: false,
             subscriptionMessage: '',
+            currentPage: 1,
+            perPage: 3,
         };
     },
     components: {
@@ -85,8 +101,43 @@ export default {
                 quiz.name.toLowerCase().includes(searchLower)
             );
         },
+        paginatedData() {
+            const start = (this.currentPage - 1) * this.perPage;
+            const end = start + this.perPage;
+            return this.filteredQuizzes.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.filteredQuizzes.length / this.perPage);
+        }
     },
     methods: {
+        visiblePages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const startPage = Math.max(
+                1,
+                Math.min(this.currentPage - 2, this.totalPages - 4)
+            );
+            const endPage = Math.min(startPage + 4, this.totalPages);
+
+            return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+            );
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        resetPagination() {
+            this.currentPage = 1;
+        },
         updateSearchQuery(query) {
             this.searchQuery = query;
         },

@@ -76,17 +76,19 @@
 
                     <!-- <div class="relative inline-flex items-center "> -->
                         <!-- class="w-20 h-8 flex items-center justify-between bg-gray-300 rounded-full p-1 cursor-pointer relative" -->
-                        <button class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 cursor-pointer flex items-center justify-center w-10 h-10"
-                            @click="changeLanguage(currentLocale === 'en' ? 'ar' : 'en')">
-                            <span v-if="currentLocale === 'en'">EN</span>
-                            <span v-else>AR</span>
+                        <button 
+    class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 cursor-pointer flex items-center justify-center w-10 h-10"
+    @click="changeLanguage(currentLocale === 'en' ? 'ar' : 'en')">
+    <span v-if="currentLocale === 'en'">EN</span>
+    <span v-else>AR</span>
+</button>
                             <!-- <span class="text-gray-600 text-sm z-10"
                                 :class="currentLocale === 'ar' ? 'mr-2' : 'ml-2'">EN</span>
                             <span class="text-gray-600 text-sm z-10"
                                 :class="currentLocale === 'ar' ? 'ml-2' : 'mr-2'">ع</span>
                             <div class="bg-white w-10 h-6 rounded-full shadow-md transform transition-transform duration-300 absolute"
                                 :class="currentLocale === 'ar' ? 'right-1' : 'left-1'"></div> -->
-                        </button>
+                        <!-- </button> -->
                     <!-- </div> -->
 
                     <!-- Dark Mode Button -->
@@ -96,17 +98,17 @@
     
     <!-- Toggle Knob -->
     <div class="absolute w-5 h-5 bg-white dark:bg-gray-200 rounded-full shadow-md transition-transform duration-300 transform"
-        :class="{ 'translate-x-6': isDarkMode, 'translate-x-0': !isDarkMode }">
+        :class="{ 'translate-x-6 ltr:translate-x-6 rtl:-translate-x-6': isDarkMode, 'translate-x-0': !isDarkMode }">
     </div>
 
     <!-- Moon Icon (Dark Mode) -->
-    <svg v-if="isDarkMode" class="absolute left-1 w-4 h-4 text-yellow-300 transition-all duration-300"
+    <svg v-if="isDarkMode" class="absolute rtl:right-1 ltr:left-1 w-4 h-4 text-yellow-300 transition-all duration-300"
         fill="currentColor" viewBox="0 0 24 24">
         <path d="M12.74 2a10.94 10.94 0 0 0 0 20 9.22 9.22 0 0 1 0-20Z" />
     </svg>
 
     <!-- Sun Icon (Light Mode) -->
-    <svg v-else class="absolute right-1 w-4 h-4 text-yellow-500 transition-all duration-300"
+    <svg v-else class="absolute rtl:left-1 ltr:right-1 w-4 h-4 text-yellow-500 transition-all duration-300"
         fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="5" />
         <line x1="12" y1="1" x2="12" y2="3" />
@@ -120,7 +122,6 @@
     </svg>
 
 </button>
-
 
                     <button v-if="isAuthenticated" @click="handleLogout"
                         class="hidden md:block hover:text-red-600 dark:hover:text-red-400 cursor-pointer">

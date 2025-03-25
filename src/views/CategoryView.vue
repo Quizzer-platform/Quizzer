@@ -1,58 +1,75 @@
 <template>
-<Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
-<div class="flex justify-center py-2 pt-20 bg-white dark:bg-[#1a202c] flex-wrap items-center gap-4 px-4 sm:px-6 lg:px-8 w-full">
-     
-        <search class="w-full" v-if="showCategories"  @search="updateSearchQuery" />   
+  <Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
+
+  <div class="flex justify-center py-2 pt-20 bg-white dark:bg-[#1a202c] flex-wrap items-center gap-4 px-4 sm:px-6 lg:px-8 w-full">
+    <search class="w-full" v-if="showCategories" @search="updateSearchQuery" />
+  </div>
+
+  <div :class="showCategories ? 'min-h-screen' : 'min-h-0'"
+       class="flex justify-center items-center bg-white text-gray-900 dark:bg-[#1a202c] dark:text-white">
+
+    <!-- Loading State -->
+    <div v-if="loading || loadingQuizzes" class="text-center py-8 min-h-screen">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
+      <p class="text-gray-600 mt-4">{{ loading ? 'Loading categories...' : 'Loading quizzes...' }}</p>
     </div>
-<div :class="showCategories ? 'min-h-screen' : 'min-h-0'"
-class="flex justify-center items-center bg-white text-gray-900 dark:bg-[#1a202c] dark:text-white">
-        <!-- Loading State -->
-        <div v-if="loading || loadingQuizzes" class="text-center py-8 min-h-screen">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
-            <p class="text-gray-600 mt-4">{{ loading ? 'Loading categories...' : 'Loading quizzes...' }}</p>
-        </div>
 
-        <div v-else-if="filteredCategories.length === 0" class="text-center text-gray-500 my-20">
-          No Categories found.
-        </div>
+    <div v-else-if="filteredCategories.length === 0" class="text-center text-gray-500 my-20">
+      No Categories found.
+    </div>
 
-        <!-- Categories View -->
-        <CategriesCards v-else-if="showCategories" :categories="filteredCategories" @view-quizzes="viewCategoryQuizzes" />
+    <!-- Categories View -->
+    <CategriesCards v-else-if="showCategories" :categories="filteredCategories" @view-quizzes="viewCategoryQuizzes" />
 
-        <!-- Quizzes View -->
     <!-- Quizzes View -->
-<div v-else class="container mx-auto px-4 lg:px-4">
-    <!-- Back Button & Search Bar Container -->
-<div class="flex flex-wrap items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:px-8">
+    <div v-else class="container mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- Back Button -->
-    <button @click="showCategories = true"
-        class="flex items-center cursor-pointer gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg shadow-md 
-               hover:bg-teal-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-500">
-        Back to Categories
-    </button>
-
-    <!-- Search Bar -->
-    <div class="relative w-full sm:w-80">
-        <search v-model="searchQuery" class="w-full" />
-    </div>
-
-</div>
-
-    <!-- Quizzes Section -->
-    <div class="flex flex-col justify-center items-center">
-        <QuizesCards v-if="selectedCategoryQuizzes.length" :cards="selectedCategoryQuizzes"
-            :categoryTitle="selectedCategoryTitle" />
-        <div v-else-if="!loadingQuizzes" class="text-center py-8">
-            <p class="text-gray-600">No quizzes found in this category.</p>
+      <!-- Back Button & Search Bar Container -->
+      <div class="flex flex-wrap items-center justify-between gap-4 max-w-5xl mx-auto px-4 py-2">
+        <button @click="showCategories = true"
+                class="flex items-center cursor-pointer gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg shadow-md 
+                       hover:bg-teal-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-500">
+          Back to Categories
+        </button>
+        <div class="relative w-full sm:w-80">
+          <search v-model="searchQuery" class="w-full" />
         </div>
-    </div>
+      </div>
+
+      <!-- Category Details Section -->
+      <div v-if="selectedCategory" class="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md text-center my-6 max-w-5xl mx-auto hover:shadow-lg">
+        <div class="flex items-center justify-center gap-4">
+          <img v-if="selectedCategory.icon" :src="selectedCategory.icon" alt="Category Icon" class="w-16 h-16 shadow-lg">
+          <h2 class="text-3xl font-semibold text-teal-800 dark:text-teal-500">{{ selectedCategory.title }}</h2>
+        </div>
+        <p class="mt-2 text-gray-600 dark:text-gray-300 text-lg px-15">{{ selectedCategory.description }}</p>
+      </div>
+
+      <!-- Quizzes Section -->
+<!-- Divider Above the Heading -->
+<hr class="border-gray-400 mb-3 w-40 sm:w-60 md:w-80 lg:w-96 xl:w-170 mx-auto" />
+
+<!-- Elegant Quizzes Review Heading -->
+<div class="flex flex-col justify-center items-center w-full max-w-5xl mx-auto">
+  <h2 class="text-2xl sm:text-3xl font-bold text-teal-800 dark:text-teal-300 text-center mt-10 mb-6">
+    Category Quizzes
+  </h2>
+</div>
+
+<!-- Quizzes Cards Section -->
+<div class="flex flex-col justify-center items-center w-full max-w-5xl mx-auto">
+  <QuizesCards v-if="selectedCategoryQuizzes.length" :cards="selectedCategoryQuizzes"
+               :categoryTitle="selectedCategory.title" class="w-full" />
+  <div v-else-if="!loadingQuizzes" class="text-center py-8">
+    <p class="text-gray-600">No quizzes found in this category.</p>
+  </div>
 </div>
 
 
     </div>
+  </div>
 
-    <Footer />
+  <Footer />
 </template>
 
 <script>
@@ -67,6 +84,7 @@ export default {
     data() {
         return {
             categories: [],
+            selectedCategory: null,
             selectedCategoryQuizzes: [],
             selectedCategoryTitle: '',
             loading: true,
@@ -124,27 +142,27 @@ export default {
         .catch(error => console.error("Error loading categories:", error))
         .finally(() => (this.loading = false));
         },
-        viewCategoryQuizzes(categoryId) {
-            this.loadingQuizzes = true;
-            this.showCategories = false;
+       viewCategoryQuizzes(categoryId) {
+      this.loadingQuizzes = true;
+      this.showCategories = false;
 
-            const selectedCategory = this.categories.find(cat => cat.id === categoryId);
-            this.selectedCategoryTitle = selectedCategory?.title || '';
+      const selectedCategory = this.categories.find(cat => cat.id === categoryId);
+      this.selectedCategory = selectedCategory || null;
 
-            fetch("https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json")
-                .then(response => response.json())
-                .then(data => {
-                    if (data && selectedCategory?.quizzes?.length) {
-                        this.selectedCategoryQuizzes = selectedCategory.quizzes
-                            .map(qid => data[qid] ? { id: qid, ...data[qid] } : null)
-                            .filter(q => q); // Remove nulls
-                    } else {
-                        this.selectedCategoryQuizzes = [];
-                    }
-                })
-                .catch(error => console.error("Error loading quizzes:", error))
-                .finally(() => (this.loadingQuizzes = false));
-        },
+      fetch("https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json")
+        .then(response => response.json())
+        .then(data => {
+          if (data && selectedCategory?.quizzes?.length) {
+            this.selectedCategoryQuizzes = selectedCategory.quizzes
+              .map(qid => data[qid] ? { id: qid, ...data[qid] } : null)
+              .filter(q => q);
+          } else {
+            this.selectedCategoryQuizzes = [];
+          }
+        })
+        .catch(error => console.error("Error loading quizzes:", error))
+        .finally(() => (this.loadingQuizzes = false));
+    },
         updateSearchQuery(query) {
             this.searchQuery = query;
         },

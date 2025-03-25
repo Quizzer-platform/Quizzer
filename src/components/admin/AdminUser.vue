@@ -69,7 +69,7 @@
                                 <tr>
                                     <th class="px-6 py-3 text-left text-sm font-semibold">Quiz Name</th>
                                     <th class="px-6 py-3 text-left text-sm font-semibold">Score</th>
-                                    <th class="px-6 py-3 text-left text-sm font-semibold">Date Taken</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold">Taken Date</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">

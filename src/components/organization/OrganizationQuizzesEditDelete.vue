@@ -37,16 +37,29 @@
                 <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quiz details...</p>
             </div>
         <!-- Quiz Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 px-2 sm:px-4 w-full mx-auto justify-items-center overflow-x-hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
           <QuizCard 
-            v-for="quiz in filteredQuizzes" 
+            v-for="quiz in paginatedData" 
             :key="quiz.id" 
             :quiz="quiz" 
             @edit="editQuiz" 
             @delete="confirmDelete(quiz.id)"
-            class="w-full sm:w-80 max-w-full flex-grow-0"
           />
         </div>
+        <!-- Pagination controls for org quizzes -->
+        <div v-if="quizzes.length > 0" class="flex justify-center gap-2 p-4 mt-2">
+              <button @click="prevPage" :disabled="currentPage === 1"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Previous
+              </button>
+              <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                  Page {{ currentPage }} of {{ totalPages }}
+              </span>
+              <button @click="nextPage" :disabled="currentPage === totalPages || totalPages === 0"
+                  class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                  Next
+              </button>
+          </div>
       </div>
     </div>
 
@@ -106,7 +119,9 @@ export default {
       quizToDeleteId: null,
       organizationId: null, // Store organization ID dynamically
       showSubscriptionModal: false,
-    subscriptionMessage: '',
+      subscriptionMessage: '',
+      currentPage: 1,
+      perPage: 3
     };
   },
 
@@ -116,9 +131,41 @@ export default {
         quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
+    paginatedData() {
+          const start = (this.currentPage - 1) * this.perPage;
+          const end = start + this.perPage;
+          return this.filteredQuizzes.slice(start, end);
+      },
+    totalPages() {
+        return Math.ceil(this.filteredQuizzes.length / this.perPage);
+    }
   },
 
   methods: {
+    visiblePages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const startPage = Math.max(
+                1,
+                Math.min(this.currentPage - 2, this.totalPages - 4)
+            );
+            const endPage = Math.min(startPage + 4, this.totalPages);
+
+            return Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+            );
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
     async fetchOrganizationId() {
   const auth = getAuth();
   return new Promise((resolve) => {

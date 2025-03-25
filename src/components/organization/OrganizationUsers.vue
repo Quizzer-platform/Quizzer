@@ -42,10 +42,24 @@
   <TableStructure 
     v-else
     :headers="['User Id', 'User Name', 'Last Quiz', 'Degree']" 
-    :rows="filteredUsers.map(user => [user.id, user.name, user.lastQuiz, user.degree])" 
+    :rows="paginatedUserData.map(user => [user.id, user.name, user.lastQuiz, user.degree])" 
     :showActions="true"
     @view-details="goToUserDetails"
   />
+  <!-- Pagination controls for users -->
+                <div v-if="users.length > 0" class="flex justify-center gap-2 p-4">
+                    <button @click="prevUserPage" :disabled="currentUserPage === 1"
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                        Previous
+                    </button>
+                    <span class="px-4 py-2 text-sm font-medium text-teal-700">
+                        Page {{ currentUserPage }} of {{ totalUserPages }}
+                    </span>
+                    <button @click="nextUserPage" :disabled="currentUserPage === totalUserPages || totalUserPages === 0"
+                        class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
+                        Next
+                    </button>
+                </div>
 </div>
 
       </main>
@@ -77,6 +91,9 @@ export default {
       users: [], // Stores fetched users
       organization: null, // Organization name of the logged-in org admin
       loading: true, // Spinner state
+      currentUserPage: 1,
+      currentAdminPage: 1,
+      perUserPage: 8,
     };
   },
   computed: {
@@ -86,8 +103,40 @@ export default {
         user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
+    paginatedUserData() {
+            const start = (this.currentUserPage - 1) * this.perUserPage;
+            const end = start + this.perUserPage;
+            return this.filteredUsers.slice(start, end);
+    },
+    totalUserPages() {
+        return Math.ceil(this.filteredUsers.length / this.perUserPage);
+    },
   },
   methods: {
+     visibleUserPages() {
+            // Create an array of page numbers to display, similar to front-end implementation
+            // This shows a maximum of 5 pages at a time
+            const userStartPage = Math.max(
+                1,
+                Math.min(this.currentUserPage - 2, this.totalUserPages - 4)
+            );
+            const userEndPage = Math.min(userStartPage + 4, this.totalUserPages);
+
+            return Array.from(
+                { length: userEndPage - userStartPage + 1 },
+                (_, i) => userStartPage + i
+            );
+        },
+        nextUserPage() {
+            if (this.currentUserPage < this.totalUserPages) {
+                this.currentUserPage++;
+            }
+        },
+        prevUserPage() {
+            if (this.currentUserPage > 1) {
+                this.currentUserPage--;
+            }
+        },
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
@@ -134,26 +183,40 @@ export default {
     const usersRef = ref(db, "users");
     const snapshot = await get(usersRef);
 
-    if (snapshot.exists()) {
-      const data = snapshot.val();
-      this.users = Object.entries(data)
-        .map(([id, user]) => ({
-          id,
-          name: user.name || "Unknown",
-          lastQuiz: user.lastQuiz || "No Quiz Taken",
-          degree: user.degree || "N/A",
-          organization: user.organization, // Ensure we use organization name
-          role: user.role // Include role for filtering
-        }))
-        .filter(user => 
-          user.organization === this.organization && // Compare with organization name
-          user.role !== "organization_admin" // Exclude organization admins
-        );
+  if (snapshot.exists()) {
+  const data = snapshot.val();
+  this.users = Object.entries(data)
+    .map(([id, user]) => {
+      // Ensure attemptedQuizzes exists and is an array
+      const attempts = Array.isArray(user.attemptedQuizzes) 
+        ? user.attemptedQuizzes.filter(q => typeof q === 'object' && q.title)
+        : [];
 
-      console.log("Filtered users:", this.users);
-    } else {
-      this.users = [];
-    }
+      // Get the last quiz details if available
+      const lastAttempt = attempts.length > 0 ? attempts[attempts.length - 1] : null;
+      const lastQuiz = lastAttempt ? lastAttempt.title : "No Quiz Taken";
+      const degree = lastAttempt ? lastAttempt.quizScore : "N/A"; // Store the last quiz score
+
+      return {
+        id,
+        name: user.name || "Unknown",
+        lastQuiz,
+        degree,  // Now stores the last quiz's score
+        organization: user.organization, // Ensure we use organization name
+        role: user.role // Include role for filtering
+      };
+    })
+    .filter(user => 
+      user.organization === this.organization && // Compare with organization name
+      user.role !== "organization_admin" // Exclude organization admins
+    );
+
+  console.log("Filtered users:", this.users);
+} else {
+  this.users = [];
+}
+
+
   } catch (error) {
     console.error("Error fetching users:", error);
   } finally {

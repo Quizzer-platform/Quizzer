@@ -35,7 +35,7 @@
                         </div>
                         <div v-else-if="userQuizzes.length > 0"
                             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                            <div v-for="quiz in userQuizzes" :key="quiz.quizId"
+                            <div v-for="quiz in userQuizzes" :key="quiz.id"
                                 class="bg-white dark:bg-gray-900/85 p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
                                 <div class="flex items-center justify-between mb-2">
                                     <span
@@ -55,9 +55,9 @@
                                 <p class="mt-2 text-sm font-medium dark:text-gray-200">
                                     Score:
                                     <span
-                                        :class="quiz.quizScore >= quiz.totalQuestions / 2 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
+                                        :class="quiz.quizScore >= quiz.totalScore / 2 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
                                         class="font-bold">
-                                        {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
+                                        {{ quiz.quizScore }} / {{ quiz.totalScore }}
                                     </span>
                                 </p>
                             </div>
@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import { ref as dbRef, get, onValue, off, update } from 'firebase/database';
+import { ref as dbRef, get, onValue, off, update, getDatabase } from 'firebase/database';
 import { database } from '@/firebase';
 import { mapState } from 'vuex';
 import UserSidebar from './UserSidebar.vue';
@@ -172,7 +172,8 @@ export default {
             }),
             listeners: [],
             error: null,
-            loading: false
+            loading: false,
+            quizData: [] // Add this to store quiz data
         };
     },
     computed: {
@@ -193,27 +194,78 @@ export default {
             });
             this.listeners.push([userRef, listener]);
         },
-        async fetchUserQuizzes() {
-            if (!this.userId) return;
-
-            const quizzesRef = dbRef(database, `users/${this.userId}/attemptedQuizzes`);
-            const listener = onValue(quizzesRef, (snapshot) => {
-                const quizzes = snapshot.val();
-                this.userQuizzes = quizzes
-                    ? Object.values(quizzes)
-                        .map((q, index) => ({
-                            ...q,
-                            id: q.quizId || index,
-                            totalQuestions: q.totalQuestions || 10,
-                            title: q.title || "Quiz",
-                            category: q.category || "General"
-                        }))
-                        .sort((a, b) => this.compareTimestamps(b.timestamp, a.timestamp))
-                        .slice(1, 4)
-                    : [];
+        async loadQuizzes() {
+            return new Promise((resolve, reject) => {
+                fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data) {
+                            this.quizData = Object.entries(data).map(([id, quiz]) => ({
+                                id: id,
+                                numberOfQuestions: quiz.numberOfQuestions,
+                                scorePerQuestion: quiz.scorePerQuestion,
+                                totalScore: quiz.numberOfQuestions * quiz.scorePerQuestion
+                            }));
+                            
+                            // After loading quiz data, fetch organization quizzes
+                            this.fetchOrganizationQuizzes().then(() => {
+                                resolve();
+                            });
+                        } else {
+                            this.quizData = [];
+                            resolve();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading quizzes:', error);
+                        this.quizData = [];
+                        reject(error);
+                    });
             });
-
-            this.listeners.push([quizzesRef, listener]);
+        },
+        
+        fetchOrganizationQuizzes() {
+            return new Promise((resolve) => {
+                const db = getDatabase();
+                const orgQuizzesRef = dbRef(db, "organizationQuizzes");
+                
+                get(orgQuizzesRef)
+                    .then(snapshot => {
+                        if (snapshot.exists()) {
+                            const data = snapshot.val();
+                            // Get all organization quizzes
+                            const orgQuizzes = Object.entries(data)
+                                .map(([id, quiz]) => ({
+                                    id: id,
+                                    numberOfQuestions: quiz.numberOfQuestions || 0,
+                                    scorePerQuestion: quiz.scorePerQuestion || 1,
+                                    totalScore: (quiz.numberOfQuestions || 0) * (quiz.scorePerQuestion || 1)
+                                }));
+                                
+                            // Merge with existing quiz data
+                            this.quizData = [...this.quizData, ...orgQuizzes];
+                        } else {
+                            console.warn("No organization quizzes found");
+                        }
+                        resolve();
+                    })
+                    .catch(error => {
+                        console.error("Error fetching organization quizzes:", error);
+                        resolve();
+                    });
+            });
+        },
+        
+        calculateQuizTotal(quizId) {
+            if (!quizId) return 0;
+            
+            // First check if the quiz exists in our combined quiz data
+            const quiz = this.quizData.find(q => q.id === quizId);
+            if (quiz) {
+                return quiz.totalScore;
+            }
+            
+            return 0;
         },
         
         compareTimestamps(timestamp1, timestamp2) {
@@ -224,6 +276,36 @@ export default {
             // Compare dates and return the difference
             return date1.getTime() - date2.getTime();
         },
+        async fetchUserQuizzes() {
+            if (!this.userId) return;
+
+            // First load quiz data
+            await this.loadQuizzes();
+
+            const quizzesRef = dbRef(database, `users/${this.userId}/attemptedQuizzes`);
+            const listener = onValue(quizzesRef, (snapshot) => {
+                const quizzes = snapshot.val();
+                this.userQuizzes = quizzes
+                    ? Object.values(quizzes)
+                        .map((q, index) => {
+                            const quizTotal = this.calculateQuizTotal(q.quizId);
+                            return {
+                                ...q,
+                                id: q.quizId || index,
+                                totalQuestions: q.totalQuestions || 10,
+                                title: q.title || "Quiz",
+                                category: q.category || "General",
+                                totalScore: quizTotal // Add the total score
+                            };
+                        })
+                        .sort((a, b) => this.compareTimestamps(b.timestamp, a.timestamp))
+                        .slice(1, 4)
+                    : [];
+            });
+
+            this.listeners.push([quizzesRef, listener]);
+        },
+        
         async fetchUserBadges() {
             if (!this.userId) return;
 
@@ -333,6 +415,9 @@ export default {
             this.loading = true;
             this.error = null;
             try {
+                // Load quizzes first
+                await this.loadQuizzes();
+                
                 await Promise.all([
                     this.fetchUserProfile(),
                     this.fetchUserQuizzes(),

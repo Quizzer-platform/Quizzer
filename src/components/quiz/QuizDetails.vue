@@ -8,7 +8,7 @@
         <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quiz details...</p>
     </div>
 
-    <div v-else class="flex flex-col items-center md:w-full md:flex-row md:items-start md:gap-4 max-w-6xl mx-auto p-6">
+    <div v-else class="flex flex-col items-center md:w-full md:flex-row md:items-start md:gap-4 max-w-6xl mx-auto p-6 md:my-10">
         <div
             class="flex flex-col my-4 p-4 rounded-xl shadow-md bg-gray-100 dark:bg-gray-900 dark:text-white md:w-[50%]">
             <div

@@ -1,6 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-100 dark:bg-[#1a202c] flex items-center justify-center p-6">
-        <div class="max-w-3xl w-full bg-white dark:bg-[#23283b] shadow-lg rounded-lg p-8 border border-gray-200 dark:border-gray-700">
+        <div
+            class="max-w-3xl w-full bg-white dark:bg-[#23283b] shadow-lg rounded-lg p-8 border border-gray-200 dark:border-gray-700">
             <!-- Timer Box -->
             <div class="mb-6 text-center" v-if="!isLoading && questions.length > 0">
                 <div class="bg-teal-100 dark:bg-teal-900 p-4 rounded-lg inline-block">
@@ -29,80 +30,80 @@
         </div>
 
         <div v-if="quizNotFoundPopUp"
-    class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4 gap-y-4">
-    
-    <!-- Time's Up Message -->
-    <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg w-full max-w-xl text-center">
-        <h2 class="text-lg sm:text-xl font-semibold text-red-600 my-4">❌ Access Denied!</h2>
-        <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">Quiz Not Found</h2>
-        <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
-            Please enter the correct code to enter your quiz.
-        </p>
-        <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
-            <button @click="goToEnterCode"
-                class="w-full sm:w-auto px-5 py-2  bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 text-white rounded-md transition cursor-pointer">
-                Try again
-            </button>
-            <button @click="goToHome"
-                class="w-full sm:w-auto px-5 py-2  bg-gray-500 dark:bg-gray-600 hover:bg-gray-800 dark:hover:bg-gray-900 text-white rounded-md transition cursor-pointer">
-                Go To home
-            </button>
+            class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4 gap-y-4">
+
+            <!-- Time's Up Message -->
+            <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg w-full max-w-xl text-center">
+                <h2 class="text-lg sm:text-xl font-semibold text-red-600 my-4">❌ Access Denied!</h2>
+                <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">Quiz Not Found</h2>
+                <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
+                    Please enter the correct code to enter your quiz.
+                </p>
+                <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button @click="goToEnterCode"
+                        class="w-full sm:w-auto px-5 py-2  bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 text-white rounded-md transition cursor-pointer">
+                        Try again
+                    </button>
+                    <button @click="goToHome"
+                        class="w-full sm:w-auto px-5 py-2  bg-gray-500 dark:bg-gray-600 hover:bg-gray-800 dark:hover:bg-gray-900 text-white rounded-md transition cursor-pointer">
+                        Go To home
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
         <!-- Time's Up Popup -->
         <div v-if="showTimeUpPopup"
-    class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4 gap-y-4">
-    
-    <!-- Time's Up Message -->
-    <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg w-full max-w-xl text-center">
-        <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">⏰ Time's Up!</h2>
-        <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
-            Your time has expired. Your quiz has been submitted automatically.
-        </p>
-        <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
-            <button @click="goToQuizzes"
-                class="w-full sm:w-auto px-5 py-2  bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 text-white rounded-md transition cursor-pointer">
-                Back to Quizzes
-            </button>
-        </div>
-    </div>
+            class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4 gap-y-4">
 
-    <!-- Quiz Results -->
-    <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg text-center w-xl">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Quiz Results:</h2>
-        <p v-if="score<5" class="text-xl text-gray-700 dark:text-gray-300 mt-2">
-            Your Score: <span class="font-bold text-red-600 dark:text-red-400">{{ score }}</span> / {{ questions.length }}
-        </p>
-        <p v-else class="text-xl text-gray-700 dark:text-gray-300 mt-2">
-            Your Score: <span class="font-bold text-green-600 dark:text-green-400">{{ score }}</span> / {{ questions.length }}
-        </p>
-        <button @click="goToHome"
-            class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition mx-2">
-            Go to Home
-        </button>
-        <button @click="goToQuizAnswers"
-            class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition mx-2">
-            Check Answers
-        </button>
-    </div>
-</div>
+            <!-- Time's Up Message -->
+            <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg w-full max-w-xl text-center">
+                <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">⏰ Time's Up!</h2>
+                <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
+                    Your time has expired. Your quiz has been submitted automatically.
+                </p>
+                <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
+                    <button @click="goToQuizzes"
+                        class="w-full sm:w-auto px-5 py-2  bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 text-white rounded-md transition cursor-pointer">
+                        Back to Quizzes
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Results -->
+            <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg text-center w-xl">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Quiz Results:</h2>
+                <p v-if="score < (numberOfQuestions * scorePerQuestion) / 2" class="text-xl text-gray-700 dark:text-gray-300 mt-2">
+                    Your Score: <span class="font-bold text-red-600 dark:text-red-400">{{ score }}</span> / {{ numberOfQuestions * scorePerQuestion }}
+                </p>
+                <p v-else class="text-xl text-gray-700 dark:text-gray-300 mt-2">
+                    Your Score: <span class="font-bold text-green-600 dark:text-green-400">{{ score }}</span> /{{ numberOfQuestions * scorePerQuestion }}
+                </p>
+                <button @click="goToHome"
+                    class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition mx-2">
+                    Go to Home
+                </button>
+                <button @click="goToQuizAnswers"
+                    class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition mx-2">
+                    Check Answers
+                </button>
+            </div>
+        </div>
         <!-- Quiz Results -->
         <div v-if="showPopup"
             class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4">
             <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg text-center w-xl">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Quiz Results:</h2>
-                <p v-if="score<5" class="text-xl text-gray-700 dark:text-gray-300 mt-2">
-                Your Score: <span class="font-bold text-red-600">{{ score }}</span> / {{ questions.length }}
+                <p v-if="score < (numberOfQuestions * scorePerQuestion) / 2" class="text-xl text-gray-700 dark:text-gray-300 mt-2">
+                    Your Score: <span class="font-bold text-red-600">{{ score }}</span> / {{ numberOfQuestions * scorePerQuestion }}
                 </p>
-            <p v-else class="text-xl text-gray-700 dark:text-gray-300 mt-2">
-                Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ questions.length }}
-            </p>
+                <p v-else class="text-xl text-gray-700 dark:text-gray-300 mt-2">
+                    Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ numberOfQuestions * scorePerQuestion }}
+                </p>
                 <button @click="goToHome"
                     class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition ">
                     Go to Home
                 </button>
-                <button @click="goToQuizAnswers"
+                <button @click="goToQuizAnswers(quizId)"
                     class="mt-4 bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition mx-5">
                     Check Answers
                 </button>
@@ -110,15 +111,15 @@
         </div>
     </div>
 
-    <div v-if="showPopup"
+    <!-- <div v-if="showPopup"
         class="fixed inset-0 bg-black/40 backdrop-blur-xs flex flex-col justify-center items-center z-50 px-4">
         <div class="bg-white  dark:bg-[#23283b] p-6 rounded-lg shadow-lg text-center w-xl">
             <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Quiz Results:</h2>
-            <p v-if="score<5" class="text-xl text-gray-700 mt-2 dark:text-gray-100">
-                Your Score: <span class="font-bold text-red-600">{{ score }}</span> / {{ questions.length }}
+            <p v-if="score < (numberOfQuestions * scorePerQuestion) / 2" class="text-xl text-gray-700 mt-2 dark:text-gray-100">
+                Your Score: <span class="font-bold text-red-600">{{ score }}</span> / {{ numberOfQuestions * scorePerQuestion }}
             </p>
             <p v-else class="text-xl text-gray-700 mt-2 dark:text-gray-100">
-                Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ questions.length }}
+                Your Score: <span class="font-bold text-green-600">{{ score }}</span> / {{ numberOfQuestions * scorePerQuestion }}
             </p>
             <button @click="goToHome"
                 class="mt-4  bg-teal-800 dark:bg-teal-700 hover:bg-teal-900 dark:hover:bg-teal-800 mb-6 cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition mx-2">
@@ -129,7 +130,7 @@
                 Check Answers
             </button>
         </div>
-    </div>
+    </div> -->
 
 </template>
 
@@ -165,6 +166,8 @@ export default {
             quizDuration: 0,
             showTimeUpPopup: false,
             quizNotFoundPopUp: false,
+            numberOfQuestions: 0,
+            scorePerQuestion: 0,
         };
     },
     methods: {
@@ -187,6 +190,8 @@ export default {
                     }));
                     this.correctAnswers = adminData.questions.map(q => q.correctAnswer);
                     this.quizDuration = adminData.duration || 30; // Default 30 minutes if not set
+                    this.numberOfQuestions = adminData.numberOfQuestions;
+                    this.scorePerQuestion = adminData.scorePerQuestion;
                     this.startTimer();
                 } else {
 
@@ -203,6 +208,8 @@ export default {
                         }));
                         this.correctAnswers = orgData.questions.map(q => q.correctAnswer);
                         this.quizDuration = orgData.duration || 30; // Default 30 minutes if not set
+                        this.numberOfQuestions = orgData.numberOfQuestions;
+                        this.scorePerQuestion = orgData.scorePerQuestion;
                         this.startTimer();
                     } else {
                         console.error("Quiz not found in either source!");

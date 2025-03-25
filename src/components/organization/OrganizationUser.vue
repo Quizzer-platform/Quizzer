@@ -131,6 +131,7 @@ export default {
             selectedUser: null, // Holds the user details
             userReview: [], // Holds the user's quizzes
             isLoading: true, // 🔹 Tracks loading state
+            quizData : [],
         };
     },
     computed: {
@@ -165,6 +166,9 @@ export default {
             try {
                 const db = getDatabase();
 
+                // Load quizzes data first
+                await this.loadQuizzes();
+
                 // Fetch User Details
                 const userRef = ref(db, `users/${userId}`);
                 const userSnap = await get(userRef);
@@ -178,17 +182,21 @@ export default {
                         phone: userData.phone || 'No phone provided',
                         createdAt: userData.createdAt || new Date().toISOString(),
                         quizzesToTake: userData.quizzesToTake || 0,
-                        overallScore: userData.overallScore || 0
+                        overallScore: userData.overallScore || 0,
+                        organization: userData.organization || 'No organization'
                     };
 
                     // Transform attempted quizzes into quiz history
                     if (userData.attemptedQuizzes) {
-                        this.userReview = Object.values(userData.attemptedQuizzes).map(quiz => ({
-                            name: quiz.title || 'Untitled Quiz',
-                            score: quiz.quizScore || 0,
-                            date: quiz.timestamp || new Date().toISOString(),
-                            totalQuestions: quiz.totalQuestions || 0
-                        }));
+                        this.userReview = Object.values(userData.attemptedQuizzes).map(quiz => {
+                            const quizTotal = this.calculateQuizTotal(quiz.quizId);
+                            return {
+                                name: quiz.title || 'Untitled Quiz',
+                                score: `${quiz.quizScore || 0} / ${quizTotal}`,
+                                date: quiz.timestamp || new Date().toISOString(),
+                                totalQuestions: quiz.totalQuestions || 0
+                            };
+                        });
                     } else {
                         this.userReview = [];
                     }
@@ -202,6 +210,78 @@ export default {
             } finally {
                 this.isLoading = false;
             }
+        },
+        loadQuizzes() {
+            return new Promise((resolve, reject) => {
+                fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data) {
+                            this.quizData = Object.entries(data).map(([id, quiz]) => ({
+                                id: id,
+                                numberOfQuestions: quiz.numberOfQuestions,
+                                scorePerQuestion: quiz.scorePerQuestion,
+                                totalScore: quiz.numberOfQuestions * quiz.scorePerQuestion
+                            }));
+                            
+                            // After loading quiz data, fetch organization quizzes
+                            this.fetchOrganizationQuizzes().then(() => {
+                                resolve();
+                            });
+                        } else {
+                            this.quizData = [];
+                            resolve();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading quizzes:', error);
+                        this.quizData = [];
+                        reject(error);
+                    });
+            });
+        },
+        fetchOrganizationQuizzes() {
+            return new Promise((resolve) => {
+                const db = getDatabase();
+                const orgQuizzesRef = ref(db, "organizationQuizzes");
+                
+                get(orgQuizzesRef)
+                    .then(snapshot => {
+                        if (snapshot.exists()) {
+                            const data = snapshot.val();
+                            // Get all organization quizzes
+                            const orgQuizzes = Object.entries(data)
+                                .map(([id, quiz]) => ({
+                                    id: id,
+                                    numberOfQuestions: quiz.numberOfQuestions || 0,
+                                    scorePerQuestion: quiz.scorePerQuestion || 1,
+                                    totalScore: (quiz.numberOfQuestions || 0) * (quiz.scorePerQuestion || 1)
+                                }));
+                                
+                            // Merge with existing quiz data
+                            this.quizData = [...this.quizData, ...orgQuizzes];
+                            console.log("Organization quizzes loaded:", orgQuizzes.length);
+                        } else {
+                            console.log("No organization quizzes found");
+                        }
+                        resolve();
+                    })
+                    .catch(error => {
+                        console.error("Error fetching organization quizzes:", error);
+                        resolve();
+                    });
+            });
+        },
+        calculateQuizTotal(quizId) {
+            if (!quizId) return 0;
+            
+            // First check if the quiz exists in our combined quiz data
+            const quiz = this.quizData.find(q => q.id === quizId);
+            if (quiz) {
+                return quiz.totalScore;
+            }
+            
+            return 0;
         },
     },
     watch: {

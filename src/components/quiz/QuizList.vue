@@ -33,6 +33,7 @@
     
     <!-- Time's Up Message -->
     <div class="bg-white dark:bg-[#23283b] p-6 rounded-lg shadow-lg w-full max-w-xl text-center">
+        <h2 class="text-lg sm:text-xl font-semibold text-red-600 my-4">❌ Access Denied!</h2>
         <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">Quiz Not Found</h2>
         <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
             Please enter the correct code to enter your quiz.
@@ -43,7 +44,7 @@
                 Try again
             </button>
             <button @click="goToHome"
-                class="w-full sm:w-auto px-5 py-2  bg-gray-300 dark:bg-gray-600 hover:bg-gray-900 dark:hover:bg-gray-900 text-white rounded-md transition cursor-pointer">
+                class="w-full sm:w-auto px-5 py-2  bg-gray-500 dark:bg-gray-600 hover:bg-gray-800 dark:hover:bg-gray-900 text-white rounded-md transition cursor-pointer">
                 Go To home
             </button>
         </div>

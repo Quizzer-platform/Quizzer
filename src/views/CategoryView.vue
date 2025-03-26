@@ -9,17 +9,27 @@
     <div :class="showCategories ? 'min-h-fit' : 'min-h-0'"
         class="flex justify-center items-center bg-white text-gray-900 dark:bg-[#1a202c] dark:text-white">
 
-        <!-- Loading State -->
+        <!-- Loading Spinner -->
+        <div v-if="loading || loadingQuizzes" class="flex flex-col justify-center items-center h-60">
+                <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <p class="text-gray-600 dark:text-gray-300 mt-4">{{ loading ? 'Loading categories...' : 'Loading quizzes...' }}</p>
+        </div>
+
+        <!-- Loading State
         <div v-if="loading || loadingQuizzes" class="text-center py-8 min-h-screen">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
             <p class="text-gray-600 mt-4">{{ loading ? 'Loading categories...' : 'Loading quizzes...' }}</p>
-        </div>
+        </div> -->
 
         <div v-else-if="paginatedData.length === 0" class="text-center text-gray-500 my-20">
             No Categories found.
         </div > 
 
-        <div v-if="showCategories" class="flex flex-col justify-center items-center">
+        <div v-else-if="showCategories" class="flex flex-col justify-center items-center">
             <!-- Categories View -->
             <CategriesCards  :categories="paginatedData" @view-quizzes="viewCategoryQuizzes" />
             <!-- Pagination controls -->

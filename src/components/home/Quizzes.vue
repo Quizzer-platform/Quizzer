@@ -6,11 +6,16 @@
         <search class="mt-6 pt-20" @search="updateSearchQuery" />
 
         <div class="flex flex-col justify-center items-center min-h-[80vh] px-6">
-            <!-- Loading State -->
-            <div v-if="loading" class="text-center py-8">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-800 mx-auto"></div>
+        <!-- Loading Spinner -->
+        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
                 <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quizzes...</p>
-            </div>
+        </div>
+
 
             <!-- No Data State -->
             <div v-else-if="paginatedData.length === 0"

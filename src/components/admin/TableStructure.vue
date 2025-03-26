@@ -2,7 +2,7 @@
     <div class="bg-white p-6 rounded-xl shadow-xl mx-auto max-w-6xl 
                dark:bg-gray-800/95 dark:text-gray-200 backdrop-blur-sm mt-8">
         <div class="hidden md:block">
-            <table class="w-full text-left border-collapse overflow-hidden rounded-xl">
+            <table class="w-full text-center border-collapse overflow-hidden rounded-xl">
                 <thead>
                     <tr class="bg-gradient-to-r from-teal-600 to-teal-700 text-white/95 
                               dark:from-teal-700 dark:to-teal-800 dark:text-teal-50">

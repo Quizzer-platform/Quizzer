@@ -17,8 +17,9 @@
                             <h2 class="text-2xl font-bold text-teal-700 dark:text-teal-400">{{ selectedUser.name }}</h2>
                             <p class="mt-1 text-gray-600 dark:text-gray-300">Joined: {{ formatDate(selectedUser.createdAt) }}</p>
                             <div class="mt-3 text-gray-700 dark:text-gray-300">
-                                <p><span class="font-semibold my-1">Email:</span> {{ selectedUser.email }}</p>
-                                <p><span class="font-semibold my-1 ">Phone:</span> {{ selectedUser.phone }}</p>
+                                <p><span class="font-semibold my-1">ID: </span> {{ selectedUser.id }}</p>
+                                <p><span class="font-semibold my-1">Email: </span> {{ selectedUser.email }}</p>
+                                <p><span class="font-semibold my-1 ">Phone: </span> {{ selectedUser.phone }}</p>
                             </div>
                         </div>
 
@@ -239,7 +240,8 @@ export default {
                         phone: userData.phone || 'No phone provided',
                         createdAt: userData.createdAt || new Date().toISOString(),
                         quizzesToTake: userData.quizzesToTake || 0,
-                        overallScore: userData.overallScore || 0
+                        overallScore: userData.overallScore || 0,
+                        id: userId
                     };
 
                     // Transform attempted quizzes into quiz history

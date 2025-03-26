@@ -10,7 +10,7 @@
         class="flex justify-center items-center bg-white text-gray-900 dark:bg-[#1a202c] dark:text-white">
 
         <!-- Loading Spinner -->
-        <div v-if="loading || loadingQuizzes" class="flex flex-col justify-center items-center h-60">
+        <div v-if="loading || loadingQuizzes" class="flex flex-col justify-center items-center min-h-screen">
                 <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

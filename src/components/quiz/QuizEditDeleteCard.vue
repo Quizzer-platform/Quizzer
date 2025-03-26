@@ -7,15 +7,24 @@
             </div>
             <!-- Edit & Delete Buttons -->
             <div class="absolute top-0 right-0 flex gap-2">
-                <button @click="$emit('edit', quiz)"
-                    class="bg-teal-400 text-white p-2 rounded-full hover:bg-teal-900 dark:bg-teal-500 dark:hover:bg-teal-700 transition cursor-pointer">
-                    ✏️
-                </button>
-                <button @click="$emit('delete', quiz)"
-                    class="bg-red-200 text-white p-2 rounded-full hover:bg-red-600 dark:bg-red-400 dark:hover:bg-red-700 transition cursor-pointer">
-                    ❌
-                </button>
-            </div>
+    <button @click="$emit('edit', quiz)"
+        class="bg-teal-400 text-white p-2 rounded-full hover:bg-teal-900 
+               dark:bg-teal-500 dark:hover:bg-teal-700 transition cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M15.232 5.232l3.536 3.536M4 16.242V20h3.758l10.486-10.486-3.536-3.536L4 16.242z" />
+        </svg>
+    </button>
+    
+    <button @click="$emit('delete', quiz)"
+        class="bg-red-400 text-white p-2 rounded-full hover:bg-red-600 
+               dark:bg-red-500 dark:hover:bg-red-700 transition cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+</div>
         </div>
 
         <!-- Quiz Title -->

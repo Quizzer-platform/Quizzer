@@ -46,9 +46,9 @@
                                 <p class="mt-2 text-sm font-medium">
                                     Score:
                                     <span
-                                        :class="quiz.quizScore >= quiz.totalQuestions / 2 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
+                                        :class="quiz.quizScore >= quiz.totalScore / 2 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
                                         class="font-bold">
-                                        {{ quiz.quizScore }} / {{ quiz.totalQuestions }}
+                                        {{ quiz.quizScore }} / {{ quiz.totalScore }}
                                     </span>
                                 </p>
                                 <button @click="goToQuizAnswers(quiz.quizId)"
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { ref as dbRef, get, onValue, off, update } from 'firebase/database';
+import { ref as dbRef, get, onValue, off, update, getDatabase } from 'firebase/database';
 import { database } from '@/firebase';
 import UserSidebar from './UserSidebar.vue';
 
@@ -119,7 +119,8 @@ export default {
             quizzesToTake: 5,
             quizzesRef: null,
             listener: null,
-            loading: true
+            loading: true,
+            quizData: [] // Add this to store quiz data
         };
     },
     computed: {
@@ -128,28 +129,109 @@ export default {
         }
     },
     methods: {
+        async loadQuizzes() {
+            return new Promise((resolve, reject) => {
+                fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data) {
+                            this.quizData = Object.entries(data).map(([id, quiz]) => ({
+                                id: id,
+                                numberOfQuestions: quiz.numberOfQuestions,
+                                scorePerQuestion: quiz.scorePerQuestion,
+                                totalScore: quiz.numberOfQuestions * quiz.scorePerQuestion
+                            }));
+                            
+                            // After loading quiz data, fetch organization quizzes
+                            this.fetchOrganizationQuizzes().then(() => {
+                                resolve();
+                            });
+                        } else {
+                            this.quizData = [];
+                            resolve();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading quizzes:', error);
+                        this.quizData = [];
+                        reject(error);
+                    });
+            });
+        },
+        
+        fetchOrganizationQuizzes() {
+            return new Promise((resolve) => {
+                const db = getDatabase();
+                const orgQuizzesRef = dbRef(db, "organizationQuizzes");
+                
+                get(orgQuizzesRef)
+                    .then(snapshot => {
+                        if (snapshot.exists()) {
+                            const data = snapshot.val();
+                            // Get all organization quizzes
+                            const orgQuizzes = Object.entries(data)
+                                .map(([id, quiz]) => ({
+                                    id: id,
+                                    numberOfQuestions: quiz.numberOfQuestions || 0,
+                                    scorePerQuestion: quiz.scorePerQuestion || 1,
+                                    totalScore: (quiz.numberOfQuestions || 0) * (quiz.scorePerQuestion || 1)
+                                }));
+                                
+                            // Merge with existing quiz data
+                            this.quizData = [...this.quizData, ...orgQuizzes];
+                            console.log("Organization quizzes loaded:", orgQuizzes.length);
+                        } else {
+                            console.log("No organization quizzes found");
+                        }
+                        resolve();
+                    })
+                    .catch(error => {
+                        console.error("Error fetching organization quizzes:", error);
+                        resolve();
+                    });
+            });
+        },
+        
+        calculateQuizTotal(quizId) {
+            if (!quizId) return 0;
+            
+            // First check if the quiz exists in our combined quiz data
+            const quiz = this.quizData.find(q => q.id === quizId);
+            if (quiz) {
+                return quiz.totalScore;
+            }
+            
+            return 0;
+        },
+        
         async fetchUserQuizzes() {
             this.loading = true;
             if (!this.userId) return;
+
+            // Load quizzes data first
+            await this.loadQuizzes();
 
             const userRef = dbRef(database, `users/${this.userId}`);
             this.listener = onValue(userRef, async (snapshot) => {
                 if (snapshot.exists()) {
                     const userData = snapshot.val();
-                    // console.log("User Data from Firebase:", userData);
 
                     this.totalScore = userData.overallScore || 0;
                     this.quizzesToTake = userData.quizzesToTake || 0;
 
                     if (userData.attemptedQuizzes) {
-                        this.userQuizzes = userData.attemptedQuizzes.slice(1).map((attempt) => ({
-                            quizId: attempt.quizId,
-                            title: attempt.title || 'Untitled',
-                            category: attempt.category || 'General',
-                            timestamp: attempt.timestamp || '',
-                            totalQuestions: attempt.totalQuestions || 0,
-                            quizScore: attempt.quizScore || 0
-                        }));
+                        this.userQuizzes = userData.attemptedQuizzes.slice(1).map((attempt) => {
+                            const quizTotal = this.calculateQuizTotal(attempt.quizId);
+                            return {
+                                quizId: attempt.quizId,
+                                title: attempt.title || 'Untitled',
+                                category: attempt.category || 'General',
+                                timestamp: attempt.timestamp || '',
+                                totalQuestions: attempt.totalQuestions || 0,
+                                quizScore: attempt.quizScore || 0,
+                                totalScore: quizTotal // Add the total score
+                            };
+                        });
                     } else {
                         this.userQuizzes = [];
                     }
@@ -199,9 +281,9 @@ export default {
             this.$router.push(`/quiz/quizAnswers/${quizId}`);
         },
     },
-    mounted() {
+    async mounted() {
         if (this.userId) {
-            this.fetchUserQuizzes();
+            await this.fetchUserQuizzes();
         }
     },
     beforeUnmount() {

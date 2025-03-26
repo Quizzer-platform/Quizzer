@@ -20,7 +20,9 @@
 
                 <!-- Description -->
                 <p class="text-gray-700 dark:text-gray-400 mt-3 text-sm leading-relaxed flex-grow px-2">
-                    {{ reduceWordCount(category.description , 100) }}
+                    <div v-if="!expandedCards[index]" ><span>{{ reduceWordCount(category.description, 100) }}</span><span @click="showFullText(index)"
+                        class="cursor-pointer hover:text-teal-300">. . . . </span></div>
+                <div v-if="expandedCards[index]"><span>{{ reduceWordCount(category.description, 1000) }}</span></div>
                 </p>
 
                 <!-- Button -->
@@ -43,12 +45,24 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            moreText: " . ",
+            expandedCards: {}
+        }
+    },
     methods: {
         reduceWordCount(str, idx) {
             if (idx > str.length) {
                 return str;
             }
-            return str.substring(0, idx) + " . . . ";
+            return str.substring(0, idx) + this.moreText;
+        },
+        showFullText(index) {
+            // In Vue 3, we can directly set properties on reactive objects
+            this.expandedCards[index] = true;
+            // Force a re-render to ensure reactivity
+            this.expandedCards = {...this.expandedCards};
         }
     }
 };

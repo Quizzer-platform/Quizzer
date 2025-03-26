@@ -37,7 +37,7 @@
                 <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quiz details...</p>
             </div>
         <!-- Quiz Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-10">
           <QuizCard 
             v-for="quiz in paginatedData" 
             :key="quiz.id" 
@@ -121,7 +121,7 @@ export default {
       showSubscriptionModal: false,
       subscriptionMessage: '',
       currentPage: 1,
-      perPage: 3
+      perPage: 6
     };
   },
 

@@ -110,6 +110,7 @@ export default {
             quizzes: [],
             overallScore: 0,
             isLoading: true,
+            quizData: [], // Add this to store quiz data
         };
     },
     computed: {
@@ -142,6 +143,78 @@ export default {
                 day: "numeric",
             });
         },
+        async loadQuizzes() {
+            return new Promise((resolve, reject) => {
+                fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/adminQuizzes.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data) {
+                            this.quizData = Object.entries(data).map(([id, quiz]) => ({
+                                id: id,
+                                numberOfQuestions: quiz.numberOfQuestions,
+                                scorePerQuestion: quiz.scorePerQuestion,
+                                totalScore: quiz.numberOfQuestions * quiz.scorePerQuestion
+                            }));
+                            
+                            // After loading quiz data, fetch organization quizzes
+                            this.fetchOrganizationQuizzes().then(() => {
+                                resolve();
+                            });
+                        } else {
+                            this.quizData = [];
+                            resolve();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading quizzes:', error);
+                        this.quizData = [];
+                        reject(error);
+                    });
+            });
+        },
+        fetchOrganizationQuizzes() {
+            return new Promise((resolve) => {
+                const db = getDatabase();
+                const orgQuizzesRef = ref(db, "organizationQuizzes");
+                
+                get(orgQuizzesRef)
+                    .then(snapshot => {
+                        if (snapshot.exists()) {
+                            const data = snapshot.val();
+                            // Get all organization quizzes
+                            const orgQuizzes = Object.entries(data)
+                                .map(([id, quiz]) => ({
+                                    id: id,
+                                    numberOfQuestions: quiz.numberOfQuestions || 0,
+                                    scorePerQuestion: quiz.scorePerQuestion || 1,
+                                    totalScore: (quiz.numberOfQuestions || 0) * (quiz.scorePerQuestion || 1)
+                                }));
+                                
+                            // Merge with existing quiz data
+                            this.quizData = [...this.quizData, ...orgQuizzes];
+                            console.log("Organization quizzes loaded:", orgQuizzes.length);
+                        } else {
+                            console.log("No organization quizzes found");
+                        }
+                        resolve();
+                    })
+                    .catch(error => {
+                        console.error("Error fetching organization quizzes:", error);
+                        resolve();
+                    });
+            });
+        },
+        calculateQuizTotal(quizId) {
+            if (!quizId) return 0;
+            
+            // First check if the quiz exists in our combined quiz data
+            const quiz = this.quizData.find(q => q.id === quizId);
+            if (quiz) {
+                return quiz.totalScore;
+            }
+            
+            return 0;
+        },
         async loadUserDetails() {
             const userId = this.$route.params.id;
             if (!userId) return;
@@ -149,6 +222,9 @@ export default {
             this.isLoading = true;
             try {
                 const db = getDatabase();
+
+                // Load quizzes data first
+                await this.loadQuizzes();
 
                 // Fetch User Details
                 const userRef = ref(db, `users/${userId}`);
@@ -168,12 +244,15 @@ export default {
 
                     // Transform attempted quizzes into quiz history
                     if (userData.attemptedQuizzes) {
-                        this.quizzes = Object.values(userData.attemptedQuizzes).map(quiz => ({
-                            name: quiz.title || 'Untitled Quiz',
-                            score: quiz.quizScore || 0,
-                            date: quiz.timestamp || new Date().toISOString(),
-                            totalQuestions: quiz.totalQuestions || 0
-                        }));
+                        this.quizzes = Object.values(userData.attemptedQuizzes).map(quiz => {
+                            const quizTotal = this.calculateQuizTotal(quiz.quizId);
+                            return {
+                                name: quiz.title || 'Untitled Quiz',
+                                score: `${quiz.quizScore || 0} / ${quizTotal}`,
+                                date: quiz.timestamp || new Date().toISOString(),
+                                totalQuestions: quiz.totalQuestions || 0
+                            };
+                        });
                     } else {
                         this.quizzes = [];
                     }

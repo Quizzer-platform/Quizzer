@@ -33,9 +33,9 @@
         <!-- Organization Details -->
         <div class="md:w-3/4">
             <h2 class="text-3xl font-bold text-teal-700 dark:text-teal-400">{{ selectedOrg.name }}</h2>
-            <p class="text-gray-600 dark:text-gray-400 mt-1"><strong>ID:</strong> {{ selectedOrg.id || 'N/A' }}</p>
-            <p class="text-gray-600 dark:text-gray-400"><strong>Admin Email:</strong> {{ selectedOrg.adminEmail || 'N/A' }}</p>
-            <p class="text-gray-600 dark:text-gray-400"><strong>Admin Phone:</strong> {{ selectedOrg.adminPhone || 'N/A' }}</p>
+            <p class="text-gray-600 dark:text-gray-400 my-1"><strong>ID: </strong> {{ selectedOrgID || 'N/A' }}</p>
+            <p class="text-gray-600 dark:text-gray-400 my-1"><strong>Admin Email: </strong> {{ selectedOrg.adminEmail || 'N/A' }}</p>
+            <p class="text-gray-600 dark:text-gray-400 my-1"><strong>Admin Phone: </strong> {{ selectedOrg.adminPhone || 'N/A' }}</p>
         </div>
 
         <!-- Total Quizzes Card -->
@@ -121,6 +121,7 @@ export default {
             isSidebarOpen: window.innerWidth >= 768,
             searchQuery: "",
             selectedOrg: null,
+            selectedOrgID: "",
             quizzes: [],
             loading: true,
         };
@@ -179,6 +180,7 @@ export default {
         },
         async fetchOrganizationDetails() {
             const orgId = this.$route.params.id;
+            this.selectedOrgID = orgId;
             if (!orgId) return;
 
             try {

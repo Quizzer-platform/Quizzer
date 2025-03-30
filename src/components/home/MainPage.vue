@@ -8,19 +8,19 @@
                     {{ $t('mainPage.hero.tagline') }}
                 </span>
 
-                <h1 class="md:text-4xl text-2xl font-bold text-gray-900 dark:text-white mt-6 sm:mt-8">
+                <h1 class="md:text-4xl text-2xl font-bold text-gray-900 dark:text-white my-6 sm:mt-8">
                     {{ $t('mainPage.hero.title.part1') }}<span
                         class="bg-teal-200 dark:bg-teal-700 dark:text-white px-3 py-2 rounded-lg ms-2">{{
                             $t('mainPage.hero.title.highlight') }}</span> Quiz Platform
                     <span class="block mt-4">{{ $t('mainPage.hero.title.part2') }}</span>
                 </h1>
 
-                <div class="text-gray-600 dark:text-gray-300 mt-4">
+                <div class="text-gray-600 dark:text-gray-300 my-4">
                     <span class="block">{{ $t('mainPage.hero.description.line1') }}</span>
                     <span class="block mt-1">{{ $t('mainPage.hero.description.line2') }}</span>
                 </div>
 
-                <div class="mt-4 text-md text-teal-600 dark:text-teal-400 font-semibold italic">
+                <div class="my-4 text-md text-teal-600 dark:text-teal-400 font-semibold italic">
                     <span class="block">{{ $t('mainPage.hero.callToAction.line1') }}</span>
                     <span class="block mt-1">{{ $t('mainPage.hero.callToAction.line2') }}</span>
                 </div>
@@ -100,9 +100,9 @@
             </h2>
 
             <div class="flex flex-col justify-center items-center md:flex-row md:gap-8  mt-6">
-                <CategriesCards :categories="filteredCategories" @view-quizzes="viewCategoryQuizzes" />
+                <!-- <CategriesCards :categories="filteredCategories" @view-quizzes="viewCategoryQuizzes" /> -->
 
-                <!-- <div class="mt-8 justify-center mb-10 ">
+                <div class="mt-8 justify-center mb-10 ">
                     <div class="flex justify-center">
                         <div
                             class="p-6 rounded-xl shadow-lg w-80 text-center flex flex-col transition duration-300 transform hover:scale-102 h-full 
@@ -129,7 +129,63 @@
                             </button>
                         </div>
                     </div>
-                </div> -->
+                </div>
+                <div class="mt-8 justify-center mb-10 ">
+                    <div class="flex justify-center">
+                        <div
+                            class="p-6 rounded-xl shadow-lg w-80 text-center flex flex-col transition duration-300 transform hover:scale-102 h-full 
+                                bg-gradient-to-br from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 
+                                hover:bg-opacity-90 dark:hover:from-gray-700 dark:hover:to-gray-800 border border-gray-200 dark:border-gray-700">
+    
+                            <div class="p-3 w-14 h-14 mx-auto rounded-lg flex items-center justify-center 
+                                bg-teal-300 dark:bg-teal-800 shadow-md transition-all duration-300 hover:scale-110">
+                                <img src="../../assets/icons8-programming-100.png" alt="icon" class="w-8 h-8">
+                            </div>
+    
+                            <h3 class="font-semibold text-xl text-gray-900 dark:text-teal-300 mt-4 tracking-wide">
+                                {{ $t(`mainPage.categories.cards.cat2.title`) }}
+                            </h3>
+    
+                            <p class="text-gray-700 dark:text-gray-400 mt-3 text-sm leading-relaxed flex-grow px-2">
+                                {{ $t(`mainPage.categories.cards.cat2.description`) }}
+                            </p>
+    
+                            <button @click="this.$router.push('/categories?category=-OKh6X0t9bgiILYFCPQ2')" class="mt-4 px-5 py-2 cursor-pointer rounded-lg shadow-md w-full transition-all duration-300
+                                bg-teal-600 text-white hover:bg-teal-500 dark:bg-teal-700 dark:hover:bg-teal-500 
+                                hover:shadow-lg hover:shadow-teal-500/50">
+                                {{ $t(`mainPage.categories.cards.seeMore`) }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 justify-center mb-10 ">
+                    <div class="flex justify-center">
+                        <div
+                            class="p-6 rounded-xl shadow-lg w-80 text-center flex flex-col transition duration-300 transform hover:scale-102 h-full 
+                                bg-gradient-to-br from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 
+                                hover:bg-opacity-90 dark:hover:from-gray-700 dark:hover:to-gray-800 border border-gray-200 dark:border-gray-700">
+    
+                            <div class="p-3 w-14 h-14 mx-auto rounded-lg flex items-center justify-center 
+                                bg-teal-300 dark:bg-teal-800 shadow-md transition-all duration-300 hover:scale-110">
+                                <img src="../../assets/icons8-programming-100.png" alt="icon" class="w-8 h-8">
+                            </div>
+    
+                            <h3 class="font-semibold text-xl text-gray-900 dark:text-teal-300 mt-4 tracking-wide">
+                                {{ $t(`mainPage.categories.cards.cat3.title`) }}
+                            </h3>
+    
+                            <p class="text-gray-700 dark:text-gray-400 mt-3 text-sm leading-relaxed flex-grow px-2">
+                                {{ $t(`mainPage.categories.cards.cat3.description`) }}
+                            </p>
+    
+                            <button @click="this.$router.push('/categories?category=-OKh6iJ-41-L-FvC3T0i')" class="mt-4 px-5 py-2 cursor-pointer rounded-lg shadow-md w-full transition-all duration-300
+                                bg-teal-600 text-white hover:bg-teal-500 dark:bg-teal-700 dark:hover:bg-teal-500 
+                                hover:shadow-lg hover:shadow-teal-500/50">
+                                {{ $t(`mainPage.categories.cards.seeMore`) }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
@@ -229,7 +285,7 @@
             </h2>
 
             <!-- Testimonials Grid -->
-            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="mt-8 mb-16 grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Testimonial Card -->
                 <div
                     class="relative bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-lg dark:shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-lg dark:hover:shadow-[0_8px_20px_rgba(0,255,255,0.3)]">

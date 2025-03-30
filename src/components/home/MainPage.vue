@@ -139,7 +139,7 @@
     
                             <div class="p-3 w-14 h-14 mx-auto rounded-lg flex items-center justify-center 
                                 bg-teal-300 dark:bg-teal-800 shadow-md transition-all duration-300 hover:scale-110">
-                                <img src="../../assets/icons8-programming-100.png" alt="icon" class="w-8 h-8">
+                                <img src="../../assets/icons8-physics-100.png" alt="icon" class="w-8 h-8">
                             </div>
     
                             <h3 class="font-semibold text-xl text-gray-900 dark:text-teal-300 mt-4 tracking-wide">
@@ -167,7 +167,7 @@
     
                             <div class="p-3 w-14 h-14 mx-auto rounded-lg flex items-center justify-center 
                                 bg-teal-300 dark:bg-teal-800 shadow-md transition-all duration-300 hover:scale-110">
-                                <img src="../../assets/icons8-programming-100.png" alt="icon" class="w-8 h-8">
+                                <img src="../../assets/icons8-technology-100.png" alt="icon" class="w-8 h-8">
                             </div>
     
                             <h3 class="font-semibold text-xl text-gray-900 dark:text-teal-300 mt-4 tracking-wide">

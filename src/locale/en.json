@@ -52,7 +52,7 @@
                 },
                 "cat3": {
                     "title": "Data Science & Analytics",
-                    "description": "This category tests knowledge of data analysis, SQL, and Python, which are fundamental for data scientists and analysts. The quizzes cover database querying, data manipulation, and key data science concepts using Python. These skills are crucial for deriving insights from data, optimizing decision-making, and building predictive models."
+                    "description": "This category tests knowledge of data analysis, SQL, and Python, and covers fundamental and advanced topics related to data scientists and analysts. The quizzes cover database querying, data manipulation, and key data science concepts using Python. These skills are crucial for deriving insights from data, optimizing decision-making, and building predictive models."
                 },
                 "seeMore": "See More"
             }

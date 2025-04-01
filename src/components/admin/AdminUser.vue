@@ -193,9 +193,9 @@ export default {
                                 
                             // Merge with existing quiz data
                             this.quizData = [...this.quizData, ...orgQuizzes];
-                            console.log("Organization quizzes loaded:", orgQuizzes.length);
+                            // console.log("Organization quizzes loaded:", orgQuizzes.length);
                         } else {
-                            console.log("No organization quizzes found");
+                            console.warn("No organization quizzes found");
                         }
                         resolve();
                     })

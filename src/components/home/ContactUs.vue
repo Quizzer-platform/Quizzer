@@ -112,6 +112,19 @@
                     </div>
                 </div>
             </div>
+            <!-- Confirmation Popup -->
+            <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
+                <div
+                    class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">✅ Message Sent!</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Your message has been successfully sent to the
+                        user.</p>
+                    <button @click="confirmMessage"
+                        class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300 cursor-pointer">
+                        OK
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 </template>
@@ -130,6 +143,7 @@ export default {
             email: "",
             phone: "",
             message: "",
+            showPopup: false,
         };
     },
 
@@ -146,10 +160,11 @@ export default {
                     user_phone: this.phone,
                     message: this.message,
                 };
-
+                // Show success popup
+                this.showPopup = true;
                 await emailjs.send(serviceID, templateID, templateParams, publicKey);
-                alert("Your message has been sent successfully!");
-
+                // alert("Your message has been sent successfully!");
+                // Reset form fields
                 this.name = "";
                 this.email = "";
                 this.phone = "";
@@ -159,6 +174,9 @@ export default {
                 alert("An error occurred while sending your message.");
             }
         },
+        confirmMessage() {
+            this.showPopup = false;
+        }
     },
 };
 </script>

@@ -149,7 +149,7 @@ export default {
              userPlans: [
             { name: "Free", description: "Access 5 quizzes", price: "EGP 0", noOfQuizzes: "5", maxQuestionsPerQuiz: "10" },
             { name: "Starter Plan", description: "Access 15 quizzes", price: "EGP 500", noOfQuizzes: "15", maxQuestionsPerQuiz: "20" },
-            { name: "Pro Plan", description: "Access 50 quizzes", price: "EGP 1500", noOfQuizzes: "40", maxQuestionsPerQuiz: "Unlimited" },
+            { name: "Pro Plan", description: "Access 50 quizzes", price: "EGP 1500", noOfQuizzes: "50", maxQuestionsPerQuiz: "Unlimited" },
         ],
             plans: [
                 { name: "Free", description: "Basic access", price: "EGP 0", noOfQuizzes: "5", maxQuestionsPerQuiz: "10" },
@@ -176,7 +176,7 @@ export default {
                 const snapshot = await get(userRef);
                 if (snapshot.exists()) {
                     this.orgId = snapshot.val().organizationId || null;
-                    console.log("User's organization ID:", this.orgId); // ✅ Debugging Log
+                    // console.log("User's organization ID:", this.orgId); // ✅ Debugging Log
                     this.isAdmin = snapshot.val().role === "admin"; // Assuming 'role' exists in your database
                 // console.log("User Role:", snapshot.val().role);
                 } else {
@@ -200,7 +200,7 @@ export default {
         },
         selectPlan(plan) {
             if (!this.isLoggedIn) {
-            console.log("User is not logged in. Showing login popup.");
+            // console.log("User is not logged in. Showing login popup.");
             this.showLoginModal = true; // Trigger login popup
             return;
             }

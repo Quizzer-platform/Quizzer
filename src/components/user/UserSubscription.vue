@@ -16,52 +16,48 @@
                         </svg>
                         <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Recent Quizzes...</p>
                         </div>
-                        <div v-else-if="subscription" class="mb-8">
-                            <div class="bg-teal-50 dark:bg-gray-900/85 rounded-lg p-6 border border-teal-200 dark:border-gray-700">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div>
-                                        <h2 class="text-xl font-semibold text-teal-800 dark:text-teal-300">
-                                            {{ subscription.plan }} Plan
-                                        </h2>
-                                        <p class="text-gray-600 dark:text-gray-400">
-                                            Status: 
-                                            <span :class="subscription.status === 'active' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
-                                                {{ subscription.status }}
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-2xl font-bold text-teal-800 dark:text-teal-300">
-                                            ${{ subscription.price }}/mo
-                                        </p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">
-                                            Next billing date: {{ subscription.nextBillingDate }}
-                                        </p>
-                                    </div>
-                                </div>
+                        <div v-else-if="filteredSubscriptions.length > 0" class="mb-8">
+    <div v-for="(subscription, index) in filteredSubscriptions" :key="index" 
+         class="bg-teal-50 dark:bg-gray-900/85 rounded-lg p-6 border border-teal-200 dark:border-gray-700 mb-4">
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <h2 class="text-xl font-semibold text-teal-800 dark:text-teal-300">
+            {{ subscription.name }} Plan
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400">
+            Status: 
+            <span class="text-green-600 dark:text-green-400">
+              Active
+            </span>
+          </p>
+        </div>
+        <div class="text-right">
+          <p class="text-2xl font-bold text-teal-800 dark:text-teal-300">
+            {{ subscription.price }}
+          </p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Quizzes Available: {{ subscription.noOfQuizzes }}
+          </p>
+        </div>
+      </div>
 
-                                <div class="space-y-2 mb-6">
-                                    <h3 class="font-semibold text-gray-800 dark:text-gray-300">Features:</h3>
-                                    <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-400">
-                                        <li v-for="feature in subscription.features" :key="feature">
-                                            {{ feature }}
-                                        </li>
-                                    </ul>
-                                </div>
+      <div class="space-y-2 mb-6">
+        <h3 class="font-semibold text-gray-800 dark:text-gray-300">Features:</h3>
+        <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-400">
+          <li>Max Questions per Quiz: {{ getMaxQuestions(subscription.name) }}</li>
+          <li>Quizzes Available: {{ subscription.noOfQuizzes }}</li>
+          <li>{{ subscription.description }}</li>
+        </ul>
+      </div>
 
-                                <div class="flex justify-end space-x-4">
-                                    <button @click="cancelSubscription"
-                                        class="px-4 py-2 border border-red-600 text-red-600 dark:border-red-400 dark:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900 transition-colors">
-                                        Cancel Subscription
-                                    </button>
-                                    <button @click="upgradePlan"
-                                        class="px-4 py-2 bg-teal-600 text-white dark:bg-teal-700 dark:hover:bg-teal-600 rounded transition-colors">
-                                        Upgrade Plan
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
+            <!-- <div class="flex justify-end space-x-4">
+        <button @click="removePlan(subscription)" 
+                class="px-4 py-2 border border-red-600 text-red-600 dark:border-red-400 dark:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900 cursor-pointer transition-colors">
+        Remove Plan
+        </button>
+            </div> -->
+    </div>
+  </div>
                         <div v-else class="text-center py-8">
                             <div class="text-4xl mb-4">✨</div>
                             <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-300 mb-2">
@@ -95,27 +91,45 @@ export default {
     data() {
         return {
             isMenuOpen: false,
-            subscription: null,
-            listener: null
+            subscriptions: [],
+            loading: true,
+            listener: null,
+            features: [
+            { name: "Max Questions per Quiz", free: "10", starter: "30", pro: "60" },
+            ],
         };
     },
     computed: {
         userId() {
             return this.$store.state.user?.uid;
+        },
+        filteredSubscriptions() {
+            return this.subscriptions.slice(1);
         }
     },
     methods: {
-        fetchSubscription() {
-            if (!this.userId) return;
+         fetchSubscriptions() {
+      if (!this.userId) return;
 
-            const subscriptionRef = dbRef(database, `userSubscriptions/${this.userId}`);
-            this.listener = onValue(subscriptionRef, (snapshot) => {
-                this.subscription = snapshot.val();
-            }, (error) => {
-                console.error('Error fetching subscription:', error);
-                this.subscription = null;
-            });
-        },
+      const plansRef = dbRef(database, `users/${this.userId}/plans`);
+      this.listener = onValue(plansRef, (snapshot) => {
+        if (snapshot.exists()) {
+          // Convert object to array if stored as object
+          const plans = Array.isArray(snapshot.val()) ? 
+            snapshot.val() : 
+            Object.values(snapshot.val());
+          
+          this.subscriptions = plans;
+        } else {
+          this.subscriptions = [];
+        }
+        this.loading = false;
+      }, (error) => {
+        console.error('Error fetching subscriptions:', error);
+        this.subscriptions = [];
+        this.loading = false;
+      });
+    },
         async cancelSubscription() {
             try {
                 // Implement subscription cancellation logic
@@ -131,21 +145,31 @@ export default {
             } catch (error) {
                 console.error('Error upgrading plan:', error);
             }
-        }
+        },
+        getMaxQuestions(planName) {
+      const planKey = this.getPlanKey(planName);
+      const maxQuestionsFeature = this.features.find(f => f.name === "Max Questions per Quiz");
+      return maxQuestionsFeature ? maxQuestionsFeature[planKey] : 'N/A';
+    },
+    // Helper to convert plan names to feature keys
+    getPlanKey(planName) {
+      const mapping = {
+        'free': 'free',
+        'starter plan': 'starter',
+        'pro plan': 'pro'
+      };
+      return mapping[planName.toLowerCase()] || 'free';
+    },
     },
     mounted() {
-        this.fetchSubscription();
+        this.fetchSubscriptions();
     },
     beforeUnmount() {
-        try {
-            if (this.listener) {
-                const subscriptionRef = dbRef(database, `userSubscriptions/${this.userId}`);
-                off(subscriptionRef);
-                this.listener = null;
-            }
-        } catch (error) {
-            console.error('Error cleaning up listeners:', error);
-        }
+    if (this.listener) {
+      const plansRef = dbRef(database, `users/${this.userId}/plans`);
+      off(plansRef);
+      this.listener = null;
     }
+  }
 };
 </script>

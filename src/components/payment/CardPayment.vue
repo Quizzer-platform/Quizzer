@@ -54,9 +54,10 @@
     </p>
   </div>
 </template>
+
 <script>
 import { loadStripe } from "@stripe/stripe-js";
-import { ref as dbRef, get, update } from "firebase/database";
+import { ref as dbRef, get, set,push } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { database } from "@/firebase";
 
@@ -72,6 +73,7 @@ export default {
       message: "",
       success: false,
       orgId: null,
+      userId:null,
     };
   },
   async mounted() {
@@ -79,10 +81,11 @@ export default {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        this.userId = user.uid; // ✅ Store user ID
         const userRef = dbRef(database, `users/${user.uid}`);
         const snapshot = await get(userRef);
         if (snapshot.exists()) {
-          this.orgId = snapshot.val().organizationId; // ✅ Store the correct org ID
+          this.orgId = snapshot.val().organizationId||null; // ✅ Store the correct org ID
         }
       }
     });
@@ -146,9 +149,7 @@ export default {
           this.message = "✅ Payment successful!";
 
           // ✅ Save the plan in Firebase after successful payment
-          if (this.orgId) {
             await this.savePlanInDatabase();
-          }
           // ✅ Redirect to confirmation page
           setTimeout(() => {
   this.$router.push({
@@ -170,24 +171,24 @@ export default {
       }
     },
     async savePlanInDatabase() {
-      try {
-        const orgRef = dbRef(database, `organizations/${this.orgId}/plans`);
-        const snapshot = await get(orgRef);
-        const existingPlans = snapshot.exists() ? snapshot.val() : [];
-
-        // ✅ Append the new plan
-        const updatedPlans = [...existingPlans, this.plan];
-
-        // ✅ Update Firebase with the selected plan
-        await update(dbRef(database, `organizations/${this.orgId}`), {
-          plans: updatedPlans,
-        });
-
-        console.log("Plan saved successfully in Firebase.");
-      } catch (error) {
-        console.error("Error saving plan in Firebase:", error);
-      }
-    },
+  try {
+    const refPath = this.orgId 
+      ? `organizations/${this.orgId}/plans`
+      : `users/${this.userId}/plans`;
+    const plansRef = dbRef(database, refPath);
+    const newPlanRef = push(plansRef);
+    await set(newPlanRef, {
+      name: this.plan.name,
+      description: this.plan.description,
+      noOfQuizzes: this.plan.noOfQuizzes,
+      price: this.plan.price
+    });
+  } catch (error) {
+    console.error("Error saving plan:", error);
+    throw error;
+  }
+}
   },
 };
 </script>
+

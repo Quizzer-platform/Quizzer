@@ -54,7 +54,7 @@
                         <h3 class="text-xl font-bold text-gray-800 dark:text-teal-300">
                             User's Quiz History
                         </h3>
-                        <SearchBar class="w-full sm:ml-4 md:ml-160" v-model="searchQuery" />
+                        <SearchBar class="w-full sm:ml-4 md:ml-160"  @search="updateSearchQuery" />
                     </div>
 
                     <!-- 🔹 Loading Spinner -->
@@ -144,6 +144,9 @@ export default {
         },
     },
     methods: {
+        updateSearchQuery(query) {
+            this.searchQuery = query;
+        },
         toggleSidebar() {
             this.isSidebarOpen = !this.isSidebarOpen;
         },

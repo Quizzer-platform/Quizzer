@@ -34,7 +34,7 @@
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                 </svg>
-                <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quiz details...</p>
+                <p class="text-gray-600 dark:text-gray-300 mt-4">Loading quizzes...</p>
             </div>
         <!-- Quiz Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-10">
@@ -65,11 +65,11 @@
 
     <!-- Delete Confirmation Popup -->
     <div v-if="showDeletePopup" class="fixed inset-0 z-[100] flex items-center justify-center bg-gray-600/75">
-      <div class="bg-white p-6 rounded-lg shadow-md mx-4 max-w-sm w-full">
-        <p class="text-lg font-semibold mb-4">Are you sure you want to delete this quiz?</p>
+      <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mx-4 max-w-sm w-full">
+        <p class="text-lg font-semibold text-center dark:text-white mb-4">Are you sure you want to delete this quiz?</p>
         <div class="flex justify-center space-x-4">
-          <button @click="deleteQuiz" class="bg-red-500 text-white px-4 py-2 rounded-lg">Yes, Delete</button>
-          <button @click="showDeletePopup = false" class="bg-gray-300 px-4 py-2 text-teal-800 rounded-lg">Cancel</button>
+          <button @click="deleteQuiz" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg cursor-pointer">Yes, Delete</button>
+          <button @click="showDeletePopup = false" class="bg-gray-300 hover:bg-gray-400 px-4 py-2 text-teal-800 rounded-lg cursor-pointer">Cancel</button>
         </div>
       </div>
     </div>

@@ -161,10 +161,10 @@ export default {
   if (!this.orgId) return;
 
   try {
-    const orgRef = dbRef(database, `organizations/${this.orgId}`);
+    const orgRef = dbRef(database, `organizations/${this.orgId}/plans`);
     const snapshot = await get(orgRef);
-    if (snapshot.exists() && snapshot.val().plans) {
-      const plans = snapshot.val().plans.slice(1); // Ignore the first element
+    if (snapshot.exists()) {
+      const plans = Object.values(snapshot.val()).slice(1); // Convert object to array
       this.subscriptions = plans.map((plan) => ({
         name: plan.name || "No Name",
         maxQuizzes: plan.noOfQuizzes || "N/A",

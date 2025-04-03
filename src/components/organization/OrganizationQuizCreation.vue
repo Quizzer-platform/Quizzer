@@ -10,6 +10,7 @@
           </svg>
           <span class="text-lg font-medium cursor-pointer">Back to Dashboard</span>
         </button>
+
       </div>
 
       <form @submit.prevent="submitQuiz"
@@ -95,16 +96,17 @@
       </form>
 
       <!-- Success Popup -->
-      <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
-        <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
-          <h2 class="text-2xl font-bold text-gray-800 dark:text-teal-300 mb-4">🎉 Quiz Created Successfully!</h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-4">Your quiz has been successfully saved.</p>
-          <button @click="redirectToDashboard"
+      <!-- Success Popup -->
+<div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
+    <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-teal-300 mb-4">🎉 {{ popupMessage }}</h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">Your quiz has been successfully saved.</p>
+        <button @click="redirectToDashboard"
             class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300 cursor-pointer">
             OK
-          </button>
-        </div>
-      </div>
+        </button>
+    </div>
+</div>
     </div>
   </div>
 </template>
@@ -118,7 +120,7 @@ export default {
             quiz: {
                 title: '',
                 duration: 10,
-                numberOfQuestions: 10,
+                numberOfQuestions: 1,
                 description: '',
                 revealAnswers: 'no',
                 scorePerQuestion: 1,
@@ -133,6 +135,7 @@ export default {
             isEditing: false,
             quizId: null,
             showPopup: false,
+            popupMessage: '',
         };
     },
     created() {
@@ -144,7 +147,8 @@ export default {
         }
     },
     methods: {
-        addQuestion() {
+      addQuestion() {
+            this.quiz.numberOfQuestions += 1;
             this.quiz.questions.push({
                 questionHead: '',
                 options: ['', '', '', ''],
@@ -180,7 +184,8 @@ export default {
 
             try {
                 this.showPopup = true;
-                // Send quiz data to Firebase
+              // Send quiz data to Firebase
+                this.popupMessage = this.isEditing? "Quiz updated successfully!" : "Quiz created successfully!";
                 const response = await fetch(url, {
                     method,
                     headers: { 'Content-Type': 'application/json' },
@@ -190,7 +195,7 @@ export default {
 
                 if (!this.isEditing) {
                     await this.incrementOrganizationQuizzes(organizationUid);
-                }
+              }
                 console.log(`Quiz ${this.isEditing ? 'Updated' : 'Created'} successfully`);
             } catch (error) {
                 console.error(`Error ${this.isEditing ? 'updating' : 'creating'} quiz:`, error);
@@ -260,6 +265,22 @@ export default {
             } catch (error) {
                 console.error('Error updating organization quizzes:', error);
             }
+      },
+         resetForm() {
+            this.quiz = {
+                title: "",
+                duration: 10,
+                numberOfQuestions: 1,
+                description: "",
+                category: "",
+                questions: [
+                    {
+                        questionHead: "",
+                        options: ["", "", "", ""],
+                        correctAnswer: "",
+                    },
+                ],
+            };
         },
         redirectToDashboard() {
     this.showPopup = false;

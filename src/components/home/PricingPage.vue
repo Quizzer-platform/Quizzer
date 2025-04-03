@@ -207,7 +207,7 @@ export default {
             }
         } else {
             this.isLoggedIn = false;
-            this.showLoginModal = true;
+            // this.showLoginModal = true;
             this.loading = false;
         }
     });

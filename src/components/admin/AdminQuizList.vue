@@ -4,7 +4,7 @@
 
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
             <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Quizzes Review</h2>
-            <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-150" @search="updateSearchQuery" />
+            <Searchbar class="w-full sm:w-auto sm:ml-4 md:ml-150" @search="updateSearchQuery" />
         </div>
 
         <!-- Loading Spinner -->
@@ -49,8 +49,8 @@
 <script>
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get } from "firebase/database";
-import SearchBar from "../layout/Searchbar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
+import Searchbar from "@/components/layout/Searchbar.vue";
 
 export default {
     data() {
@@ -64,7 +64,7 @@ export default {
         };
     },
     components: {
-        SearchBar,
+        Searchbar,
         TableStructure,
     },
     computed: {

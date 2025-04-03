@@ -80,7 +80,7 @@
         <div class="flex flex-col md:flex-row justify-between items-center mb-4">
             <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Created Quizzes</h3>
             <!-- Fix: Use v-model directly on searchQuery -->
-            <SearchBar class="w-full md:w-auto mt-2 md:mt-0" @search="updateSearchQuery" />
+            <Searchbar class="w-full md:w-auto mt-2 md:mt-0" @search="updateSearchQuery" />
         </div>
 
         <!-- No Quizzes Message -->
@@ -107,14 +107,14 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavbar from "@/components/admin/AdminNavBar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
-import SearchBar from "@/components/layout/Searchbar.vue";
+import Searchbar from "@/components/layout/Searchbar.vue";
 
 export default {
     components: {
         AdminSidebar,
         AdminNavbar,
         TableStructure,
-        SearchBar,
+        Searchbar,
     },
     data() {
         return {

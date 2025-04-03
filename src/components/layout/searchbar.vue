@@ -21,6 +21,7 @@
 
 <script>
 export default {
+    name: "Searchbar",
     props: {
         customClass: {
             type: String,

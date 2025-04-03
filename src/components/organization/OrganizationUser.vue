@@ -54,7 +54,7 @@
                         <h3 class="text-xl font-bold text-gray-800 dark:text-teal-300">
                             User's Quiz History
                         </h3>
-                        <SearchBar class="w-full sm:ml-4 md:ml-160"  @search="updateSearchQuery" />
+                        <Searchbar class="w-full sm:ml-4 md:ml-160"  @search="updateSearchQuery" />
                     </div>
 
                     <!-- 🔹 Loading Spinner -->
@@ -115,14 +115,14 @@ import { getDatabase, ref, get } from "firebase/database";
 import OrganizationSidebar from "@/components/organization/OrganizationSidebar.vue";
 import OrganizationNavbar from "@/components/organization/OrganizationNavbar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
-import SearchBar from "@/components/layout/Searchbar.vue";
+import Searchbar from "@/components/layout/Searchbar.vue";
 
 export default {
     components: {
         OrganizationSidebar,
         OrganizationNavbar,
         TableStructure,
-        SearchBar,
+        Searchbar,
     },
     data() {
         return {

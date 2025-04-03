@@ -3,7 +3,7 @@
         <Navbar class="fixed top-0 left-0 w-full h-20 bg-white dark:bg-gray-900 shadow z-10"></Navbar>
 
         <!-- Search Bar -->
-        <search class="mt-6 pt-20" @search="updateSearchQuery" />
+        <Searchbar class="mt-6 pt-20" @search="updateSearchQuery" />
 
         <div class="flex flex-col justify-center items-center min-h-[80vh] px-6">
         <!-- Loading Spinner -->
@@ -50,14 +50,14 @@
 import Navbar from "../layout/Navbar.vue";
 import Footer from "../layout/Footer.vue";
 import Quizzes from "./QuizzesCards.vue";
-import search from "../layout/Searchbar.vue";
+import Searchbar from "@/components/layout/Searchbar.vue";
 
 export default {
     components: {
         Quizzes,
         Navbar,
         Footer,
-        search
+        Searchbar
     },
     data() {
         return {

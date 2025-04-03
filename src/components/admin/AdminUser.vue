@@ -45,7 +45,7 @@
                 <div class="mt-8">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-3">
                         <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">User's Quiz History</h3>
-                        <SearchBar class="w-full md:w-auto mt-2 md:mt-0" @search="updateSearchQuery" />
+                        <Searchbar class="w-full md:w-auto mt-2 md:mt-0" @search="updateSearchQuery" />
                     </div>
 
                        <!-- Loading Spinner -->
@@ -94,14 +94,14 @@ import { getDatabase, ref, get } from "firebase/database";
 import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavbar from "@/components/admin/AdminNavBar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
-import SearchBar from "@/components/layout/Searchbar.vue";
+import Searchbar from "@/components/layout/Searchbar.vue";
 
 export default {
     components: {
         AdminSidebar,
         AdminNavbar,
         TableStructure,
-        SearchBar,
+        Searchbar,
     },
     data() {
         return {

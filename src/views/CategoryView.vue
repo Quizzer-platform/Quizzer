@@ -3,10 +3,10 @@
 
     <div
         class="flex justify-center py-2 pt-20 bg-white dark:bg-[#1a202c] flex-wrap items-center gap-4 px-4 sm:px-6 lg:px-8 w-full">
-        <search class="w-full" v-if="showCategories" @search="updateSearchQuery" />
+        <Searchbar class="w-full" v-if="showCategories" @search="updateSearchQuery" />
     </div>
 
-    <div :class="showCategories ? 'min-h-fit' : 'min-h-0'"
+    <div :class="showCategories ? 'min-h-screen' : 'min-h-0'"
         class="flex justify-center items-center bg-white text-gray-900 dark:bg-[#1a202c] dark:text-white">
 
         <!-- Loading Spinner -->
@@ -107,11 +107,11 @@
 import Navbar from "../components/layout/Navbar.vue";
 import Footer from "../components/layout/Footer.vue";
 import CategriesCards from "../components/home/CategriesCards.vue";
-import search from "../components/layout/Searchbar.vue";
 import QuizesCards from "../components/home/QuizzesCards.vue";
+import Searchbar from "@/components/layout/Searchbar.vue";
 
 export default {
-    components: { CategriesCards, QuizesCards, Navbar, Footer, search },
+    components: { CategriesCards, QuizesCards, Navbar, Footer, Searchbar },
     data() {
         return {
             categories: [],

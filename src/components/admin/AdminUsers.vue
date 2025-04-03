@@ -13,7 +13,7 @@
                 <h2 class="text-xl font-bold text-gray-800 dark:text-teal-300 mb-3">System Users</h2>
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
                     <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Users Review</h2>
-                    <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateUserSearchQuery" />
+                    <Searchbar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateUserSearchQuery" />
                 </div>
 
                 <!-- Loading Spinner -->
@@ -98,14 +98,14 @@
 import { getDatabase, ref, get } from "firebase/database";
 import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavbar from "@/components/admin/AdminNavBar.vue";
-import SearchBar from "@/components/layout/Searchbar.vue";
+import Searchbar from "@/components/layout/Searchbar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
 
 export default {
     components: {
         AdminSidebar,
         AdminNavbar,
-        SearchBar,
+        Searchbar,
         TableStructure,
     },
     data() {

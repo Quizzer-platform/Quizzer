@@ -5,7 +5,7 @@
     <!-- Subscriptions Header -->
     <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
       <h3 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Subscriptions</h3>
-      <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-150" @search="updateSearchQuery" />
+      <Searchbar class="w-full sm:w-auto sm:ml-4 md:ml-150" @search="updateSearchQuery" />
     </div>
     <div v-if="loading" class="flex flex-col justify-center items-center h-60">
                 <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -55,7 +55,7 @@
 
 <script>
 import TableStructure from "@/components/admin/TableStructure.vue";
-import SearchBar from "@/components/layout/Searchbar.vue";
+import Searchbar from "@/components/layout/Searchbar.vue";
 import { ref as dbRef, get } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { database } from "@/firebase";
@@ -63,7 +63,7 @@ import { database } from "@/firebase";
 export default {
   components: {
     TableStructure,
-    SearchBar,
+    Searchbar,
   },
   data() {
     return {

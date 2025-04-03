@@ -8,7 +8,7 @@
             <div class="flex-1 p-4">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
                     <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-400">Edit Categories</h2>
-                    <SearchBar class="w-full sm:w-auto" @search="updateSearchQuery" />
+                    <Searchbar class="w-full sm:w-auto" @search="updateSearchQuery" />
                     <button
                         class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 dark:bg-teal-600 dark:hover:bg-teal-800 w-1/2 sm:w-auto cursor-pointer"
                         @click="createCategory">
@@ -77,11 +77,11 @@ import { getDatabase, ref, get, remove } from "firebase/database";
 import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavBar from "@/components/admin/AdminNavBar.vue";
 import QuizCard from "@/components/quiz/QuizEditDeleteCard.vue";
-import SearchBar from "@/components/layout/Searchbar.vue";
-import categoryIcon from '@/assets/categoryIcon.png';
+import Searchbar from "@/components/layout/Searchbar.vue";
+// import categoryIcon from '@/assets/categoryIcon.png';
 
 export default {
-    components: { AdminSidebar, AdminNavBar, QuizCard, SearchBar },
+    components: { AdminSidebar, AdminNavBar, QuizCard, Searchbar },
 
     data() {
         return {

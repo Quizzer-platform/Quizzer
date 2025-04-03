@@ -17,7 +17,7 @@
                 <div class="mt-8">
                     <div class="flex flex-col md:flex-row md:justify-between  gap-2 sm:gap-4 mb-3">
                         <h3 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Users Review</h3>
-                        <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateSearchQuery" />
+                        <Searchbar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateSearchQuery" />
                     </div>
 
                     <!-- Loading Spinner -->
@@ -71,7 +71,7 @@ import { getDatabase, ref, get } from "firebase/database";
 import OrganizationSidebar from "@/components/organization/OrganizationSidebar.vue";
 import OrganizationNavbar from "@/components/organization/OrganizationNavbar.vue";
 import DashboardOverview from "@/components/organization/OrganizationOverview.vue";
-import SearchBar from "@/components/layout/Searchbar.vue";
+import Searchbar from "@/components/layout/Searchbar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
 
 export default {
@@ -79,7 +79,7 @@ export default {
         OrganizationSidebar,
         OrganizationNavbar,
         DashboardOverview,
-        SearchBar,
+        Searchbar,
         TableStructure,
     },
     data() {

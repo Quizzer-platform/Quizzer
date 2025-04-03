@@ -150,9 +150,9 @@ export default {
     methods: {
         async sendEmail() {
             try {
-                const serviceID = "service_ta30y0o";
-                const templateID = "template_jple4br";
-                const publicKey = "wQb6IC1fjIt3_eUVs";
+                const serviceID = "service_68r2nzs";
+                const templateID = "template_l9p06cp";
+                const publicKey = "Z5SO_C6sXyZn24Tlo";
 
                 const templateParams = {
                     user_name: this.name,

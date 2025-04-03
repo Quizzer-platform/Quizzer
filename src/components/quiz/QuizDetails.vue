@@ -113,6 +113,22 @@
             </button>
         </div>
     </div>
+    <div v-if="showNotUserPopup" class="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-4">
+        <div class="bg-white dark:bg-gray-900 dark:text-white p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+            <h2 class="text-lg sm:text-xl font-semibold text-red-600">❌ Access Denied!</h2>
+            <h3 class="text-lg sm:text-xl font-semibold text-red-600">Quizzes Are Meant for Users Only</h3>
+            <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
+                You cannot join this quiz because you are not user yet.
+            </p>
+            <p>
+                please sign in or sign up to take the quiz
+            </p>
+            <button @click="showNotUserPopup = false"
+                class="mt-4 w-full sm:w-auto px-5 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition cursor-pointer">
+                OK
+            </button>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -136,6 +152,7 @@ export default {
             organizationName: "",
             showSubscriptionPopup: false,
             showAlreadyTakenPopup: false,
+            showNotUserPopup: false
         };
     },
 
@@ -214,21 +231,28 @@ export default {
         },
 
         async handleStartQuiz() {
-            console.log("User Role:", this.userRole);
+            // console.log("User Role:", this.userRole);
             if (this.userRole === "admin" || this.userRole === "organization_admin") {
                 this.showModal = true;
                 return;
             }
+            const auth = getAuth();
+            const user = auth.currentUser;
+
+            if (!user){
+                this.showNotUserPopup = true;
+                return;
+            }
 
             const hasSubscription = await this.checkSubscription();
-            console.log("Has Subscription:", hasSubscription);
+            // console.log("Has Subscription:", hasSubscription);
             if (!hasSubscription) return;
 
             const alreadyTaken = await this.quizAlreadyTaken();
-            console.log("Already Taken:", alreadyTaken);
+            // console.log("Already Taken:", alreadyTaken);
             if (alreadyTaken) return;
 
-            console.log("Quiz Data:", this.quiz);
+            // console.log("Quiz Data:", this.quiz);
             if (!this.quiz.id) {
                 console.error("Quiz ID is missing");
                 return;

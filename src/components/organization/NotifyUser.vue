@@ -18,12 +18,12 @@
             <h2 class="text-3xl font-bold text-gray-800 dark:text-teal-500 text-center">Contact User</h2>
 
             <div class="space-y-4">
-                <div>
+                <!-- <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Organization Name</label>
                     <input v-model="OrganizationName" type="text" placeholder="Organization Name"
                         class="mt-2 p-3 w-full bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600
                                focus:ring-teal-500 focus:border-teal-500 outline-none text-gray-900 dark:text-white" required>
-                </div>
+                </div> -->
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">User Name</label>

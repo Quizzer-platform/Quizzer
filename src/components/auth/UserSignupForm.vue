@@ -156,6 +156,9 @@ export default {
                         attemptedQuizzes: ['init'],
                         overallScore: 0,
                         quizzesToTake: 5,
+                        plans: [
+                            { name: "init", description: "init", price: 0, noOfQuizzes: 0 },
+                        ],
                     }
                 });
 
@@ -223,6 +226,9 @@ export default {
                     attemptedQuizzes: ['init'],
                     overallScore: 0,
                     quizzesToTake: 5,
+                    plans: [
+                        { name: "init", description: "init", price: 0, noOfQuizzes: 0 },
+                    ],
                 };
 
                 // Save user data to database

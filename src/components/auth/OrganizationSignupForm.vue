@@ -82,11 +82,11 @@ export default {
         };
     },
     methods: {
-        generateOrgID(name) {
-            const randomNum = Math.floor(1000 + Math.random() * 9000);
-            const timestamp = Date.now();
-            return `${name.toLowerCase().replace(/\s+/g, '')}-${randomNum}-${timestamp}`;
-        },
+        // generateOrgID(name) {
+        //     const randomNum = Math.floor(1000 + Math.random() * 9000);
+        //     const timestamp = Date.now();
+        //     return `${name.toLowerCase().replace(/\s+/g, '')}-${randomNum}-${timestamp}`;
+        // },
         validateForm() {
             this.errors = {};
             if (!this.org.name) this.errors.name = "Organization name is required";

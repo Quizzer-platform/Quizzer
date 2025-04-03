@@ -197,8 +197,7 @@ export default {
 
                     const orgQuizRes = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes/${quizId}.json`);
                     const orgData = await orgQuizRes.json();
-                    console.log("org Data:", orgData);
-
+                    // console.log("org Data:", orgData);
                     if (orgData && orgData.questions) {
                         this.quizName = orgData.title;
                         this.description = orgData.description;

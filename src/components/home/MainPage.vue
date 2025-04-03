@@ -336,7 +336,7 @@
 </template>
 
 <script>
-import router from '@/router';
+// import router from '@/router';
 import Navbar from "../layout/Navbar.vue";
 import Footer from "../layout/Footer.vue";
 import Features from "./Features.vue"

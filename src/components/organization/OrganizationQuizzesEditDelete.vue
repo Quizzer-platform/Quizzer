@@ -19,7 +19,7 @@
           <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-400">Edit Quizzes</h2>
 
           <!-- Search Bar -->
-          <SearchBar class="w-full sm:w-64" @search="updateSearchQuery" />
+          <Searchbar class="w-full sm:w-64" @search="updateSearchQuery" />
 
           <!-- Create Quiz Button -->
           <button class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 dark:bg-teal-600 dark:hover:bg-teal-800 w-1/2 sm:w-auto cursor-pointer"  @click="createQuiz">
@@ -103,11 +103,11 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import OrganizationSidebar from "@/components/organization/OrganizationSidebar.vue";
 import OrganizationNavbar from "@/components/organization/OrganizationNavbar.vue";
 import QuizCard from "@/components/quiz/QuizEditDeleteCard.vue";
-import SearchBar from "@/components/layout/Searchbar.vue"; 
+import Searchbar from "@/components/layout/Searchbar.vue"; 
 import { getDatabase, ref, onValue ,get } from "firebase/database";
 
 export default {
-  components: { OrganizationSidebar, OrganizationNavbar, QuizCard, SearchBar },
+  components: { OrganizationSidebar, OrganizationNavbar, QuizCard, Searchbar },
 
   data() {
     return {

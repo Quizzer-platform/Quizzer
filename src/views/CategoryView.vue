@@ -107,7 +107,7 @@
 import Navbar from "../components/layout/Navbar.vue";
 import Footer from "../components/layout/Footer.vue";
 import CategriesCards from "../components/home/CategriesCards.vue";
-import search from "../components/layout/Searchbar.vue";
+import search from "@/components/layout/Searchbar.vue";
 import QuizesCards from "../components/home/QuizzesCards.vue";
 
 export default {

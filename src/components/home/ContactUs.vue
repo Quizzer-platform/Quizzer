@@ -79,7 +79,7 @@
                 </div>
                 <div class="w-full lg:w-1/2 xl:w-5/12 lg:me-25 ">
                     <div class="relative p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg sm:p-12">
-                        <form @submit.prevent="submitForm" class="space-y-4">
+                        <form @submit.prevent="sendEmail" class="space-y-4">
                             <div>
                                 <label for="name"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-200">Name</label>
@@ -150,9 +150,9 @@ export default {
     methods: {
         async sendEmail() {
             try {
-                const serviceID = "service_7cay50n";
-                const templateID = "template_jple4br";
-                const publicKey = "wQb6IC1fjIt3_eUVs";
+                const serviceID = "service_68r2nzs";
+                const templateID = "template_l9p06cp";
+                const publicKey = "Z5SO_C6sXyZn24Tlo";
 
                 const templateParams = {
                     user_name: this.name,

@@ -41,8 +41,8 @@
                 <button
                     class="w-full mt-6 bg-teal-700 dark:bg-teal-600 text-white py-3 rounded-lg 
                            hover:bg-teal-800 dark:hover:bg-teal-500 transition-all duration-300 cursor-pointer"
-                    @click="$router.push('/organization')">
-                    Go to Dashboard
+                    @click="$router.push('/home')">
+                    Go back Home
                 </button>
             </div>
         </div>

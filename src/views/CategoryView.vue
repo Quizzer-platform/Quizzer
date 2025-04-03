@@ -3,7 +3,7 @@
 
     <div
         class="flex justify-center py-2 pt-20 bg-white dark:bg-[#1a202c] flex-wrap items-center gap-4 px-4 sm:px-6 lg:px-8 w-full">
-        <search class="w-full" v-if="showCategories" @search="updateSearchQuery" />
+        <!-- <search class="w-full" v-if="showCategories" @search="updateSearchQuery" /> -->
     </div>
 
     <div :class="showCategories ? 'min-h-fit' : 'min-h-0'"
@@ -107,11 +107,11 @@
 import Navbar from "../components/layout/Navbar.vue";
 import Footer from "../components/layout/Footer.vue";
 import CategriesCards from "../components/home/CategriesCards.vue";
-import search from "@/components/layout/Searchbar.vue";
+// import search from "@/components/layout/Searchbar.vue";
 import QuizesCards from "../components/home/QuizzesCards.vue";
 
 export default {
-    components: { CategriesCards, QuizesCards, Navbar, Footer, search },
+    components: { CategriesCards, QuizesCards, Navbar, Footer },
     data() {
         return {
             categories: [],

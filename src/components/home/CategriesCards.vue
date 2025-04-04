@@ -2,16 +2,16 @@
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center mb-10">
         <div v-for="(category, index) in categories" :key="index" class="flex justify-center">
             <div
-                class="p-6 rounded-xl shadow-lg w-80 text-center flex flex-col transition duration-300 transform hover:scale-105 h-full 
+                class="p-6 rounded-xl shadow-lg w-80 text-center flex flex-col transition duration-300 transform hover:scale-103 h-full 
                 bg-gradient-to-br from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 
                 hover:bg-opacity-90 dark:hover:from-gray-700 dark:hover:to-gray-800 border border-gray-200 dark:border-gray-700">
                 
                 <!-- Icon Section -->
-                <div
+                <!-- <div
                     class="p-3 w-14 h-14 mx-auto rounded-lg flex items-center justify-center 
                     bg-teal-300 dark:bg-teal-800 shadow-md transition-all duration-300 hover:scale-110">
                     <img :src="category.icon" alt="icon" class="w-8 h-8">
-                </div>
+                </div> -->
 
                 <!-- Title -->
                 <h3 class="font-semibold text-xl text-gray-900 dark:text-teal-300 mt-4 tracking-wide">

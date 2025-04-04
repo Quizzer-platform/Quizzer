@@ -17,7 +17,7 @@
                 </div>
 
                 <!-- Loading Spinner -->
-        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+            <div v-if="loading" class="flex flex-col justify-center items-center h-60">
                 <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -49,7 +49,7 @@
                     <h2 class="text-xl font-bold text-gray-800 dark:text-teal-300 mb-3">System Administrators</h2>
                     <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
                         <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Admins Review</h2>
-                        <SearchBar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateAdminSearchQuery" />
+                        <Searchbar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateAdminSearchQuery" />
                     </div>
                     <!-- Loading Spinner -->
                     <div v-if="loading" class="flex flex-col justify-center items-center h-60">

@@ -2,7 +2,7 @@
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center mb-10">
         <div v-for="(card, index) in cards" :key="index" class="flex justify-center">
             <div
-                class="p-6 rounded-xl shadow-lg w-80 text-center flex flex-col transition duration-300 transform hover:scale-105 h-full 
+                class="p-6 rounded-xl shadow-lg w-80 text-center flex flex-col transition duration-300 transform hover:scale-103 h-full 
                 bg-gradient-to-br from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 
                 hover:bg-opacity-90 dark:hover:from-gray-700 dark:hover:to-gray-800 border border-gray-200 dark:border-gray-700">
 

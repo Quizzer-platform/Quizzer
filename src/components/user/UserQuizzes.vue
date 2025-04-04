@@ -14,9 +14,12 @@
                                 <p class="text-lg font-semibold">
                                     Total Score: <span class="text-teal-600 dark:text-teal-300">{{ totalScore }}</span>
                                 </p>
+                                <p class="text-lg font-semibold">
+                                    Remaining Quizzes: 
+                                    <span class="text-teal-600 dark:text-teal-300">{{ quizzesToTake }}</span>
+                                </p>
                             </div>
                         </div>
-
                         <div v-if="loading" class="flex flex-col justify-center items-center h-60">
                             <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 24 24">

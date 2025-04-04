@@ -85,11 +85,17 @@
                 </div>
             </div>
             <!-- Login Required Popup Modal -->
-<div v-if="showLoginModal" class="fixed inset-0 bg-black/40 dark:bg-black/50 backdrop-blur-xs flex justify-center items-center z-50 px-4">
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+<div v-if="showLoginModal" class="fixed inset-0 bg-black/40 dark:bg-black/50 backdrop-blur-xs flex justify-center items-center z-50 px-4" @click.self="showLoginModal = false">
+    <div class="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md text-center">
         <h3 class="text-lg sm:text-xl font-semibold text-red-600">
             Login Required
         </h3>
+        <button @click="showLoginModal = false" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        </button>
         <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
             You need to be logged in to subscribe to a plan. If you don’t have an account, sign up now to get started!
         </p>

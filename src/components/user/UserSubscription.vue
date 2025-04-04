@@ -7,7 +7,12 @@
             <div class="min-h-screen w-full bg-gray-100 dark:bg-[#1a202c] md:ml-54">
                 <div class="container mx-auto px-4 py-8">
                     <div class="bg-white dark:bg-gray-900/60 dark:text-gray-200 rounded-lg shadow-lg p-6">
-                        <h1 class="text-2xl font-bold text-teal-800 dark:text-teal-400 mb-6">Your Subscription</h1>
+                      <h1 class="text-2xl font-bold text-teal-800 dark:text-teal-400 mb-6 flex flex-col sm:flex-row sm:items-center sm: text-center">
+                          Your Subscription
+                          <span class="text-lg text-teal-600 dark:text-gray-400 sm:ml-2 sm:inline-block text-center sm:text-left mt-2 sm:mt-0">
+                            (Total Allowed Quizzes: {{ quizzesToTake }})
+                          </span>
+                      </h1>
                         <div v-if="loading" class="flex flex-col justify-center items-center h-60">
                         <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24">
@@ -94,6 +99,7 @@ export default {
             subscriptions: [],
             loading: true,
             listener: null,
+            quizzesToTake: 0, 
             features: [
             { name: "Max Questions per Quiz", free: "10", starter: "30", pro: "60" },
             ],
@@ -111,22 +117,24 @@ export default {
          fetchSubscriptions() {
       if (!this.userId) return;
 
-      const plansRef = dbRef(database, `users/${this.userId}/plans`);
-      this.listener = onValue(plansRef, (snapshot) => {
+     const userRef = dbRef(database, `users/${this.userId}`);
+
+    this.listener = onValue(userRef, (snapshot) => {
         if (snapshot.exists()) {
-          // Convert object to array if stored as object
-          const plans = Array.isArray(snapshot.val()) ? 
-            snapshot.val() : 
-            Object.values(snapshot.val());
-          
-          this.subscriptions = plans;
+            const userData = snapshot.val();
+            // Extract subscription plans
+            this.subscriptions = userData.plans ? Object.values(userData.plans) : [];
+            // Extract quizzesToTake
+            this.quizzesToTake = userData.quizzesToTake || 0;
         } else {
           this.subscriptions = [];
+          this.quizzesToTake = 0;
         }
         this.loading = false;
       }, (error) => {
         console.error('Error fetching subscriptions:', error);
         this.subscriptions = [];
+        this.quizzesToTake = 0;
         this.loading = false;
       });
     },

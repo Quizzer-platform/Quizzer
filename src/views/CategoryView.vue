@@ -59,7 +59,7 @@
                     Back to Categories
                 </button>
                 <div class="relative w-full sm:w-80">
-                    <search v-model="searchQuery" class="w-full" />
+                    <searchbar v-model="updateSearchQuery" class="w-full" />
                 </div>
             </div>
 

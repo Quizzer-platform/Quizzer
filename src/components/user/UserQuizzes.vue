@@ -80,26 +80,29 @@
         </div>
 
         <!-- Popup if quizzesToTake = 0 -->
-        <div v-if="quizzesToTake === 0"
-            class="fixed inset-0 bg-black/40 backdrop-blur-xs flex justify-center items-center z-50 px-4">
-            <div
-                class="bg-white dark:bg-gray-800 dark:text-gray-200 p-6 rounded-lg shadow-lg w-full max-w-md text-center">
-                <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">❌ Access Denied!</h2>
-                <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm sm:text-base">
-                    To know your progress or to take another exam, you need to subscribe.
-                </p>
-                <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
-                    <button @click="goToPricing"
-                        class="w-full sm:w-auto px-5 py-2 bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-md transition cursor-pointer">
-                        Go to Pricing
-                    </button>
-                    <button @click="goToProfile"
-                        class="w-full sm:w-auto px-5 py-2 bg-gray-400 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700 text-white rounded-md transition cursor-pointer">
-                        Go back to Profile
-                    </button>
-                </div>
-            </div>
+<div v-if="showNoQuizzesPopup" class="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-4" @click="closeNoQuizzesPopup">
+    <div
+        class="bg-white dark:bg-gray-800 dark:text-gray-200 p-6 rounded-lg shadow-lg w-full max-w-md text-center" @click.stop>
+        <h2 class="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400">Quiz Limit Reached</h2>
+        <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm sm:text-base">
+            You've used all your available quiz attempts. To take more quizzes , 
+            please subscribe to our plans.
+        </p>
+        <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm sm:text-base font-medium">
+            You can still review your previous quiz results below.
+        </p>
+        <div class="mt-4 flex flex-col sm:flex-row justify-center gap-3">
+            <button @click="goToPricing"
+                class="w-full sm:w-auto px-5 py-2 bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-md transition cursor-pointer">
+                Subscribe Now
+            </button>
+            <button @click="closeNoQuizzesPopup"
+                class="w-full sm:w-auto px-5 py-2 bg-gray-400 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700 text-white rounded-md transition cursor-pointer">
+                Close
+            </button>
         </div>
+    </div>
+</div>
     </div>
 </template>
 
@@ -123,7 +126,8 @@ export default {
             quizzesRef: null,
             listener: null,
             loading: true,
-            quizData: [] // Add this to store quiz data
+            quizData: [], // Add this to store quiz data
+            showNoQuizzesPopup: false ,
         };
     },
     computed: {
@@ -221,7 +225,9 @@ export default {
 
                     this.totalScore = userData.overallScore || 0;
                     this.quizzesToTake = userData.quizzesToTake || 0;
-
+                    if (this.quizzesToTake === 0) {
+                    this.showNoQuizzesPopup = true;
+                    }
                     if (userData.attemptedQuizzes) {
                         this.userQuizzes = userData.attemptedQuizzes.slice(1).map((attempt) => {
                             const quizTotal = this.calculateQuizTotal(attempt.quizId);
@@ -276,8 +282,14 @@ export default {
                 this.userRank = 0;
             }
         },
+        closeNoQuizzesPopup() {
+        this.showNoQuizzesPopup = false;
+        },
         goToPricing() {
             this.$router.push("/pricing");
+        },
+        goToProfile() {
+            this.$router.push("/profile/userQuizzes");
         },
         goToQuizAnswers(quizId) {
             if (!quizId) return;

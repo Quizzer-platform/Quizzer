@@ -75,19 +75,45 @@
                         <!-- Badges Section -->
                         <h2 class="mt-7 text-xl font-bold text-gray-800 dark:text-gray-200">Badges</h2>
                         <div v-if="loading" class="flex flex-col justify-center items-center h-60">
-                        <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                        </svg>
-                        <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Badges...</p>
+                            <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                            </svg>
+                            <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Badges...</p>
                         </div>
                         <div v-else-if="userBadges.length > 0" class="flex flex-wrap justify-start gap-4 mt-4">
                             <div v-for="badge in userBadges" :key="badge.id"
-                                class="text-center p-4 bg-white dark:bg-gray-900/85  rounded-lg shadow hover:shadow-lg transition-shadow w-full sm:w-48">
-                                <img :src="badge.imageUrl" :alt="badge.name"
-                                    class="w-20 h-20 rounded-full mx-auto border-2 shadow-md"
-                                    :class="badge.borderColor" />
+                                class="text-center p-4 bg-white dark:bg-gray-900/85 rounded-lg shadow hover:shadow-lg transition-shadow w-full sm:w-48">
+                                <!-- Replace image with SVG -->
+                                <!-- Replace the badge container div with this improved version -->
+                                <div class="w-20 h-20 mx-auto flex items-center justify-center rounded-full border-2 shadow-md badge-container"
+                                    :class="badge.borderColor">
+                                    <!-- Elegant background gradient -->
+                                    <div class="absolute inset-0 rounded-full elegant-bg"></div>
+                                    <!-- Subtle shine effect -->
+                                    <div class="absolute inset-0 elegant-shine"></div>
+                                    
+                                    <!-- Junior Quizzer Badge SVG - Graduation cap design -->
+                                    <svg v-if="badge.id === 'junior-quizzer'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-14 h-14 text-teal-500 relative z-10">
+                                        <path fill="currentColor" d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                                    </svg>
+                                    
+                                    <!-- Expert Quizzer Badge SVG - Trophy design -->
+                                    <svg v-else-if="badge.id === 'expert-quizzer'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-14 h-14 text-teal-600 relative z-10">
+                                        <path fill="currentColor" d="M18 2C17.1 2 16 3 16 4H8C8 3 6.9 2 6 2H2V11C2 12 3 13 4 13H6.2C6.6 15 7.9 16.7 11 17V19.1C8.8 19.3 8 20.4 8 21.7V22H16V21.7C16 20.4 15.2 19.3 13 19.1V17C16.1 16.7 17.4 15 17.8 13H20C21 13 22 12 22 11V2H18M6 11H4V4H6V11M20 11H18V4H20V11Z" />
+                                    </svg>
+                                    
+                                    <!-- Master Quizzer Badge SVG - Medal design -->
+                                    <svg v-else-if="badge.id === 'master-quizzer'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-14 h-14 text-teal-800 relative z-10">
+                                        <path fill="currentColor" d="M20,2H4V4L9.81,8.36C6.14,9.57 4.14,13.53 5.35,17.2C6.56,20.87 10.5,22.87 14.19,21.66C17.86,20.45 19.86,16.5 18.65,12.82C17.95,10.71 16.3,9.05 14.19,8.36L20,4V2M14.94,19.5L12,17.78L9.06,19.5L9.84,16.17L7.25,13.93L10.66,13.64L12,10.5L13.34,13.64L16.75,13.93L14.16,16.17L14.94,19.5Z" />
+                                    </svg>
+                                    
+                                    <!-- Default Badge SVG (fallback) - Star design -->
+                                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-14 h-14 text-teal-700 relative z-10">
+                                        <path fill="currentColor" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
+                                    </svg>
+                                </div>
                                 <p class="mt-2 font-bold text-gray-800 dark:text-gray-200">{{ badge.name }}</p>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">{{ badge.description }}</p>
                             </div>
@@ -322,7 +348,6 @@ export default {
                         id: 'junior-quizzer',
                         name: 'Junior Quizzer',
                         description: 'Completed +3 quizzes',
-                        imageUrl: '../src/assets/bagde1.PNG',
                         borderColor: 'border-teal-400'
                     });
                 }
@@ -333,7 +358,6 @@ export default {
                         id: 'expert-quizzer',
                         name: 'Expert Quizzer',
                         description: 'Completed +7 quizzes',
-                        imageUrl: '../src/assets/badge2.PNG',
                         borderColor: 'border-teal-600'
                     });
                 }
@@ -344,7 +368,6 @@ export default {
                         id: 'master-quizzer',
                         name: 'Master Quizzer',
                         description: 'Completed +10 quizzes',
-                        imageUrl: '../src/assets/badge2.PNG',
                         borderColor: 'border-teal-800'
                     });
                 }
@@ -464,3 +487,70 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.badge-container {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.badge-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.elegant-bg {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(240, 240, 240, 0.8) 50%,
+    rgba(230, 230, 230, 0.7) 100%
+  );
+  z-index: 1;
+}
+
+.elegant-shine {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 2;
+  opacity: 0.7;
+  animation: subtle-rotate 8s linear infinite;
+}
+
+@keyframes subtle-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.badge-container svg {
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.badge-container:hover svg {
+  transform: scale(1.05);
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.25));
+}
+
+/* Add subtle text styling for badge names */
+.badge-container + p {
+  font-weight: 600;
+  background: linear-gradient(to right, #0d9488, #115e59);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+</style>

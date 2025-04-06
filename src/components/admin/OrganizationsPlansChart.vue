@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import { onMounted, ref, watch } from "vue";
-import { Chart, ArcElement, Title, Tooltip, Legend } from "chart.js";
+import { onMounted, ref, watch, onBeforeUnmount } from "vue";
+import { Chart, ArcElement, Title, Tooltip, Legend, DoughnutController } from "chart.js";
 
 // Register the necessary components for Chart.js
-Chart.register(ArcElement, Title, Tooltip, Legend);
+Chart.register(ArcElement, Title, Tooltip, Legend, DoughnutController);
 
 export default {
   props: ["data"],
@@ -33,6 +33,7 @@ export default {
     const createChart = () => {
       if (chart.value) {
         chart.value.destroy();
+        chart.value = null;
       }
 
       if (!chartCanvas.value || !props.data || props.data.length === 0) return;

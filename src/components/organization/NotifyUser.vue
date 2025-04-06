@@ -18,12 +18,12 @@
             <h2 class="text-3xl font-bold text-gray-800 dark:text-teal-500 text-center">Contact User</h2>
 
             <div class="space-y-4">
-                <!-- <div>
+                <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Organization Name</label>
                     <input v-model="OrganizationName" type="text" placeholder="Organization Name"
                         class="mt-2 p-3 w-full bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600
                                focus:ring-teal-500 focus:border-teal-500 outline-none text-gray-900 dark:text-white" required>
-                </div> -->
+                </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">User Name</label>
@@ -127,3 +127,13 @@ export default {
     }
 };
 </script>
+
+<style>
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #374151 inset !important; /* Match dark input background */
+  -webkit-text-fill-color: white !important;
+  caret-color: white;
+  transition: background-color 9999s ease-in-out 0s;
+}
+</style>
+

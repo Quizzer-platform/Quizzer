@@ -67,8 +67,7 @@
                         {{ cell }}
                     </span>
                 </div>
-                <div v-if="showActions" class="pt-4 mt-3 border-t border-teal-100/30 
-                           dark:border-teal-900/50">
+                <div v-if="showActions" class="pt-4 mt-3">
                     <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 
                                rounded-lg bg-teal-700/5 hover:bg-teal-700/10 ring-1 
                                ring-teal-700/10 hover:ring-teal-700/20 transition-all duration-150 text-teal-800 cursor-pointer

@@ -69,7 +69,7 @@
                             Category</label>
                         <select v-model="quiz.category"
                             class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white shadow-sm border-gray-300 dark:border-gray-700 focus:ring-teal-500 focus:border-teal-500 outline-none"
-                            multiple>
+                            >
                             <option v-for="category in categories" :key="category.id" :value="category.id" class="my-2">
                                 {{ category.title }}
                             </option>
@@ -122,9 +122,12 @@
             <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
                 <div
                     class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
-                    <h2 class="text-2xl font-bold text-gray-800 dark:text-teal-300 mb-4">🎉 Quiz Created Successfully!
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-teal-300 mb-4">
+                        🎉 {{ isEditing ? 'Quiz Updated Successfully!' : 'Quiz Created Successfully!' }}
                     </h2>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Your quiz has been successfully saved.</p>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        Your quiz has been successfully {{ isEditing ? 'updated' : 'saved' }}.
+                    </p>
                     <button @click="redirectToDashboard"
                         class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300 cursor-pointer">
                         OK
@@ -215,7 +218,7 @@ export default {
             });
         },
         submitQuiz() {
-            if (this.quiz.category==="") {
+            if (this.quiz.category=="") {
                 this.showcategoryRequied = true;
                 return;
             }
@@ -244,7 +247,8 @@ export default {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("Quiz Saved:", data);
+                    const quizId = this.isEditing ? this.quizId : data.name;
+                    this.updateCategoryQuizzes(quizId);
                     if (!this.isEditing) {
                         this.resetForm();
                     }
@@ -275,10 +279,27 @@ export default {
         redirectToDashboard() {
             this.showPopup = false;
             this.$router.push('/admin'); // Redirect to admin dashboard
+        },
+        updateCategoryQuizzes(quizId) {
+            const categoryId = this.quiz.category;
+            const categoryUrl = `https://quizzer-platform-default-rtdb.firebaseio.com/categories/${categoryId}.json`;
+            
+            fetch(categoryUrl)
+                .then(response => response.json())
+                .then(categoryData => {
+                    const quizzes = categoryData.quizzes || [];
+                    if (!quizzes.includes(quizId)) {
+                        quizzes.push(quizId);
+                        return fetch(categoryUrl, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ quizzes })
+                        });
+                    }
+                })
+                .catch(error => console.error('Error updating category:', error));
         }
     }
 };
 </script>
 
-<style scoped></style>
-<style scoped></style>

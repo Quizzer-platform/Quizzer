@@ -122,6 +122,25 @@ export default {
       this.message = "";
 
       try {
+        if (!this.userId || this.orgId === null) {
+  await new Promise((resolve) => {
+    const unsubscribe = getAuth().onAuthStateChanged(async (user) => {
+      if (user) {
+        this.userId = user.uid;
+
+        // Fetch organization ID (orgId) from Firebase
+        const userRef = dbRef(database, `users/${this.userId}`);
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          this.orgId = snapshot.val().organizationId || null;
+        }
+
+        unsubscribe();
+        resolve();
+      }
+    });
+  });
+}
         const response = await fetch("http://localhost:4001/create-payment-intent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -183,6 +202,16 @@ export default {
       noOfQuizzes: this.plan.noOfQuizzes,
       price: this.plan.price
     });
+    if (!this.orgId) {
+      const userRef = dbRef(database, `users/${this.userId}`);
+      const userSnapshot = await get(userRef);
+      if (userSnapshot.exists()) {
+        const currentQuizzesToTake = Number(userSnapshot.val().quizzesToTake) || 0; // Ensure it's a number
+const newQuizzesToTake = currentQuizzesToTake + Number(this.plan.noOfQuizzes);
+await set(dbRef(database, `users/${this.userId}/quizzesToTake`), newQuizzesToTake);
+
+      }
+    }
   } catch (error) {
     console.error("Error saving plan:", error);
     throw error;

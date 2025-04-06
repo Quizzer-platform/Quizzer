@@ -34,7 +34,7 @@
               class="mt-2 p-3 w-full rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white shadow-sm border border-gray-300 dark:border-gray-700 focus:ring-teal-500 focus:border-teal-500 outline-none" required></textarea>
           </div>
 
-          <div>
+          <!-- <div>
             <label for="icon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Select Icon</label>
             <select id="icon" v-model="category.icon"
               class="mt-2 p-3 w-full bg-gray-50 dark:bg-gray-800 dark:text-white rounded-lg shadow-sm border border-gray-300 dark:border-gray-700 focus:ring-teal-500 focus:border-teal-500 outline-none" required>
@@ -43,9 +43,9 @@
                 {{ icon.label }}
               </option>
             </select>
-          </div>
+          </div> -->
 
-          <div>
+          <!-- <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Selected Icon Preview</label>
             <div class="mt-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-700 text-center">
               <div v-if="category.icon" class="flex items-center justify-center">
@@ -58,7 +58,7 @@
                 <p>No icon selected</p>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select Quizzes</label>
@@ -82,16 +82,20 @@
       </form>
 
       <!-- Success Popup -->
-      <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
-        <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
-          <h2 class="text-2xl font-bold text-gray-800 dark:text-teal-300 mb-4">🎉 Category Saved Successfully!</h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-4">Your category has been successfully saved.</p>
-          <button @click="redirectToCategories"
-            class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300 cursor-pointer">
-            OK
-          </button>
-        </div>
-      </div>
+<div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
+  <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-teal-300 mb-4">
+      🎉 Category {{ isEditing ? 'Updated' : 'Created' }} Successfully!
+    </h2>
+    <p class="text-gray-600 dark:text-gray-400 mb-4">
+      Your category has been {{ isEditing ? 'updated' : 'created' }} successfully.
+    </p>
+    <button @click="redirectToCategories"
+      class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300 cursor-pointer">
+      OK
+    </button>
+  </div>
+</div>
     </div>
   </div>
 </template>
@@ -101,16 +105,16 @@ export default {
     data() {
         return {
             icons: [
-                { label: 'Books Icon', value: '../src/assets/icons8-books-100.png' },
-                { label: 'Bot Icon', value: '../src/assets/icons8-bot-100.png' },
-                { label: 'Language Icon', value: '../src/assets/icons8-language-100.png' },
-                { label: 'Math Icon', value: '../src/assets/icons8-math-100.png' },
-                { label: 'Microscope Icon', value: '../src/assets/icons8-microscope-100.png' },
-                { label: 'Physics Icon', value: '../src/assets/icons8-physics-100.png' },
-                { label: 'Programming Icon', value: '../src/assets/icons8-programming-100.png' },
-                { label: 'Technology Icon', value: '../src/assets/icons8-technology-100.png' },
-                { label: 'Cloud connection Icon', value: '../src/assets/icons8-cloud-connection-100.png' },
-                { label: 'Cloud development Icon', value: '../src/assets/icons8-cloud-development-100.png' },
+                { label: 'Books Icon', value: '@/src/assets/icons8-books-100.png' },
+                { label: 'Bot Icon', value: '@/src/assets/icons8-bot-100.png' },
+                { label: 'Language Icon', value: '@/src/assets/icons8-language-100.png' },
+                { label: 'Math Icon', value: '@/src/assets/icons8-math-100.png' },
+                { label: 'Microscope Icon', value: '@/src/assets/icons8-microscope-100.png' },
+                { label: 'Physics Icon', value: '@/src/assets/icons8-physics-100.png' },
+                { label: 'Programming Icon', value: '@/src/assets/icons8-programming-100.png' },
+                { label: 'Technology Icon', value: '@/src/assets/icons8-technology-100.png' },
+                { label: 'Cloud connection Icon', value: '@/src/assets/icons8-cloud-connection-100.png' },
+                { label: 'Cloud development Icon', value: '@/src/assets/icons8-cloud-development-100.png' },
             ],
             category: {
                 title: '',

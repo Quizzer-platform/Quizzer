@@ -9,24 +9,29 @@
 
       <div class="flex-1 p-4">
         <!-- Page Header -->
-        <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
+        <div class="flex flex-col-reverse md:flex-row justify-between items-center my-4 gap-4 px-2">
           <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-400">Edit Quizzes</h2>
-          <Searchbar class="w-full sm:w-auto" @search="updateSearchQuery" />
+          <Searchbar class="w-full sm:w-auto" @search="updateAdminQuizSearchQuery" />
           <button class="bg-teal-700 text-white px-4 py-2 rounded-md hover:bg-teal-900 dark:bg-teal-600 dark:hover:bg-teal-800 w-1/2 sm:w-auto cursor-pointer" @click="createQuiz">
             ➕ Create Quiz
           </button>
         </div>
 
+        <!-- No Quizzes Message -->
+        <div v-if="!loading && filteredAdminQuizzes.length === 0 " class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">
+          No quizzes available.
+        </div>
+
         <!-- 🔹 Loading Spinner -->
-           <!-- Loading Spinner -->
-                    <div v-if="loading" class="flex flex-col justify-center items-center h-60">
-                        <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                        </svg>
-                        <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Quizzes...</p>
-                    </div>
+        <!-- Loading Spinner -->
+        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+            <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+            <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Quizzes...</p>
+        </div>
 
         <!-- Admin Quizzes Section -->
         <h3 v-if="filteredAdminQuizzes.length" class="text-lg font-semibold text-gray-800 dark:text-gray-300 mt-6">Admin Created Quizzes</h3>
@@ -60,10 +65,19 @@
           </div>
 
         <!-- Organization Quizzes Section -->
-        <h3 v-if="filteredOrgQuizzes.length" class="text-lg font-semibold text-gray-800 dark:text-gray-300 mt-6">Organization Created Quizzes</h3>
+        <div class="flex flex-col md:flex-row justify-between items-center my-4 gap-x-4 px-2 mt-10">
+            <h3 v-if="filteredOrgQuizzes.length" class="text-lg font-semibold text-gray-800 dark:text-gray-300 mt-6">Organization Created Quizzes</h3>
+            <div class="md:w-xl opacity-0"></div>
+            <Searchbar class="w-full sm:w-auto" @search="updateOrgQuizSearchQuery" />
+        </div>
         <hr v-if="filteredOrgQuizzes.length" class="my-2 border-gray-300 dark:border-gray-700" />
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
           <QuizCard v-for="quiz in paginatedOrgData" :key="quiz.id" :quiz="quiz" @edit="editQuiz(quiz)" @delete="confirmDelete(quiz.id, 'organization')" />
+        </div>
+
+        <!-- No Quizzes Message -->
+        <div v-if="!loading && filteredOrgQuizzes.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">
+          No quizzes available.
         </div>
 
         <!-- Pagination controls for org quizzes -->
@@ -81,10 +95,7 @@
               </button>
           </div>
 
-        <!-- No Quizzes Message -->
-        <div v-if="!loading && filteredAdminQuizzes.length === 0 && filteredOrgQuizzes.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6">
-          No quizzes available.
-        </div>
+        
       </div>
     </div>
 
@@ -93,10 +104,10 @@
       <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
         <p class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">Are you sure you want to delete this quiz?</p>
         <div class="flex justify-center space-x-4">
-          <button @click="deleteQuiz" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800">
+          <button @click="deleteQuiz" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800 cursor-pointer">
             Yes, Delete
           </button>
-          <button @click="showDeletePopup = false" class="bg-gray-300 text-teal-800 px-4 py-2 rounded-lg dark:bg-gray-600 dark:text-teal-300 dark:hover:bg-gray-500">
+          <button @click="showDeletePopup = false" class="bg-gray-300 text-teal-800 px-4 py-2 rounded-lg dark:bg-gray-600 dark:text-teal-300 dark:hover:bg-gray-500 cursor-pointer">
             Cancel
           </button>
         </div>
@@ -119,7 +130,8 @@ export default {
   data() {
     return {
       isSidebarOpen: window.innerWidth >= 768,
-      searchQuery: "",
+      adminQuizSearchQuery: "",
+      orgQuizSearchQuery: "",
       adminQuizzes: [],
       orgQuizzes: [],
       loading: true,
@@ -136,19 +148,19 @@ computed: {
   filteredAdminQuizzes() {
     return this.adminQuizzes.filter((quiz) => {
       if (!quiz || !quiz.title) {
-        console.warn('Undefined quiz or quiz title in adminQuizzes:', quiz);
+        // console.warn('Undefined quiz or quiz title in adminQuizzes:', quiz);
         return false;
       }
-      return quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase());
+      return quiz.title.toLowerCase().includes(this.adminQuizSearchQuery.toLowerCase());
     });
   },
   filteredOrgQuizzes() {
     return this.orgQuizzes.filter((quiz) => {
       if (!quiz || !quiz.title) {
-        console.warn('Undefined quiz or quiz title in orgQuizzes:', quiz);
+        // console.warn('Undefined quiz or quiz title in orgQuizzes:', quiz);
         return false;
       }
-      return quiz.title.toLowerCase().includes(this.searchQuery.toLowerCase());
+      return quiz.title.toLowerCase().includes(this.orgQuizSearchQuery.toLowerCase());
     });
   },
   paginatedAdminData() {
@@ -264,8 +276,12 @@ computed: {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
 
-    updateSearchQuery(query) {
-      this.searchQuery = query;
+    updateAdminQuizSearchQuery(query) {
+      this.adminQuizSearchQuery = query;
+    },
+
+    updateOrgQuizSearchQuery(query) {
+      this.orgQuizSearchQuery = query;
     },
 
     createQuiz() {

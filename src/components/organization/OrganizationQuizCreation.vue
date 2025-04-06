@@ -2,7 +2,7 @@
   <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#1a202c] p-6">
     <div class="container mx-auto max-w-4xl">
       <div class="flex items-center mb-6">
-        <button @click="$router.push('/organization')"
+        <button @click="redirectToDashboard"
           class="flex items-center gap-2 text-white bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg cursor-pointer shadow-lg transition-all duration-300">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
             stroke="currentColor" class="w-6 h-6">
@@ -196,7 +196,7 @@ export default {
                 if (!this.isEditing) {
                     await this.incrementOrganizationQuizzes(organizationUid);
               }
-                console.log(`Quiz ${this.isEditing ? 'Updated' : 'Created'} successfully`);
+                // console.log(`Quiz ${this.isEditing ? 'Updated' : 'Created'} successfully`);
             } catch (error) {
                 console.error(`Error ${this.isEditing ? 'updating' : 'creating'} quiz:`, error);
             }
@@ -236,7 +236,7 @@ export default {
                     body: JSON.stringify({ quizzes: updatedQuizCount }),
                 });
 
-                console.log(`Organization's quiz count updated to: ${updatedQuizCount}`);
+                // console.log(`Organization's quiz count updated to: ${updatedQuizCount}`);
             } catch (error) {
                 console.error('Error updating organization quiz count:', error);
             }
@@ -282,10 +282,33 @@ export default {
                 ],
             };
         },
-        redirectToDashboard() {
+        async redirectToDashboard() {
     this.showPopup = false;
-    this.$router.push('/organization'); // Redirect back to the dashboard
-},
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+        console.error("User not authenticated");
+        return;
+    }
+
+    try {
+        // Fetch user role from Firebase
+        const userUid = user.uid;
+        const userUrl = `https://quizzer-platform-default-rtdb.firebaseio.com/users/${userUid}.json`;
+        const response = await fetch(userUrl);
+        const userData = await response.json();
+
+        if (userData.role === "admin") {
+            this.$router.push('/admin');
+        } else {
+            this.$router.push('/organization');
+        }
+    } catch (error) {
+        console.error("Error fetching user role:", error);
+        this.$router.push('/organization'); // Fallback in case of error
+    }
+}
     }
 };
 </script>

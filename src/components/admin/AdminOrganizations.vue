@@ -7,7 +7,12 @@
             <AdminNavbar @toggleSidebar="toggleSidebar" />
 
             <div class="flex-1 p-4">
-                <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
+                <!-- Pie Chart for Plan Distribution -->
+        <div v-if="organizations.length > 0" class="my-6">
+          <h3 class="text-lg font-medium text-teal-900 dark:text-teal-300">Organizations Plans</h3>
+          <PieChart :data="planWeights" />
+        </div>
+               <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
                     <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Organizations</h2>
                     <Searchbar class="w-full sm:w-auto sm:ml-4 md:ml-160" @search="updateSearchQuery" />
                 </div>
@@ -24,7 +29,7 @@
 
                 <!-- Show No Data Message -->
                 <div v-else-if="filteredOrganizations.length === 0"
-                    class="text-center text-gray-500 dark:text-gray-400">
+                    class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">
                     No organizations found.
                 </div>
 
@@ -59,6 +64,7 @@ import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavbar from "@/components/admin/AdminNavBar.vue";
 import Searchbar from "@/components/layout/Searchbar.vue";
 import DynamicTable from "@/components/admin/TableStructure.vue";
+import PieChart from "@/components/admin/OrganizationsPlansChart.vue";
 
 export default {
     components: {
@@ -66,6 +72,7 @@ export default {
         AdminNavbar,
         Searchbar,
         DynamicTable,
+        PieChart,
     },
     data() {
         return {
@@ -74,7 +81,9 @@ export default {
             searchQuery: "",
             loading: true,
             currentPage: 1,
-            perPage: 8
+            perPage: 8,
+            planWeights: [],
+
         };
     },
     computed: {
@@ -91,7 +100,7 @@ export default {
         },
         totalPages() {
             return Math.ceil(this.filteredOrganizations.length / this.perPage);
-        }
+        },
     },
     methods: {
         visiblePages() {
@@ -145,23 +154,28 @@ export default {
 
                 if (orgSnap.exists()) {
                     const orgData = orgSnap.val();
+                     
                     const quizzesData = orgQuizzesSnap.exists() ? orgQuizzesSnap.val() : {};
-
                     this.organizations = Object.entries(orgData).map(([id, org]) => {
                         // Count quizzes for this organization
                         const orgQuizzes = Object.values(quizzesData).filter(quiz =>
                             quiz.organizationId === id || // Match by organization ID
                             quiz.organizationUId === org.adminUid // Fallback to admin UID
                         );
-
                         return {
                             id,
                             name: org.name || "Unknown Organization",
                             quizzes: orgQuizzes.length,
                             adminEmail: org.adminEmail || "No Email",
-                            adminUid: org.adminUid
+                            adminUid: org.adminUid,
+                            plans: org.plans || [],
                         };
                     });
+                    this.planWeights = this.organizations.map(org => ({
+                        name: org.name,
+                        plansCount: Array.isArray(org.plans) ? org.plans.length : 
+                                   (org.plans && typeof org.plans === 'object' ? Object.keys(org.plans).length : 0),
+                    }));
                 } else {
                     this.organizations = [];
                 }

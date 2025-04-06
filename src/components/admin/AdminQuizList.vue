@@ -18,7 +18,7 @@
         </div>
 
         <!-- Show No Data Message -->
-        <p v-else-if="quizzes.length === 0" class="text-center text-gray-500">No quizzes available</p>
+        <p v-else-if="filteredQuizzes.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">No quizzes found</p>
 
         <!-- Quizzes Table -->
         <TableStructure v-else :headers="['QUIZ Code', 'Name of Quiz', 'No. of Questions', 'Org. Name']" :rows="paginatedData.map(quiz => [

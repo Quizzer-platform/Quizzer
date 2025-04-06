@@ -111,6 +111,7 @@ export default {
             document.documentElement.classList.remove("dark");
         }
         localStorage.setItem("darkMode", this.isDarkMode);
+        window.dispatchEvent(new CustomEvent('dark-mode-toggled'));
     },
   },
   mounted() {

@@ -5,9 +5,9 @@
         <!-- Search Bar -->
         <Searchbar class="mt-6 pt-20" @search="updateSearchQuery" />
 
-        <div class="flex flex-col justify-center items-center min-h-[80vh] px-6">
+        <div class="flex flex-col justify-center items-center min-h-fit px-6">
         <!-- Loading Spinner -->
-        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+        <div v-if="loading" class="flex flex-col justify-center items-center h-80">
                 <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -19,7 +19,7 @@
 
             <!-- No Data State -->
             <div v-else-if="paginatedData.length === 0"
-                class="text-center text-gray-500 dark:text-gray-400 my-20 text-lg">
+                class="text-center text-gray-500 dark:text-gray-400 my-20 text-lg flex flex-col justify-center items-center h-80">
                 No quizzes found.
             </div>
 

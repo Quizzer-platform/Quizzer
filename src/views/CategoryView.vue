@@ -6,7 +6,7 @@
         <Searchbar class="w-full" v-if="showCategories" @search="updateSearchQuery" />
     </div>
 
-    <div :class="showCategories ? 'min-h-screen' : 'min-h-0'"
+    <div :class="showCategories ? 'min-h-fit' : 'min-h-0'"
         class="flex justify-center items-center bg-white text-gray-900 dark:bg-[#1a202c] dark:text-white">
 
         <!-- Loading Spinner -->
@@ -25,7 +25,7 @@
             <p class="text-gray-600 mt-4">{{ loading ? 'Loading categories...' : 'Loading quizzes...' }}</p>
         </div> -->
 
-        <div v-else-if="paginatedData.length === 0" class="text-center text-gray-500 my-20">
+        <div v-else-if="paginatedData.length === 0" class="text-center text-gray-500 my-20 flex flex-col justify-center items-center h-80">
             No Categories found.
         </div > 
 
@@ -33,7 +33,7 @@
             <!-- Categories View -->
             <CategriesCards  :categories="paginatedData" @view-quizzes="viewCategoryQuizzes" />
             <!-- Pagination controls -->
-            <div v-if="categories.length > 0" class="flex justify-center gap-2 p-4">
+            <div v-if="categories.length > 0" class="flex justify-center gap-2 p-4 mt-2 mb-10">
                 <button @click="prevPage" :disabled="currentPage === 1"
                     class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-500 disabled:opacity-50 cursor-pointer">
                     Previous
@@ -59,7 +59,7 @@
                     Back to Categories
                 </button>
                 <div class="relative w-full sm:w-80">
-                    <search v-model="searchQuery" class="w-full" />
+                    <searchbar v-model="updateSearchQuery" class="w-full" />
                 </div>
             </div>
 
@@ -67,8 +67,7 @@
             <div v-if="selectedCategory"
                 class="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md text-center my-6 max-w-5xl mx-auto hover:shadow-lg">
                 <div class="flex items-center justify-center gap-4">
-                    <img v-if="selectedCategory.icon" :src="selectedCategory.icon" alt="Category Icon"
-                        class="w-16 h-16 shadow-lg">
+                    <!-- <img v-if="selectedCategory.icon" :src="selectedCategory.icon" alt="Category Icon" class="w-16 h-16 shadow-lg"> -->
                     <h2 class="text-3xl font-semibold text-teal-800 dark:text-teal-500">{{ selectedCategory.title }}
                     </h2>
                 </div>

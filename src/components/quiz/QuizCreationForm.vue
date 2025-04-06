@@ -69,7 +69,7 @@
                             Category</label>
                         <select v-model="quiz.category"
                             class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white shadow-sm border-gray-300 dark:border-gray-700 focus:ring-teal-500 focus:border-teal-500 outline-none"
-                            multiple>
+                            >
                             <option v-for="category in categories" :key="category.id" :value="category.id" class="my-2">
                                 {{ category.title }}
                             </option>
@@ -218,7 +218,7 @@ export default {
             });
         },
         submitQuiz() {
-            if (this.quiz.category==="") {
+            if (this.quiz.category=="") {
                 this.showcategoryRequied = true;
                 return;
             }
@@ -247,7 +247,8 @@ export default {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    // console.log("Quiz Saved:", data);
+                    const quizId = this.isEditing ? this.quizId : data.name;
+                    this.updateCategoryQuizzes(quizId);
                     if (!this.isEditing) {
                         this.resetForm();
                     }
@@ -278,6 +279,25 @@ export default {
         redirectToDashboard() {
             this.showPopup = false;
             this.$router.push('/admin'); // Redirect to admin dashboard
+        },
+        updateCategoryQuizzes(quizId) {
+            const categoryId = this.quiz.category;
+            const categoryUrl = `https://quizzer-platform-default-rtdb.firebaseio.com/categories/${categoryId}.json`;
+            
+            fetch(categoryUrl)
+                .then(response => response.json())
+                .then(categoryData => {
+                    const quizzes = categoryData.quizzes || [];
+                    if (!quizzes.includes(quizId)) {
+                        quizzes.push(quizId);
+                        return fetch(categoryUrl, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ quizzes })
+                        });
+                    }
+                })
+                .catch(error => console.error('Error updating category:', error));
         }
     }
 };

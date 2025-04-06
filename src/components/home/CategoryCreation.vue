@@ -105,16 +105,16 @@ export default {
     data() {
         return {
             icons: [
-                { label: 'Books Icon', value: '../src/assets/icons8-books-100.png' },
-                { label: 'Bot Icon', value: '../src/assets/icons8-bot-100.png' },
-                { label: 'Language Icon', value: '../src/assets/icons8-language-100.png' },
-                { label: 'Math Icon', value: '../src/assets/icons8-math-100.png' },
-                { label: 'Microscope Icon', value: '../src/assets/icons8-microscope-100.png' },
-                { label: 'Physics Icon', value: '../src/assets/icons8-physics-100.png' },
-                { label: 'Programming Icon', value: '../src/assets/icons8-programming-100.png' },
-                { label: 'Technology Icon', value: '../src/assets/icons8-technology-100.png' },
-                { label: 'Cloud connection Icon', value: '../src/assets/icons8-cloud-connection-100.png' },
-                { label: 'Cloud development Icon', value: '../src/assets/icons8-cloud-development-100.png' },
+                { label: 'Books Icon', value: '@/src/assets/icons8-books-100.png' },
+                { label: 'Bot Icon', value: '@/src/assets/icons8-bot-100.png' },
+                { label: 'Language Icon', value: '@/src/assets/icons8-language-100.png' },
+                { label: 'Math Icon', value: '@/src/assets/icons8-math-100.png' },
+                { label: 'Microscope Icon', value: '@/src/assets/icons8-microscope-100.png' },
+                { label: 'Physics Icon', value: '@/src/assets/icons8-physics-100.png' },
+                { label: 'Programming Icon', value: '@/src/assets/icons8-programming-100.png' },
+                { label: 'Technology Icon', value: '@/src/assets/icons8-technology-100.png' },
+                { label: 'Cloud connection Icon', value: '@/src/assets/icons8-cloud-connection-100.png' },
+                { label: 'Cloud development Icon', value: '@/src/assets/icons8-cloud-development-100.png' },
             ],
             category: {
                 title: '',

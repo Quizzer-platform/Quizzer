@@ -7,7 +7,7 @@
 
         <div class="flex flex-col justify-center items-center min-h-fit px-6">
         <!-- Loading Spinner -->
-        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+        <div v-if="loading" class="flex flex-col justify-center items-center h-80">
                 <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

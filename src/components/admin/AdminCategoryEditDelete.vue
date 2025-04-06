@@ -34,6 +34,10 @@
                     }" @edit="editCategory(category)" @delete="confirmDelete(category.id)" />
                 </div>
 
+                <div v-if="!loading && filteredCategories.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">
+                    No categories available.
+                </div>
+
                 <!-- Pagination controls -->
                 <div v-if="categories.length > 0" class="flex justify-center gap-2 p-4 mt-2">
                     <button @click="prevPage" :disabled="currentPage === 1"
@@ -49,9 +53,7 @@
                     </button>
                 </div>
 
-                <div v-if="!loading && filteredCategories.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6">
-                    No categories available.
-                </div>
+                
             </div>
         </div>
 

@@ -33,6 +33,11 @@
             quiz.questions.length,
             quiz.duration
         ])" :showActions="true" @view-details="previewQuiz" />
+
+       <!-- Show No Data Message -->
+       <p v-if="!loading && filteredQuizzes.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">No quizzes found</p>
+
+
         <!-- Pagination controls -->
         <div v-if="quizzes.length > 0" class="flex justify-center gap-2 p-4">
             <button @click="prevPage" :disabled="currentPage === 1"

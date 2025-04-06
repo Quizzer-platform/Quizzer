@@ -44,6 +44,11 @@
                         :rows="paginatedUserData.map(user => [user.id, user.name, user.lastQuiz, user.degree])"
                         :showActions="true" @view-details="goToUserDetails" />
 
+                    <!-- Show No Data Message -->
+                    <p v-if="!loading && filteredUsers.length === 0"
+                        class="text-center text-gray-500 dark:text-gray-400 mt-5 h-50 flex flex-col justify-center items-center">
+                        No users found</p>
+
                     <!-- Pagination controls for users -->
                     <div v-if="users.length > 0" class="flex justify-center gap-2 p-4">
                         <button @click="prevUserPage" :disabled="currentUserPage === 1"
@@ -186,11 +191,11 @@ export default {
             if (!this.organization) return; // Ensure organization is set
             try {
                 this.loading = true; // Show spinner
-        
+
                 const db = getDatabase();
                 const usersRef = ref(db, "users");
                 const snapshot = await get(usersRef);
-        
+
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     this.users = Object.entries(data)
@@ -199,11 +204,11 @@ export default {
                             const attempts = Array.isArray(user.attemptedQuizzes)
                                 ? user.attemptedQuizzes.filter(q => typeof q === 'object' && q.title)
                                 : [];
-        
+
                             // Get the last quiz details if available
                             const lastAttempt = attempts.length > 0 ? attempts[attempts.length - 1] : null;
                             const lastQuiz = lastAttempt ? lastAttempt.title : "No Quiz Taken";
-                            
+
                             // Calculate quiz total based on quiz data
                             let quizTotal = 0;
                             if (lastAttempt) {
@@ -221,18 +226,18 @@ export default {
                                         }
                                     }
                                 }
-                                
+
                                 // If we still don't have a total, use the number of questions as a fallback
                                 if (!quizTotal && lastAttempt.numberOfQuestions) {
                                     quizTotal = lastAttempt.numberOfQuestions;
                                 }
-                                
+
                                 // Final fallback
                                 if (!quizTotal) {
                                     quizTotal = 10; // Default value if we can't determine the total
                                 }
                             }
-                            
+
                             const degree = lastAttempt ? `${lastAttempt.quizScore} / ${quizTotal}` : "N/A";
 
                             return {
@@ -251,29 +256,29 @@ export default {
                         );
                     // Update chart data
                     this.chartData = [];
-                    
+
                     this.users.forEach(user => {
                         const email = user.name;
                         if (Array.isArray(user.attemptedQuizzes)) {
                             user.attemptedQuizzes.forEach(quiz => {
                                 if (!quiz) return;
-                                
+
                                 const quizTitle = quiz.title;
                                 const quizId = quiz.quizId;
                                 const score = quiz.quizScore || 0;
-                                
+
                                 // Find the quiz in our quizData
                                 const quizDetails = this.quizData.find(q => q.id === quizId);
-                                
+
                                 // Only include quizzes created by this organization
-                                if (quizDetails && 
-                                    (quizDetails.organization === this.organization || 
-                                     quizDetails.organizationUid === this.organization || 
-                                     quizDetails.organizationUid === this.organizationUid)) {
-                                    
+                                if (quizDetails &&
+                                    (quizDetails.organization === this.organization ||
+                                        quizDetails.organizationUid === this.organization ||
+                                        quizDetails.organizationUid === this.organizationUid)) {
+
                                     // Calculate total score with fallbacks
                                     let total = 10; // Default fallback
-                                    
+
                                     if (quiz.totalScore) {
                                         total = quiz.totalScore;
                                     } else if (quizDetails.totalScore) {
@@ -283,7 +288,7 @@ export default {
                                     } else if (quiz.numberOfQuestions) {
                                         total = quiz.numberOfQuestions;
                                     }
-                                    
+
                                     this.chartData.push({
                                         quizTitle,
                                         email,
@@ -313,10 +318,10 @@ export default {
                         scorePerQuestion: quiz.scorePerQuestion,
                         totalScore: quiz.numberOfQuestions * quiz.scorePerQuestion
                     }));
-                    
+
                     // After loading quiz data, fetch organization quizzes
                     this.fetchOrganizationQuizzes();
-                    
+
                     // After loading quiz data, refresh user data to include total scores
                     if (this.organization) {
                         this.fetchUsers();
@@ -335,25 +340,25 @@ export default {
                 const db = getDatabase();
                 const quizzesRef = ref(db, 'organizationQuizzes');
                 const snapshot = await get(quizzesRef);
-                
+
                 if (snapshot.exists()) {
                     const quizzesData = snapshot.val();
                     // console.log("All quizzes data:", Object.keys(quizzesData).length);
-                    
+
                     // Filter quizzes that belong to this organization
                     const orgQuizzes = Object.entries(quizzesData)
                         .filter(([id, quiz]) => {
-                            return quiz.organizationUid === this.organizationUid || 
-                                   quiz.organizationId === this.organization;
+                            return quiz.organizationUid === this.organizationUid ||
+                                quiz.organizationId === this.organization;
                         })
                         .map(([id, quiz]) => ({
                             id,
                             ...quiz
                         }));
-                    
+
                     this.quizData = orgQuizzes;
                     // console.log("Organization quizzes loaded:", this.quizData.length, "for org:", this.organization);
-                    
+
                     // Debug the quizzes found
                     // if (this.quizData.length > 0) {
                     //     console.log("Sample quiz:", this.quizData[0].title);
@@ -379,7 +384,7 @@ export default {
                     return quiz.numberOfQuestions;
                 }
             }
-            
+
             // Return a default value if we can't determine the total
             return 40;
         },

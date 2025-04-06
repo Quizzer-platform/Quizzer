@@ -29,7 +29,7 @@
 
                 <!-- Show No Data Message -->
                 <div v-else-if="filteredOrganizations.length === 0"
-                    class="text-center text-gray-500 dark:text-gray-400">
+                    class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">
                     No organizations found.
                 </div>
 

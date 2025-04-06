@@ -47,6 +47,11 @@
                     :rows="paginatedUserData.map(user => [user.id, user.name, user.email])" :showActions="true"
                     @view-details="goToUserDetails" class="w-full max-w-5xl mx-auto" />
 
+                    <!-- No Admins Message -->
+                    <div v-if="!loading && filteredUsers.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">
+                        No users found.
+                    </div>
+
                 <!-- Pagination controls for users -->
                 <div v-if="users.length > 0" class="flex justify-center gap-2 p-4">
                     <button @click="prevUserPage" :disabled="currentUserPage === 1"
@@ -85,7 +90,7 @@
                             admin.email
                         ])" :showActions="true" @view-details="goToUserDetails" class="w-full max-w-5xl mx-auto" />
                     <!-- No Admins Message -->
-                    <div v-else-if="!loading && admins.length === 0" class="text-center text-gray-500 mt-6">
+                    <div v-else-if="!loading && filteredAdmins.length === 0" class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">
                         No administrators found.
                     </div>
 

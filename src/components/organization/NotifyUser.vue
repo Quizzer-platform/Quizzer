@@ -127,3 +127,13 @@ export default {
     }
 };
 </script>
+
+<style>
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #374151 inset !important; /* Match dark input background */
+  -webkit-text-fill-color: white !important;
+  caret-color: white;
+  transition: background-color 9999s ease-in-out 0s;
+}
+</style>
+

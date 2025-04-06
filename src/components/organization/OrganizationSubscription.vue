@@ -7,6 +7,12 @@
       <h3 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Subscriptions</h3>
       <Searchbar class="w-full sm:w-auto sm:ml-4 md:ml-150" @search="updateSearchQuery" />
     </div>
+    <!-- Remaining Quizzes -->
+<div v-if="remainingQuizzes !== null" class="text-center mb-4">
+  <p class="text-teal-800 dark:text-teal-300 font-semibold">
+    You have created {{ usedQuizzes }} quizzes ,{{ remainingQuizzes }} quizzes are remain.
+  </p>
+</div>
     <div v-if="loading" class="flex flex-col justify-center items-center h-60">
                 <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
@@ -31,7 +37,7 @@
     <TableStructure 
       v-else
       :headers="['Name of Plan', 'Quizzes', 'Price', 'Description']" 
-      :rows="filteredSubscriptions
+      :rows="paginatedData
         .filter(s => s.name && s.maxQuizzes && s.price && s.description) 
         .map(s => [s.name, s.maxQuizzes, s.price, s.description])"
       :showActions="false"
@@ -72,7 +78,9 @@ export default {
       orgId: null, // ✅ Logged-in organization ID
       loading: true,
       currentPage: 1,
-      perPage: 8
+      perPage: 8,
+      usedQuizzes: 0,
+      remainingQuizzes: null,
     };
   },
   computed: {
@@ -161,10 +169,13 @@ export default {
   if (!this.orgId) return;
 
   try {
-    const orgRef = dbRef(database, `organizations/${this.orgId}/plans`);
+    const orgRef = dbRef(database, `organizations/${this.orgId}`);
     const snapshot = await get(orgRef);
     if (snapshot.exists()) {
-      const plans = Object.values(snapshot.val()).slice(1); // Convert object to array
+      const plans = Object.values(snapshot.val().plans).slice(1); // Convert object to array
+      const totalAllowed = plans.reduce((sum, plan) => sum + parseInt(plan.noOfQuizzes || 0), 0);
+      this.usedQuizzes = snapshot.val().quizzes || 0;
+      this.remainingQuizzes = totalAllowed - this.usedQuizzes;
       this.subscriptions = plans.map((plan) => ({
         name: plan.name || "No Name",
         maxQuizzes: plan.noOfQuizzes || "N/A",

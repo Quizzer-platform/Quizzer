@@ -122,9 +122,12 @@
             <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black/40">
                 <div
                     class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl text-center transform scale-95 transition-transform duration-300">
-                    <h2 class="text-2xl font-bold text-gray-800 dark:text-teal-300 mb-4">🎉 Quiz Created Successfully!
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-teal-300 mb-4">
+                        🎉 {{ isEditing ? 'Quiz Updated Successfully!' : 'Quiz Created Successfully!' }}
                     </h2>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Your quiz has been successfully saved.</p>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        Your quiz has been successfully {{ isEditing ? 'updated' : 'saved' }}.
+                    </p>
                     <button @click="redirectToDashboard"
                         class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-500 transition-all duration-300 cursor-pointer">
                         OK
@@ -244,7 +247,7 @@ export default {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("Quiz Saved:", data);
+                    // console.log("Quiz Saved:", data);
                     if (!this.isEditing) {
                         this.resetForm();
                     }
@@ -280,5 +283,3 @@ export default {
 };
 </script>
 
-<style scoped></style>
-<style scoped></style>

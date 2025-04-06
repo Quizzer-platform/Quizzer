@@ -9,7 +9,24 @@
             <!-- Main Content -->
             <main class="flex-1 p-4">
                 <!-- User Review Section -->
-                <!-- <div class="mt-4"> -->
+                <!-- Chart Section with Loading State -->
+                <div>
+                    <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                        <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        <p class="text-gray-600 dark:text-gray-300 mt-4">Preparing chart data...</p>
+                    </div>
+                    <div v-else-if="userScores.length === 0" class="flex flex-col items-center justify-center h-60">
+                        <p class="text-gray-500 dark:text-gray-400 text-center">
+                            No quiz data available. Users haven't taken any quizzes yet.
+                        </p>
+                    </div>
+                    <UsersChart v-else :data="userScores" />
+                </div>
+
                 <h2 class="text-xl font-bold text-gray-800 dark:text-teal-300 mb-3">System Users</h2>
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 px-2">
                     <h2 class="text-xl font-semibold text-teal-900 dark:text-teal-300 sm:pl-5">Users Review</h2>
@@ -100,6 +117,7 @@ import AdminSidebar from "@/components/admin/AdminSidebar.vue";
 import AdminNavbar from "@/components/admin/AdminNavBar.vue";
 import Searchbar from "@/components/layout/Searchbar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
+import UsersChart from "@/components/admin/UsersChart.vue"; // Import the chart component
 
 export default {
     components: {
@@ -107,6 +125,7 @@ export default {
         AdminNavbar,
         Searchbar,
         TableStructure,
+        UsersChart,
     },
     data() {
         return {
@@ -120,6 +139,7 @@ export default {
             currentAdminPage: 1,
             perUserPage: 8,
             perAdminPage: 8,
+            userScores: [],
         };
     },
     computed: {
@@ -220,36 +240,101 @@ export default {
         updateAdminSearchQuery(query) {
             this.adminSearchQuery = query;
         },
-        async fetchUsers() {
-            try {
-                this.loading = true; // Show spinner
-
-                const db = getDatabase();
-                const usersRef = ref(db, "users");
-                const snapshot = await get(usersRef);
-
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    this.users = Object.entries(data)
-                        .filter(([_, user]) => user.role === 'user') // Exclude admin users
-                        .map(([id, user]) => ({
-                            id,
-                            name: user.name || "Unknown User",
-                            email: user.email || "No Email",
-                            role: user.role || "user",
-                            createdAt: user.createdAt || null
-                        }))
-                        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)); // Sort by creation date
-
-                } else {
-                    this.users = [];
-                }
-            } catch (error) {
-                console.error("Error fetching users:", error);
-                this.users = [];
-            } finally {
-                this.loading = false; // Hide spinner
+        // Add this method to prepare chart data
+        async prepareChartData() {
+          try {
+            this.userScores = [];
+            
+            // Load quiz data first to get quiz details
+            const db = getDatabase();
+            const adminQuizzesRef = ref(db, "adminQuizzes");
+            const orgQuizzesRef = ref(db, "organizationQuizzes");
+            
+            // Get admin quizzes
+            const adminQuizzesSnap = await get(adminQuizzesRef);
+            let quizData = {};
+            
+            if (adminQuizzesSnap.exists()) {
+              quizData = adminQuizzesSnap.val();
             }
+            
+            // Get organization quizzes
+            const orgQuizzesSnap = await get(orgQuizzesRef);
+            if (orgQuizzesSnap.exists()) {
+              quizData = { ...quizData, ...orgQuizzesSnap.val() };
+            }
+            
+            // Process each user's attempted quizzes
+            for (const user of this.users) {
+              if (user.attemptedQuizzes) {
+                // Convert attemptedQuizzes to array if it's an object
+                const quizAttempts = Array.isArray(user.attemptedQuizzes) 
+                  ? user.attemptedQuizzes 
+                  : Object.entries(user.attemptedQuizzes).map(([id, data]) => ({
+                      quizId: id,
+                      ...data
+                    }));
+                
+                quizAttempts.forEach(attempt => {
+                  if (!attempt) return;
+                  
+                  const quizId = attempt.quizId;
+                  const quizDetails = quizData[quizId];
+                  
+                  // Skip if quiz details not found
+                  if (!quizDetails) return;
+                  
+                  const quizTitle = attempt.title || quizDetails.title || "Unknown Quiz";
+                  const score = attempt.quizScore || attempt.score || 0;
+                  const total = attempt.totalScore || quizDetails.numberOfQuestions * quizDetails.scorePerQuestion || 10;
+                  
+                  this.userScores.push({
+                    quizTitle,
+                    userName: user.name,
+                    email: user.email,
+                    score: (score / total) * 10, // Normalize to out of 10
+                  });
+                });
+              }
+            }
+            
+            // console.log("Chart data prepared:", this.userScores.length, "entries");
+            
+          } catch (error) {
+            console.error("Error preparing chart data:", error);
+          }
+        },
+        
+        // Update the fetchUsers method to call prepareChartData
+        async fetchUsers() {
+          try {
+            this.loading = true;
+            const db = getDatabase();
+            const usersRef = ref(db, "users");
+            const snapshot = await get(usersRef);
+        
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              this.users = Object.entries(data)
+                .filter(([id, user]) => user.role === "user") // Only include users with role "user"
+                .map(([id, user]) => ({
+                  id,
+                  name: user.name || "Unknown User",
+                  email: user.email || "No email",
+                  role: user.role || "user",
+                  attemptedQuizzes: user.attemptedQuizzes || []
+                }));
+              
+              // Prepare chart data after users are loaded
+              await this.prepareChartData();
+            } else {
+              this.users = [];
+            }
+            this.loading = false;
+          } catch (error) {
+            console.error("Error fetching users:", error);
+            this.loading = false;
+          }
         },
         goToUserDetails(userId) {
             this.$router.push(`/admin/user/${userId}`);

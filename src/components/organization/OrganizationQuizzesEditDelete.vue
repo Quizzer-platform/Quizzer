@@ -245,7 +245,7 @@ export default {
       });
     }
 
-    console.log(`Total allowed quizzes: ${totalAllowed}`);
+    // console.log(`Total allowed quizzes: ${totalAllowed}`);
 
     // ✅ Fetch the actual quiz count directly from Firebase
     const quizResponse = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes.json`);
@@ -341,14 +341,14 @@ if (currentQuizzes >= totalAllowed) {
 
   watch: {
     organizationId(newId) {
-      console.log("Organization ID changed:", newId);
+      // console.log("Organization ID changed:", newId);
       this.fetchQuizzes();
     },
   },
 
   mounted() {
   window.addEventListener("resize", this.handleResize);
-  console.log("Component Mounted: Fetching Organization ID");
+  // console.log("Component Mounted: Fetching Organization ID");
   this.fetchOrganizationId()
     .then(() => {
       this.fetchQuizzes();

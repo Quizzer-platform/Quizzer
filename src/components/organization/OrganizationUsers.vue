@@ -12,7 +12,9 @@
             <!-- Main Content -->
             <main class="flex-1 p-4">
                 <!-- <DashboardOverview />-->
-
+                <div class="mt-10">
+                    <UserScoresChart v-if="chartData.length" :data="chartData" />
+                </div>
                 <!-- User Review Section -->
                 <div class="mt-8">
                     <div class="flex flex-col md:flex-row md:justify-between  gap-2 sm:gap-4 mb-3">
@@ -73,6 +75,7 @@ import OrganizationNavbar from "@/components/organization/OrganizationNavbar.vue
 import DashboardOverview from "@/components/organization/OrganizationOverview.vue";
 import Searchbar from "@/components/layout/Searchbar.vue";
 import TableStructure from "@/components/admin/TableStructure.vue";
+import UserScoresChart from "@/components/organization/UsersScoresChart.vue";
 
 export default {
     components: {
@@ -81,6 +84,7 @@ export default {
         DashboardOverview,
         Searchbar,
         TableStructure,
+        UserScoresChart,
     },
     data() {
         return {
@@ -88,11 +92,13 @@ export default {
             searchQuery: "",
             users: [], // Stores fetched users
             organization: null, // Organization name of the logged-in org admin
+            organizationUid: null,
             loading: true, // Spinner state
             currentUserPage: 1,
             currentAdminPage: 1,
             perUserPage: 8,
-            quizData : [],
+            quizData: [],
+            chartData: [],
         };
     },
     computed: {
@@ -164,7 +170,9 @@ export default {
                     if (snapshot.exists()) {
                         const userData = snapshot.val();
                         this.organization = userData.organization; // Get organization name
-                        console.log("Fetched Organization Name:", this.organization);
+                        this.organizationUid = user.uid; // Store the organization admin's UID
+                        // console.log("Fetched Organization Name:", this.organization);
+                        // console.log("Organization UID:", this.organizationUid);
                         resolve(this.organization);
                     } else {
                         console.error("Organization admin data not found in users collection.");
@@ -173,15 +181,16 @@ export default {
                 });
             });
         },
+        // Update the fetchUsers method to handle undefined quiz totals better
         async fetchUsers() {
             if (!this.organization) return; // Ensure organization is set
             try {
                 this.loading = true; // Show spinner
-
+        
                 const db = getDatabase();
                 const usersRef = ref(db, "users");
                 const snapshot = await get(usersRef);
-
+        
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     this.users = Object.entries(data)
@@ -190,38 +199,104 @@ export default {
                             const attempts = Array.isArray(user.attemptedQuizzes)
                                 ? user.attemptedQuizzes.filter(q => typeof q === 'object' && q.title)
                                 : [];
-
+        
                             // Get the last quiz details if available
                             const lastAttempt = attempts.length > 0 ? attempts[attempts.length - 1] : null;
                             const lastQuiz = lastAttempt ? lastAttempt.title : "No Quiz Taken";
                             
                             // Calculate quiz total based on quiz data
-                            const quizTotal = lastAttempt && this.quizData.length > 0 
-                                ? this.calculateQuizTotal(lastAttempt.quizId)
-                                : 0;
+                            let quizTotal = 0;
+                            if (lastAttempt) {
+                                // Try to get the total from the attempt itself first
+                                if (lastAttempt.totalScore) {
+                                    quizTotal = lastAttempt.totalScore;
+                                } else if (lastAttempt.quizId) {
+                                    // Try to find the quiz in our loaded quiz data
+                                    const quizDetails = this.quizData.find(q => q.id === lastAttempt.quizId);
+                                    if (quizDetails) {
+                                        if (quizDetails.totalScore) {
+                                            quizTotal = quizDetails.totalScore;
+                                        } else if (quizDetails.numberOfQuestions && quizDetails.scorePerQuestion) {
+                                            quizTotal = quizDetails.numberOfQuestions * quizDetails.scorePerQuestion;
+                                        }
+                                    }
+                                }
                                 
-                            const degree = lastAttempt ? `${lastAttempt.quizScore} / ${quizTotal}` : "N/A"; // Store the last quiz score
+                                // If we still don't have a total, use the number of questions as a fallback
+                                if (!quizTotal && lastAttempt.numberOfQuestions) {
+                                    quizTotal = lastAttempt.numberOfQuestions;
+                                }
+                                
+                                // Final fallback
+                                if (!quizTotal) {
+                                    quizTotal = 10; // Default value if we can't determine the total
+                                }
+                            }
+                            
+                            const degree = lastAttempt ? `${lastAttempt.quizScore} / ${quizTotal}` : "N/A";
 
                             return {
                                 id,
                                 name: user.name || "Unknown",
                                 lastQuiz,
-                                degree,  // Now stores the last quiz's score
-                                organization: user.organization, // Ensure we use organization name
-                                role: user.role // Include role for filtering
+                                degree,
+                                organization: user.organization,
+                                role: user.role,
+                                attemptedQuizzes: attempts,
                             };
                         })
                         .filter(user =>
-                            user.organization === this.organization && // Compare with organization name
-                            user.role !== "organization_admin" // Exclude organization admins
+                            user.organization === this.organization &&
+                            user.role !== "organization_admin"
                         );
-
-                    console.log("Filtered users:", this.users);
+                    // Update chart data
+                    this.chartData = [];
+                    
+                    this.users.forEach(user => {
+                        const email = user.name;
+                        if (Array.isArray(user.attemptedQuizzes)) {
+                            user.attemptedQuizzes.forEach(quiz => {
+                                if (!quiz) return;
+                                
+                                const quizTitle = quiz.title;
+                                const quizId = quiz.quizId;
+                                const score = quiz.quizScore || 0;
+                                
+                                // Find the quiz in our quizData
+                                const quizDetails = this.quizData.find(q => q.id === quizId);
+                                
+                                // Only include quizzes created by this organization
+                                if (quizDetails && 
+                                    (quizDetails.organization === this.organization || 
+                                     quizDetails.organizationUid === this.organization || 
+                                     quizDetails.organizationUid === this.organizationUid)) {
+                                    
+                                    // Calculate total score with fallbacks
+                                    let total = 10; // Default fallback
+                                    
+                                    if (quiz.totalScore) {
+                                        total = quiz.totalScore;
+                                    } else if (quizDetails.totalScore) {
+                                        total = quizDetails.totalScore;
+                                    } else if (quizDetails.numberOfQuestions && quizDetails.scorePerQuestion) {
+                                        total = quizDetails.numberOfQuestions * quizDetails.scorePerQuestion;
+                                    } else if (quiz.numberOfQuestions) {
+                                        total = quiz.numberOfQuestions;
+                                    }
+                                    
+                                    this.chartData.push({
+                                        quizTitle,
+                                        email,
+                                        score: (score / total) * 10, // Normalize to out of 10
+                                        organizationOwned: true
+                                    });
+                                }
+                            });
+                        }
+                    });
                 } else {
                     this.users = [];
                 }
-
-
             } catch (error) {
                 console.error("Error fetching users:", error);
             } finally {
@@ -255,96 +330,58 @@ export default {
                     console.log('Quizzes loaded');
                 });
         },
-        fetchOrganizationQuizzes() {
-            if (!this.organization) return; // Ensure organization is set
-            
-            const db = getDatabase();
-            const orgQuizzesRef = ref(db, "organizationQuizzes");
-            
-            get(orgQuizzesRef)
-                .then(snapshot => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        // Filter quizzes for the current organization
-                        const orgQuizzes = Object.entries(data)
-                            .filter(([id, quiz]) => quiz.organization === this.organization)
-                            .map(([id, quiz]) => ({
-                                id: id,
-                                title: quiz.title || "Untitled Quiz",
-                                description: quiz.description || "",
-                                numberOfQuestions: quiz.numberOfQuestions || 0,
-                                scorePerQuestion: quiz.scorePerQuestion || 1,
-                                totalScore: (quiz.numberOfQuestions || 0) * (quiz.scorePerQuestion || 1),
-                                createdAt: quiz.createdAt || new Date().toISOString()
-                            }));
-                            
-                        // Merge with existing quiz data
-                        this.quizData = [...this.quizData, ...orgQuizzes];
-                        console.log("Organization quizzes loaded:", orgQuizzes.length);
-                    } else {
-                        console.log("No organization quizzes found");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching organization quizzes:", error);
-                });
+        async fetchOrganizationQuizzes() {
+            try {
+                const db = getDatabase();
+                const quizzesRef = ref(db, 'organizationQuizzes');
+                const snapshot = await get(quizzesRef);
+                
+                if (snapshot.exists()) {
+                    const quizzesData = snapshot.val();
+                    // console.log("All quizzes data:", Object.keys(quizzesData).length);
+                    
+                    // Filter quizzes that belong to this organization
+                    const orgQuizzes = Object.entries(quizzesData)
+                        .filter(([id, quiz]) => {
+                            return quiz.organizationUid === this.organizationUid || 
+                                   quiz.organizationId === this.organization;
+                        })
+                        .map(([id, quiz]) => ({
+                            id,
+                            ...quiz
+                        }));
+                    
+                    this.quizData = orgQuizzes;
+                    // console.log("Organization quizzes loaded:", this.quizData.length, "for org:", this.organization);
+                    
+                    // Debug the quizzes found
+                    // if (this.quizData.length > 0) {
+                    //     console.log("Sample quiz:", this.quizData[0].title);
+                    // }
+                } else {
+                    console.log("No quizzes found in database");
+                    this.quizData = [];
+                }
+            } catch (error) {
+                console.error("Error fetching organization quizzes:", error);
+                this.quizData = [];
+            }
         },
         calculateQuizTotal(quizId) {
             // First check if the quiz exists in our combined quiz data
             const quiz = this.quizData.find(q => q.id === quizId);
             if (quiz) {
-                return quiz.totalScore;
+                if (quiz.totalScore) {
+                    return quiz.totalScore;
+                } else if (quiz.numberOfQuestions && quiz.scorePerQuestion) {
+                    return quiz.numberOfQuestions * quiz.scorePerQuestion;
+                } else if (quiz.numberOfQuestions) {
+                    return quiz.numberOfQuestions;
+                }
             }
             
-            // If not found, try to calculate it directly from the quiz properties
-            // This is a fallback in case the quiz wasn't properly loaded
-            const db = getDatabase();
-            const adminQuizRef = ref(db, `adminQuizzes/${quizId}`);
-            const orgQuizRef = ref(db, `organizationQuizzes/${quizId}`);
-            
-            // Try admin quizzes first
-            get(adminQuizRef).then(snapshot => {
-                if (snapshot.exists()) {
-                    const quizData = snapshot.val();
-                    const totalScore = quizData.numberOfQuestions * quizData.scorePerQuestion;
-                    
-                    // Add to our quiz data for future reference
-                    this.quizData.push({
-                        id: quizId,
-                        numberOfQuestions: quizData.numberOfQuestions,
-                        scorePerQuestion: quizData.scorePerQuestion,
-                        totalScore: totalScore
-                    });
-                    
-                    // Refresh users to update the display
-                    this.fetchUsers();
-                    return totalScore;
-                } else {
-                    // Try organization quizzes
-                    get(orgQuizRef).then(snapshot => {
-                        if (snapshot.exists()) {
-                            const quizData = snapshot.val();
-                            const totalScore = quizData.numberOfQuestions * quizData.scorePerQuestion;
-                            
-                            // Add to our quiz data for future reference
-                            this.quizData.push({
-                                id: quizId,
-                                numberOfQuestions: quizData.numberOfQuestions,
-                                scorePerQuestion: quizData.scorePerQuestion,
-                                totalScore: totalScore
-                            });
-                            
-                            // Refresh users to update the display
-                            this.fetchUsers();
-                            return totalScore;
-                        }
-                    });
-                }
-            });
-            
-            // Return 0 as default if quiz not found immediately
-            // The async operations above will update the data later if found
-            return 0;
+            // Return a default value if we can't determine the total
+            return 40;
         },
         goToUserDetails(userId) {
             this.$router.push(`/organization/user/${userId}`);

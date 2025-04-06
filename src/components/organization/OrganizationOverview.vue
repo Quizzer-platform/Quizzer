@@ -97,7 +97,7 @@ export default {
                     });
                 }
 
-                console.log(`Total allowed quizzes: ${totalAllowed}`);
+                // console.log(`Total allowed quizzes: ${totalAllowed}`);
 
                 // ✅ Fetch the actual quiz count directly from Firebase
                 const quizResponse = await fetch(`https://quizzer-platform-default-rtdb.firebaseio.com/organizationQuizzes.json`);
@@ -108,7 +108,7 @@ export default {
                     quiz => quiz.organizationUid === user.uid
                 ).length;
 
-                console.log(`Current quizzes: ${currentQuizzes}, Allowed: ${totalAllowed}`);
+                // console.log(`Current quizzes: ${currentQuizzes}, Allowed: ${totalAllowed}`);
 
                 // ❌ Prevent quiz creation if limit is reached
                 if (totalAllowed === 0) {

@@ -322,7 +322,7 @@ export default {
                         id: 'junior-quizzer',
                         name: 'Junior Quizzer',
                         description: 'Completed +3 quizzes',
-                        imageUrl: '../src/assets/bagde1.PNG',
+                        imageUrl: '@/src/assets/bagde1.PNG',
                         borderColor: 'border-teal-400'
                     });
                 }
@@ -333,7 +333,7 @@ export default {
                         id: 'expert-quizzer',
                         name: 'Expert Quizzer',
                         description: 'Completed +7 quizzes',
-                        imageUrl: '../src/assets/badge2.PNG',
+                        imageUrl: '@/src/assets/badge2.PNG',
                         borderColor: 'border-teal-600'
                     });
                 }
@@ -344,7 +344,7 @@ export default {
                         id: 'master-quizzer',
                         name: 'Master Quizzer',
                         description: 'Completed +10 quizzes',
-                        imageUrl: '../src/assets/badge2.PNG',
+                        imageUrl: '@/src/assets/badge2.PNG',
                         borderColor: 'border-teal-800'
                     });
                 }

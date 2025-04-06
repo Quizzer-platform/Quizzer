@@ -104,10 +104,10 @@
       <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
         <p class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">Are you sure you want to delete this quiz?</p>
         <div class="flex justify-center space-x-4">
-          <button @click="deleteQuiz" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800">
+          <button @click="deleteQuiz" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800 cursor-pointer">
             Yes, Delete
           </button>
-          <button @click="showDeletePopup = false" class="bg-gray-300 text-teal-800 px-4 py-2 rounded-lg dark:bg-gray-600 dark:text-teal-300 dark:hover:bg-gray-500">
+          <button @click="showDeletePopup = false" class="bg-gray-300 text-teal-800 px-4 py-2 rounded-lg dark:bg-gray-600 dark:text-teal-300 dark:hover:bg-gray-500 cursor-pointer">
             Cancel
           </button>
         </div>

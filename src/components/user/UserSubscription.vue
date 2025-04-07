@@ -7,95 +7,100 @@
             <div class="min-h-screen w-full bg-gray-100 dark:bg-[#1a202c] md:ml-54">
                 <div class="container mx-auto px-4 py-8">
                     <div class="bg-white dark:bg-gray-900/60 dark:text-gray-200 rounded-lg shadow-lg p-6">
-                      <h1 class="text-2xl font-bold text-teal-800 dark:text-teal-400 mb-6 flex flex-col sm:flex-row sm:items-center sm: text-center">
-                          Your Subscription
-                          <span class="text-lg text-teal-600 dark:text-gray-400 sm:ml-2 sm:inline-block text-center sm:text-left mt-2 sm:mt-0">
-                            (Total Allowed Quizzes: {{ quizzesToTake }})
-                          </span>
-                      </h1>
-                        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
-                        <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                        </svg>
-                        <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Your Subscriptions...</p>
-                        </div>
-                        <div  
-                                class="bg-teal-50 dark:bg-gray-900/85 rounded-lg p-6 border border-teal-200 dark:border-gray-700 mb-4">
+                        <h1
+                            class="text-2xl font-bold text-teal-800 dark:text-teal-400 mb-6 flex flex-col sm:flex-row sm:items-center sm: text-center">
+                            Your Subscription
+                            <span
+                                class="text-lg text-teal-600 dark:text-gray-400 sm:ml-2 sm:inline-block text-center sm:text-left mt-2 sm:mt-0">
+                                (Total Allowed Quizzes: {{ quizzesToTake }})
+                            </span>
+                        </h1>
+                        <div
+                            class="bg-teal-50 dark:bg-gray-900/85 rounded-lg p-6 border border-teal-200 dark:border-gray-700 mb-4">
                             <div class="flex justify-between items-start mb-4">
                                 <div>
-                                <h2 class="text-xl font-semibold text-teal-800 dark:text-teal-300">
-                                    Quizzer Gift
-                                </h2>
-                                <p class="text-gray-600 dark:text-gray-400">
-                                    Status: 
-                                    <span class="text-green-600 dark:text-green-400">
-                                    Active
-                                    </span>
-                                </p>
+                                    <h2 class="text-xl font-semibold text-teal-800 dark:text-teal-300">
+                                        Quizzer Gift
+                                    </h2>
+                                    <p class="text-gray-600 dark:text-gray-400">
+                                        Status:
+                                        <span class="text-green-600 dark:text-green-400">
+                                            Active
+                                        </span>
+                                    </p>
                                 </div>
                                 <div class="text-right">
-                                <p class="text-2xl font-bold text-teal-800 dark:text-teal-300">
-                                    Free
-                                </p>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    Quizzes Available: 5
-                                </p>
+                                    <p class="text-2xl font-bold text-teal-800 dark:text-teal-300">
+                                        Free
+                                    </p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                                        Quizzes Available: 5
+                                    </p>
                                 </div>
                             </div>
 
                             <div class="space-y-2 mb-6">
                                 <h3 class="font-semibold text-gray-800 dark:text-gray-300">Features:</h3>
                                 <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-400">
-                                <li>Max Questions per Quiz: 10 </li>
-                                <li>Quizzes Available: 5 </li>
-                                <li><span class="max-w-xl">This is the quizzer gift for every user to explore our website and have a good experience before actually subscribe to any plan</span></li>
+                                    <li>Max Questions per Quiz: 10 </li>
+                                    <li>Quizzes Available: 5 </li>
+                                    <li><span class="max-w-xl">This is the quizzer gift for every user to explore our
+                                            website and have a good experience before actually subscribe to any
+                                            plan</span></li>
                                 </ul>
                             </div>
 
-                                    <!-- <div class="flex justify-end space-x-4">
+                            <!-- <div class="flex justify-end space-x-4">
                                 <button @click="removePlan(subscription)" 
                                         class="px-4 py-2 border border-red-600 text-red-600 dark:border-red-400 dark:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900 cursor-pointer transition-colors">
                                 Remove Plan
                                 </button>
                                     </div> -->
-                            </div>
+                        </div>
+                        <div v-if="loading" class="flex flex-col justify-center items-center h-60">
+                            <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                            </svg>
+                            <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Your Subscriptions...</p>
+                        </div>
                         <div v-if="filteredSubscriptions.length > 0" class="mb-8">
-                            <div v-for="(subscription, index) in filteredSubscriptions" :key="index" 
+                            <div v-for="(subscription, index) in filteredSubscriptions" :key="index"
                                 class="bg-teal-50 dark:bg-gray-900/85 rounded-lg p-6 border border-teal-200 dark:border-gray-700 mb-4">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                <h2 class="text-xl font-semibold text-teal-800 dark:text-teal-300">
-                                    {{ subscription.name }}
-                                </h2>
-                                <p class="text-gray-600 dark:text-gray-400">
-                                    Status: 
-                                    <span class="text-green-600 dark:text-green-400">
-                                    Active
-                                    </span>
-                                </p>
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h2 class="text-xl font-semibold text-teal-800 dark:text-teal-300">
+                                            {{ subscription.name }}
+                                        </h2>
+                                        <p class="text-gray-600 dark:text-gray-400">
+                                            Status:
+                                            <span class="text-green-600 dark:text-green-400">
+                                                Active
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-2xl font-bold text-teal-800 dark:text-teal-300">
+                                            {{ subscription.price }}
+                                        </p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                                            Quizzes Available: {{ subscription.noOfQuizzes }}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="text-right">
-                                <p class="text-2xl font-bold text-teal-800 dark:text-teal-300">
-                                    {{ subscription.price }}
-                                </p>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    Quizzes Available: {{ subscription.noOfQuizzes }}
-                                </p>
+
+                                <div class="space-y-2 mb-6">
+                                    <h3 class="font-semibold text-gray-800 dark:text-gray-300">Features:</h3>
+                                    <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-400">
+                                        <li>Max Questions per Quiz: {{ getMaxQuestions(subscription.name) }}</li>
+                                        <li>Quizzes Available: {{ subscription.noOfQuizzes }}</li>
+                                        <li>{{ subscription.description }}</li>
+                                    </ul>
                                 </div>
-                            </div>
 
-                            <div class="space-y-2 mb-6">
-                                <h3 class="font-semibold text-gray-800 dark:text-gray-300">Features:</h3>
-                                <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-400">
-                                <li>Max Questions per Quiz: {{ getMaxQuestions(subscription.name) }}</li>
-                                <li>Quizzes Available: {{ subscription.noOfQuizzes }}</li>
-                                <li>{{ subscription.description }}</li>
-                                </ul>
-                            </div>
-
-                                    <!-- <div class="flex justify-end space-x-4">
+                                <!-- <div class="flex justify-end space-x-4">
                                 <button @click="removePlan(subscription)" 
                                         class="px-4 py-2 border border-red-600 text-red-600 dark:border-red-400 dark:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900 cursor-pointer transition-colors">
                                 Remove Plan
@@ -139,9 +144,9 @@ export default {
             subscriptions: [],
             loading: true,
             listener: null,
-            quizzesToTake: 0, 
+            quizzesToTake: 0,
             features: [
-            { name: "Max Questions per Quiz", free: "10", starter: "30", pro: "60" },
+                { name: "Max Questions per Quiz", free: "10", starter: "30", pro: "60" },
             ],
         };
     },
@@ -154,30 +159,30 @@ export default {
         }
     },
     methods: {
-         fetchSubscriptions() {
-      if (!this.userId) return;
+        fetchSubscriptions() {
+            if (!this.userId) return;
 
-     const userRef = dbRef(database, `users/${this.userId}`);
+            const userRef = dbRef(database, `users/${this.userId}`);
 
-    this.listener = onValue(userRef, (snapshot) => {
-        if (snapshot.exists()) {
-            const userData = snapshot.val();
-            // Extract subscription plans
-            this.subscriptions = userData.plans ? Object.values(userData.plans) : [];
-            // Extract quizzesToTake
-            this.quizzesToTake = userData.quizzesToTake || 0;
-        } else {
-          this.subscriptions = [];
-          this.quizzesToTake = 0;
-        }
-        this.loading = false;
-      }, (error) => {
-        console.error('Error fetching subscriptions:', error);
-        this.subscriptions = [];
-        this.quizzesToTake = 0;
-        this.loading = false;
-      });
-    },
+            this.listener = onValue(userRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    // Extract subscription plans
+                    this.subscriptions = userData.plans ? Object.values(userData.plans) : [];
+                    // Extract quizzesToTake
+                    this.quizzesToTake = userData.quizzesToTake || 0;
+                } else {
+                    this.subscriptions = [];
+                    this.quizzesToTake = 0;
+                }
+                this.loading = false;
+            }, (error) => {
+                console.error('Error fetching subscriptions:', error);
+                this.subscriptions = [];
+                this.quizzesToTake = 0;
+                this.loading = false;
+            });
+        },
         async cancelSubscription() {
             try {
                 // Implement subscription cancellation logic
@@ -195,29 +200,29 @@ export default {
             }
         },
         getMaxQuestions(planName) {
-      const planKey = this.getPlanKey(planName);
-      const maxQuestionsFeature = this.features.find(f => f.name === "Max Questions per Quiz");
-      return maxQuestionsFeature ? maxQuestionsFeature[planKey] : 'N/A';
-    },
-    // Helper to convert plan names to feature keys
-    getPlanKey(planName) {
-      const mapping = {
-        'free': 'free',
-        'starter plan': 'starter',
-        'pro plan': 'pro'
-      };
-      return mapping[planName.toLowerCase()] || 'free';
-    },
+            const planKey = this.getPlanKey(planName);
+            const maxQuestionsFeature = this.features.find(f => f.name === "Max Questions per Quiz");
+            return maxQuestionsFeature ? maxQuestionsFeature[planKey] : 'N/A';
+        },
+        // Helper to convert plan names to feature keys
+        getPlanKey(planName) {
+            const mapping = {
+                'free': 'free',
+                'starter plan': 'starter',
+                'pro plan': 'pro'
+            };
+            return mapping[planName.toLowerCase()] || 'free';
+        },
     },
     mounted() {
         this.fetchSubscriptions();
     },
     beforeUnmount() {
-    if (this.listener) {
-      const plansRef = dbRef(database, `users/${this.userId}/plans`);
-      off(plansRef);
-      this.listener = null;
+        if (this.listener) {
+            const plansRef = dbRef(database, `users/${this.userId}/plans`);
+            off(plansRef);
+            this.listener = null;
+        }
     }
-  }
 };
 </script>

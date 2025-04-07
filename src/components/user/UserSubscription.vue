@@ -21,48 +21,88 @@
                         </svg>
                         <p class="text-gray-600 dark:text-gray-300 mt-4">Loading Your Subscriptions...</p>
                         </div>
-                        <div v-else-if="filteredSubscriptions.length > 0" class="mb-8">
-    <div v-for="(subscription, index) in filteredSubscriptions" :key="index" 
-         class="bg-teal-50 dark:bg-gray-900/85 rounded-lg p-6 border border-teal-200 dark:border-gray-700 mb-4">
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <h2 class="text-xl font-semibold text-teal-800 dark:text-teal-300">
-            {{ subscription.name }} Plan
-          </h2>
-          <p class="text-gray-600 dark:text-gray-400">
-            Status: 
-            <span class="text-green-600 dark:text-green-400">
-              Active
-            </span>
-          </p>
-        </div>
-        <div class="text-right">
-          <p class="text-2xl font-bold text-teal-800 dark:text-teal-300">
-            {{ subscription.price }}
-          </p>
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            Quizzes Available: {{ subscription.noOfQuizzes }}
-          </p>
-        </div>
-      </div>
+                        <div  
+                                class="bg-teal-50 dark:bg-gray-900/85 rounded-lg p-6 border border-teal-200 dark:border-gray-700 mb-4">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                <h2 class="text-xl font-semibold text-teal-800 dark:text-teal-300">
+                                    Quizzer Gift
+                                </h2>
+                                <p class="text-gray-600 dark:text-gray-400">
+                                    Status: 
+                                    <span class="text-green-600 dark:text-green-400">
+                                    Active
+                                    </span>
+                                </p>
+                                </div>
+                                <div class="text-right">
+                                <p class="text-2xl font-bold text-teal-800 dark:text-teal-300">
+                                    Free
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    Quizzes Available: 5
+                                </p>
+                                </div>
+                            </div>
 
-      <div class="space-y-2 mb-6">
-        <h3 class="font-semibold text-gray-800 dark:text-gray-300">Features:</h3>
-        <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-400">
-          <li>Max Questions per Quiz: {{ getMaxQuestions(subscription.name) }}</li>
-          <li>Quizzes Available: {{ subscription.noOfQuizzes }}</li>
-          <li>{{ subscription.description }}</li>
-        </ul>
-      </div>
+                            <div class="space-y-2 mb-6">
+                                <h3 class="font-semibold text-gray-800 dark:text-gray-300">Features:</h3>
+                                <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-400">
+                                <li>Max Questions per Quiz: 10 </li>
+                                <li>Quizzes Available: 5 </li>
+                                <li><span class="max-w-xl">This is the quizzer gift for every user to explore our website and have a good experience before actually subscribe to any plan</span></li>
+                                </ul>
+                            </div>
 
-            <!-- <div class="flex justify-end space-x-4">
-        <button @click="removePlan(subscription)" 
-                class="px-4 py-2 border border-red-600 text-red-600 dark:border-red-400 dark:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900 cursor-pointer transition-colors">
-        Remove Plan
-        </button>
-            </div> -->
-    </div>
-  </div>
+                                    <!-- <div class="flex justify-end space-x-4">
+                                <button @click="removePlan(subscription)" 
+                                        class="px-4 py-2 border border-red-600 text-red-600 dark:border-red-400 dark:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900 cursor-pointer transition-colors">
+                                Remove Plan
+                                </button>
+                                    </div> -->
+                            </div>
+                        <div v-if="filteredSubscriptions.length > 0" class="mb-8">
+                            <div v-for="(subscription, index) in filteredSubscriptions" :key="index" 
+                                class="bg-teal-50 dark:bg-gray-900/85 rounded-lg p-6 border border-teal-200 dark:border-gray-700 mb-4">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                <h2 class="text-xl font-semibold text-teal-800 dark:text-teal-300">
+                                    {{ subscription.name }}
+                                </h2>
+                                <p class="text-gray-600 dark:text-gray-400">
+                                    Status: 
+                                    <span class="text-green-600 dark:text-green-400">
+                                    Active
+                                    </span>
+                                </p>
+                                </div>
+                                <div class="text-right">
+                                <p class="text-2xl font-bold text-teal-800 dark:text-teal-300">
+                                    {{ subscription.price }}
+                                </p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    Quizzes Available: {{ subscription.noOfQuizzes }}
+                                </p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2 mb-6">
+                                <h3 class="font-semibold text-gray-800 dark:text-gray-300">Features:</h3>
+                                <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-400">
+                                <li>Max Questions per Quiz: {{ getMaxQuestions(subscription.name) }}</li>
+                                <li>Quizzes Available: {{ subscription.noOfQuizzes }}</li>
+                                <li>{{ subscription.description }}</li>
+                                </ul>
+                            </div>
+
+                                    <!-- <div class="flex justify-end space-x-4">
+                                <button @click="removePlan(subscription)" 
+                                        class="px-4 py-2 border border-red-600 text-red-600 dark:border-red-400 dark:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900 cursor-pointer transition-colors">
+                                Remove Plan
+                                </button>
+                                    </div> -->
+                            </div>
+                        </div>
                         <div v-else class="text-center py-8">
                             <div class="text-4xl mb-4">✨</div>
                             <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-300 mb-2">

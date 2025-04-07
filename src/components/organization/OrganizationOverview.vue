@@ -1,24 +1,22 @@
 <template>
-    <div
-        class="bg-white rounded-lg shadow-md mt-6 mx-auto md:mx-6 p-8 sm:p-10 lg:p-12 flex flex-col md:flex-row items-center lg:h-auto 
+    <div class="bg-white rounded-lg shadow-md mt-6 mx-auto md:mx-6 p-8 sm:p-10 lg:p-12 flex flex-col md:flex-row items-center lg:h-auto 
                  dark:bg-gray-800 dark:text-gray-200">
         <!-- Left Content -->
         <div class="max-w-2xl px-4 md:px-6 lg:px-10 text-center md:text-left">
-            <h2 class="text-2xl sm:text-3xl font-bold text-teal-900 dark:text-teal-300 mb-4">Time to Manage Your Quizzes!</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold text-teal-900 dark:text-teal-300 mb-4">Time to Manage Your
+                Quizzes!</h2>
             <p class="text-gray-600 dark:text-gray-400 mb-4 leading-relaxedd">
-                Empower learners and challenge minds! Effortlessly create and manage quizzes to boost engagement, track progress, and make learning interactive. Start shaping knowledge today!
+                Empower learners and challenge minds! Effortlessly create and manage quizzes to boost engagement, track
+                progress, and make learning interactive. Start shaping knowledge today!
             </p>
             <div class="mt-4 sm:mt-6 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                <button
-                    class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer
-                       dark:bg-teal-800 dark:hover:bg-teal-600 dark:text-teal-200"
-                    @click="createQuiz">CREATE QUIZ</button>
-                <button
-                    class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer
-                       dark:bg-teal-800 dark:hover:bg-teal-600 dark:text-teal-200"
-                    @click="viewQuiz">VIEW
+                <button class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer
+                       dark:bg-teal-800 dark:hover:bg-teal-600 dark:text-teal-200" @click="createQuiz">CREATE
+                    QUIZ</button>
+                <button class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer
+                       dark:bg-teal-800 dark:hover:bg-teal-600 dark:text-teal-200" @click="viewQuiz">VIEW
                     / EDIT QUIZ</button>
-                <button  @click="$router.push('/notifyuser')" class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer
+                <button @click="$router.push('/notifyuser')" class="bg-teal-900 hover:bg-teal-700 text-white px-6 py-2 w-full rounded-md shadow-md cursor-pointer
                        dark:bg-teal-800 dark:hover:bg-teal-600 dark:text-teal-200">CONTACT USER</button>
             </div>
         </div>
@@ -27,11 +25,11 @@
             <img src="../../assets/AdminImg.svg" alt="Dashboard Illustration"
                 class="h-36 md:h-40 lg:h-44 xl:h-48 w-auto">
         </div>
-            <!-- Subscription Modal -->
+        <!-- Subscription Modal -->
          <div v-if="showSubscriptionModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4">
-            <h2 class="text-xl font-bold text-red-600 mb-4">Subscription Required</h2>
-            <p class="text-gray-700 mb-4">{{ subscriptionMessage }}</p>
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4 dark:bg-gray-700">
+            <h2 class="text-xl font-bold text-red-500 mb-4">Subscription Required</h2>
+            <p class="text-gray-700 mb-4 dark:text-gray-200">{{ subscriptionMessage }}</p>
             <div class="flex justify-center gap-4">
                 <button 
                     @click="showSubscriptionModal = false"
@@ -47,7 +45,7 @@
                 </router-link>
             </div>
         </div>
-    </div>
+        </div>
     </div>
 
 </template>
@@ -76,7 +74,7 @@ export default {
                 // Fetch all organizations
                 const orgResponse = await fetch('https://quizzer-platform-default-rtdb.firebaseio.com/organizations.json');
                 const orgsData = await orgResponse.json();
-                
+
                 // Find organization manually
                 const organizationKey = Object.keys(orgsData || {}).find(
                     key => orgsData[key].adminUid === user.uid
@@ -112,20 +110,20 @@ export default {
 
                 // ❌ Prevent quiz creation if limit is reached
                 if (totalAllowed === 0) {
-    this.subscriptionMessage = `You haven't subscribed to a plan yet. Please choose a plan to start creating quizzes.`;
-    this.showSubscriptionModal = true;
-    return;
-}
+                    this.subscriptionMessage = `You haven't subscribed to a plan yet. Please choose a plan to start creating quizzes.`;
+                    this.showSubscriptionModal = true;
+                    return;
+                }
 
-if (currentQuizzes >= totalAllowed) {
-    this.subscriptionMessage = `You've created ${currentQuizzes}/${totalAllowed} allowed quizzes. Upgrade your plan to add more.`;
-    this.showSubscriptionModal = true;
-    return;
-}
+                if (currentQuizzes >= totalAllowed) {
+                    this.subscriptionMessage = `You've created ${currentQuizzes}/${totalAllowed} allowed quizzes. Upgrade your plan to add more.`;
+                    this.showSubscriptionModal = true;
+                    return;
+                }
 
                 // ✅ Only navigate if within limit
                 this.$router.push('/organization/createQuiz');
-                
+
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error checking quota. Please try again.');

@@ -30,11 +30,16 @@
                         :disabled="loading">
                         {{ loading ? 'Logging in...' : 'Login' }}
                     </button>
+                    <div class="text-[#364365] dark:text-white font-medium text-sm flex justify-center gap-2 my-4 text-center">
+                        <span class="border-b-1 w-20 self-center dark:border-gray-600"></span>
+                        <p>Or sign in with</p>
+                        <span class="border-b-1 w-20 self-center dark:border-gray-600"></span>
+                    </div>
                     <div class="text-center mt-4">
                         <button @click="handleGoogleSignIn"
-                            class="flex items-center justify-center w-full bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:cursor-pointer">
+                            class="flex items-center justify-center w-full bg-white dark:bg-gray-700 dark:text-white border-2 border-gray-300 dark:border-gray-600 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:cursor-pointer">
                             <img src="https://www.google.com/favicon.ico" alt="Google" class="w-6 h-6 mr-2">
-                            Login with Google
+                            Google
                         </button>
                     </div>
                     <p class="text-center mt-4 text-gray-600 dark:text-gray-400">

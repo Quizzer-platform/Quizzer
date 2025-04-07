@@ -80,10 +80,10 @@
             </div>
         </div>
         <!-- Subscription Modal -->
-        <div v-if="showSubscriptionModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-[999]">
-            <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md text-center w-xl">
-                <h2 class="text-xl font-bold text-red-700 mb-4">Subscription Required</h2>
-                <p class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">{{ subscriptionMessage }}</p>
+        <div v-if="showSubscriptionModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4 dark:bg-gray-700">
+               <h2 class="text-xl font-bold text-red-500 mb-4">Subscription Required</h2>
+            <p class="text-gray-700 mb-4 dark:text-gray-200">{{ subscriptionMessage }}</p>
                 <div class="flex justify-center gap-4">
                     <button @click="showSubscriptionModal = false"
                         class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors cursor-pointer">

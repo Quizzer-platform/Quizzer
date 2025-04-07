@@ -9,10 +9,6 @@
                     <div class="bg-white dark:bg-gray-900/60 dark:text-gray-200 rounded-lg shadow-lg p-6">
                         <h1 class="text-2xl font-bold text-teal-800 dark:text-teal-400 mb-6">Your Organizations</h1>
 
-                        <div v-if="error"
-                            class="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 p-4 rounded-lg mb-6">
-                            {{ error }}
-                        </div>
 
                         <div v-if="userOrgs.length > 0" class="flex flex-col gap-6 w-full">
                             <div v-for="org in userOrgs" :key="org.id"

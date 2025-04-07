@@ -41,10 +41,10 @@
                                 </div>
                             </div>
                             <div class="flex flex-col items-start">
-                                <p class="text-xs text-red-500 max-w-sm">
+                                <p class="text-xs text-teal-700 max-w-sm">
                                     * if you want to take another quiz click the button below*
                                 </p>
-                                <p class="text-xs text-red-500 max-w-sm">
+                                <p class="text-xs text-teal-700 max-w-sm">
                                     * note : to take quiz you must have the quiz code from your org *
                                 </p>
                                 <p class="mt-5">

@@ -29,20 +29,19 @@
         </div>
             <!-- Subscription Modal -->
          <div v-if="showSubscriptionModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md mx-4">
+        <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg text-center max-w-md mx-4">
             <h2 class="text-xl font-bold text-red-600 mb-4">Subscription Required</h2>
-            <p class="text-gray-700 mb-4">{{ subscriptionMessage }}</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-4">{{ subscriptionMessage }}</p>
             <div class="flex justify-center gap-4">
                 <button 
                     @click="showSubscriptionModal = false"
-                    class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors"
+                    class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded hover:bg-gray-300 transition-colors cursor-pointer"
                 >
                     Close
                 </button>
                 <router-link 
                     to="/pricing" 
-                    class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors"
-                >
+                    class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors cursor-pointer">
                     View Plans
                 </router-link>
             </div>
@@ -112,16 +111,16 @@ export default {
 
                 // ❌ Prevent quiz creation if limit is reached
                 if (totalAllowed === 0) {
-    this.subscriptionMessage = `You haven't subscribed to a plan yet. Please choose a plan to start creating quizzes.`;
-    this.showSubscriptionModal = true;
-    return;
-}
+                    this.subscriptionMessage = `You haven't subscribed to a plan yet. Please choose a plan to start creating quizzes.`;
+                    this.showSubscriptionModal = true;
+                    return;
+                }
 
-if (currentQuizzes >= totalAllowed) {
-    this.subscriptionMessage = `You've created ${currentQuizzes}/${totalAllowed} allowed quizzes. Upgrade your plan to add more.`;
-    this.showSubscriptionModal = true;
-    return;
-}
+                if (currentQuizzes >= totalAllowed) {
+                    this.subscriptionMessage = `You've created ${currentQuizzes}/${totalAllowed} allowed quizzes. Upgrade your plan to add more.`;
+                    this.showSubscriptionModal = true;
+                    return;
+                }
 
                 // ✅ Only navigate if within limit
                 this.$router.push('/organization/createQuiz');

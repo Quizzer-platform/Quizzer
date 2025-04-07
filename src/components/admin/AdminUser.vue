@@ -15,7 +15,8 @@
                         <!-- User Info -->
                         <div class="text-center md:text-left">
                             <h2 class="text-2xl font-bold text-teal-700 dark:text-teal-400">{{ selectedUser.name }}</h2>
-                            <p class="mt-1 text-gray-600 dark:text-gray-300">Joined: {{ formatDate(selectedUser.createdAt) }}</p>
+                            <p class="mt-1 text-gray-600 dark:text-gray-300">Joined: {{
+                                formatDate(selectedUser.createdAt) }}</p>
                             <div class="mt-3 text-gray-700 dark:text-gray-300">
                                 <p><span class="font-semibold my-1">ID: </span> {{ selectedUser.id }}</p>
                                 <p><span class="font-semibold my-1">Email: </span> {{ selectedUser.email }}</p>
@@ -48,11 +49,12 @@
                         <Searchbar class="w-full md:w-auto mt-2 md:mt-0" @search="updateSearchQuery" />
                     </div>
 
-                       <!-- Loading Spinner -->
+                    <!-- Loading Spinner -->
                     <div v-if="isLoading" class="flex flex-col justify-center items-center h-60">
                         <svg class="animate-spin h-12 w-12 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                         </svg>
                         <p class="text-gray-600 dark:text-gray-300 mt-4">Loading User details...</p>
@@ -74,14 +76,20 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                <tr v-for="quiz in filteredQuizzes" :key="quiz.name" 
+                                <tr v-for="quiz in filteredQuizzes" :key="quiz.name"
                                     class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{{ quiz.name }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{{ quiz.score }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{{ formatDate(quiz.date) }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200">{{
+                                        formatDate(quiz.date) }}</td>
                                 </tr>
                             </tbody>
                         </table>
+                        <!-- Show No Data Message -->
+                        <p v-if="filteredQuizzes.length === 0"
+                            class="text-center text-gray-500 dark:text-gray-400 mt-6 h-50 flex flex-col justify-center items-center">
+                            No quizzes found</p>
+
                     </div>
                 </div>
             </main>
@@ -123,9 +131,9 @@ export default {
             );
         },
     },
-    methods: { 
+    methods: {
         removeFirstQuiz() {
-            this.quizzes.splice(0,1);
+            this.quizzes.splice(0, 1);
         },
         updateSearchQuery(query) {
             this.searchQuery = query;
@@ -156,7 +164,7 @@ export default {
                                 scorePerQuestion: quiz.scorePerQuestion,
                                 totalScore: quiz.numberOfQuestions * quiz.scorePerQuestion
                             }));
-                            
+
                             // After loading quiz data, fetch organization quizzes
                             this.fetchOrganizationQuizzes().then(() => {
                                 resolve();
@@ -177,7 +185,7 @@ export default {
             return new Promise((resolve) => {
                 const db = getDatabase();
                 const orgQuizzesRef = ref(db, "organizationQuizzes");
-                
+
                 get(orgQuizzesRef)
                     .then(snapshot => {
                         if (snapshot.exists()) {
@@ -190,7 +198,7 @@ export default {
                                     scorePerQuestion: quiz.scorePerQuestion || 1,
                                     totalScore: (quiz.numberOfQuestions || 0) * (quiz.scorePerQuestion || 1)
                                 }));
-                                
+
                             // Merge with existing quiz data
                             this.quizData = [...this.quizData, ...orgQuizzes];
                             // console.log("Organization quizzes loaded:", orgQuizzes.length);
@@ -207,13 +215,13 @@ export default {
         },
         calculateQuizTotal(quizId) {
             if (!quizId) return 0;
-            
+
             // First check if the quiz exists in our combined quiz data
             const quiz = this.quizData.find(q => q.id === quizId);
             if (quiz) {
                 return quiz.totalScore;
             }
-            
+
             return 0;
         },
         async loadUserDetails() {
@@ -230,7 +238,7 @@ export default {
                 // Fetch User Details
                 const userRef = ref(db, `users/${userId}`);
                 const userSnap = await get(userRef);
-                
+
                 if (userSnap.exists()) {
                     const userData = userSnap.val();
                     this.selectedUser = {

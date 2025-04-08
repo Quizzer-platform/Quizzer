@@ -56,7 +56,12 @@
     <!-- Subscription Plans -->
     <div class="mt-8 w-full">
         <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Subscription Plans</h3>
-
+        <!-- Remaining Quizzes -->
+        <div v-if="remainingQuizzes !== null" class="text-center mb-4">
+            <p class="text-teal-800 dark:text-teal-300 font-semibold">
+                You have created {{ usedQuizzes }} quizzes , {{ remainingQuizzes }} quizzes are remain.
+            </p>
+        </div>
         <div v-if="selectedOrg.plans && Object.values(selectedOrg.plans).length > 1"
              class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div v-for="(plan, index) in Object.values(selectedOrg.plans).slice(1)" :key="index"
@@ -65,7 +70,7 @@
                 <h4 class="text-xl font-semibold text-teal-800 dark:text-teal-400">{{ plan.name }}</h4>
                 <p class="text-gray-700 dark:text-gray-300">{{ plan.description }}</p>
                 <p class="text-teal-900 dark:text-teal-400 font-medium">Price: {{ plan.price }}</p>
-                <p class="text-gray-600 dark:text-gray-400">Quizzes Allowed: {{ plan.noOfQuizzes - selectedOrg.quizzes }}</p>
+                <p class="text-gray-600 dark:text-gray-400">Quizzes Allowed: {{ plan.noOfQuizzes  }}</p>
             </div>
         </div>
 
@@ -124,6 +129,8 @@ export default {
             selectedOrgID: "",
             quizzes: [],
             loading: true,
+            remainingQuizzes :null ,
+            usedQuizzes : 0,
         };
     },
     computed: {
@@ -193,6 +200,12 @@ export default {
 
                 if (orgSnap.exists()) {
                     this.selectedOrg = orgSnap.val();
+                    const plans = Object.values(orgSnap.val().plans).slice(1); // Convert object to array
+                    const totalAllowed = plans.reduce((sum, plan) => sum + parseInt(plan.noOfQuizzes || 0), 0);
+                    this.usedQuizzes = orgSnap.val().quizzes || 0;
+                    this.remainingQuizzes = totalAllowed - this.usedQuizzes;
+                    // console.log(this.remainingQuizzes)
+                    // console.log(this.usedQuizzes)
                 } else {
                     console.error("Organization not found");
                     this.selectedOrg = null;

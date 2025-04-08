@@ -10,7 +10,7 @@
         <!-- Remaining Quizzes -->
         <div v-if="remainingQuizzes !== null" class="text-center mb-4">
             <p class="text-teal-800 dark:text-teal-300 font-semibold">
-                You have created {{ usedQuizzes }} quizzes ,{{ remainingQuizzes }} quizzes are remain.
+                You have created {{ usedQuizzes }} quizzes , {{ remainingQuizzes }} quizzes are remain.
             </p>
         </div>
         <div v-if="loading" class="flex flex-col justify-center items-center h-60">
